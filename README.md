@@ -1,21 +1,19 @@
 # Cub3d
-Wolfenstein made in Urduliz
-a
-Makefile
+Wolfenstein made in 42 Urduliz
 
-include
-	lib
-		minilib.a
-		libft.a
-	inc
-		cubed.h
-
-	minilib42
-	libft
-src
-	main.c
-	parser
-	hooks
-	render
-	utils
-	
+## Dependencies
+- Minilibx_linux
+	> sudo apt-get install gcc make xorg libxext-dev libbsd-dev
+## Files
+├── include  
+│   ├── cub3d.h  
+│   ├── inc  
+│   └── lib  
+├── Makefile  
+├── README.md  
+└── src  
+    ├── hooks  
+    ├── main.c  
+    ├── parser  
+    ├── render  
+    └── utils  
