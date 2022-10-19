@@ -1,6 +1,6 @@
 NAME 	= Cub3d
 
-INC 	= -I ./include -I ./include/inc
+INC 	= -I ./include/ -I ./include/inc/
 LIB		= -L ./include/lib -lft -lmlx_Linux -lXext -lX11 -lm -lbsd
 CC		= gcc
 CFLAGS 	= -g3 #-Wall -Werror -Wextra #-Wpedantic
@@ -11,7 +11,7 @@ FILES	= src/main \
 		  src/hooks/hooks \
 		  src/parser/parser \
 		  src/render/render \
-		  src/utils/utils \
+		  src/utils/utils src/utils/init_destroy \
 
 SRC		= $(addsuffix .c, $(FILES))
 OBJ		= $(addsuffix .o, $(FILES))
