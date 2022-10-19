@@ -16,4 +16,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define BYTE 8
+
+typedef struct s_mlx_tools
+{
+	void	*mlx;
+	void	*mlx_win;
+	void	*mlx_img;
+	char	*mlx_addr;
+	int		bit_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_mlx_tools;
+
+
 #endif
