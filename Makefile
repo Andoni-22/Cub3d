@@ -1,9 +1,9 @@
 NAME 	= Cub3d
 
 INC 	= -I ./include -I ./include/inc
-LIB		= -L ./include/lib -lft -lmlx_Linux
+LIB		= -L ./include/lib -lft -lmlx_Linux -lXext -lX11 -lm -lbsd
 CC		= gcc
-CFLAGS 	= -g3 -Wall -Werror -Wextra #-Wpedantic
+CFLAGS 	= -g3 #-Wall -Werror -Wextra #-Wpedantic
 SNTZ	= -fsanitize=address
 RM		= rm -rf
 
@@ -32,7 +32,10 @@ fclean: clean
 
 re: fclean all
 
-#run: all
-#	./$(NAME)
+run: all
+	./$(NAME)
+
+debug: all
+	gdb ./$(NAME)
 
 .PHONY: all clean fclean re run
