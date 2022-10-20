@@ -22,37 +22,32 @@
 #include "mlx.h"
 #include "mlx_int.h"
 
-typedef struct	application_s {
-	struct mlx_s	*mlx_win;
-
-} application_t;
+#define BYTE 8
 
 typedef struct mlx_s
 {
 	void	*mlx;
-	void	*mlx_window;
+	void	*img;
+	char	*img_addr;
+	void	*mlx_win;
 	int		size_y;
 	int		size_x;
+	int		line_length;
+	int		bit_per_pixel;
+	int		endian;
+
 
 }	mlx_t;
+
+typedef struct	application_s {
+	mlx_t	mlx_win;
+
+} application_t;
+
 
 int		application_init(application_t *appl);
 void	application_destory(application_t *appl);
 int		appl_mlx_init(mlx_t	*mlx);
 void	appl_mlx_destroy(mlx_t	*mlx);
-
-#define BYTE 8
-
-typedef struct s_mlx_tools
-{
-	void	*mlx;
-	void	*mlx_win;
-	void	*mlx_img;
-	char	*mlx_addr;
-	int		bit_per_pixel;
-	int		line_length;
-	int		endian;
-}	t_mlx_tools;
-
 
 #endif
