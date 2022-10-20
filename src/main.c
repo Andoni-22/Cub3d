@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <stdint.h>
-
-#include "libft.h"
-#include "get_next_line.h"
 #include "cub3d.h"
-
-#include "mlx.h"
-#include "mlx_int.h"
 
 /*
  MY PIXEL PUT
@@ -88,77 +80,18 @@ static int	get_rgb(int t, int red, int green, int blue)
 	return (t << 24 | red << 16 | green << 8 | blue);
 }
 
-#define GET_SIZE 1
-#define FILL_MAP 2
-
-int	load_map(void *var, char *map_path, int flag)
-{
-	int		fd;
-	size_t	map_size;
-	char	*line;
-
-	fd = open(map_path, O_RDONLY);
-	if (fd == -1)
-		return (1);
-	map_size = 0;
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break ;
-		if (flag == GET_SIZE)
-			(*(size_t *)var)++;
-		else if (flag == FILL_MAP)
-		{
-			(*(char **)var) = line;
-			(*(char **)var);
-		}
-	}
-	close(fd);
-	return (0);
-}
-
-static void	show_map(char **map)
-{
-	while (*map)
-		printf("%s\n", *map++);
-}
-
 int main(int argc, char **argv)
 {
-	char	**map;
-	size_t	map_sz;
+	application_t	*appl;
+	mlx_t			*mlx_win;
 
-	if (argc != 2)
-		return (1);
-	map_sz = 0;
-	load_map(&map_sz, argv[1], GET_SIZE);
-	map = ft_calloc(map_sz + 1, sizeof(char **));
-	load_map(map, argv[1], FILL_MAP);
-	show_map(map);
-	return (0);
-	t_mlx_tools	mlx_tools;
-	int			x;
-	int			y;
-
-	ft_bzero(&mlx_tools, sizeof(mlx_tools));
-
-	init_mlx_tools(&mlx_tools);
-
-	y = 124;
-	while (++y < 375)
-	{
-		x = 124;
-		while (++x < 375)
-			my_pixel_put(&mlx_tools, y, x, get_rgb(255, 255, 0, 0));
-	}
-	printf("BIT PER PIXEL: %d\n", mlx_tools.bit_per_pixel);
-	printf("LINE LENGTH: %d\n", mlx_tools.line_length);
-	printf("ENDIAN %d\n", mlx_tools.endian);
-	
-	mlx_put_image_to_window(mlx_tools.mlx, mlx_tools.mlx_win, mlx_tools.mlx_img, 0, 0);
-
-
-	mlx_loop(mlx_tools.mlx);
+	if (application_init(appl) < 0)
+		return (-1);
+	mlx_win = appl->mlx_win;
+	mlx_win->mlx_window = mlx_new_window(mlx_win->mlx, mlx_win->size_x, mlx_win->size_y, "Cub3d");
+	(void)argc;
+	(void)argv;
+	mlx_loop(mlx_win->mlx);
+	application_destory(appl);
 	return (0);
 }
