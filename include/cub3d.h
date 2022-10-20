@@ -15,9 +15,11 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "libft.h"
+#include "get_next_line.h"
 
 #include "mlx.h"
 #include "mlx_int.h"
@@ -36,10 +38,16 @@ typedef struct mlx_s
 	int		bit_per_pixel;
 	int		endian;
 
-
 }	mlx_t;
 
+typedef struct	s_map
+{
+	char	**map;
+	ssize_t	map_sz;
+}	t_map;
+
 typedef struct	application_s {
+	t_map	map;
 	mlx_t	mlx_win;
 
 } application_t;
@@ -49,5 +57,8 @@ int		application_init(application_t *appl);
 void	application_destory(application_t *appl);
 int		appl_mlx_init(mlx_t	*mlx);
 void	appl_mlx_destroy(mlx_t	*mlx);
+
+ssize_t	get_map_size(int);
+char	**load_map(ssize_t, int);
 
 #endif

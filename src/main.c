@@ -17,18 +17,29 @@ static int	get_rgb(int t, int red, int green, int blue)
 	return (t << 24 | red << 16 | green << 8 | blue);
 }
 
+static void	show_map(char **map)
+{
+	while (*map)
+		printf("%s", *map++);
+}
+
 int main(int argc, char **argv)
 {
 	application_t	appl;
 	mlx_t			mlx_win;
+	t_map			map;
 
-	if (application_init(&appl) < 0)
+	if (argc != 2 || application_init(&appl) < 0)
 		return (-1);
 	mlx_win = appl.mlx_win;
-	mlx_win.mlx_win = mlx_new_window(mlx_win.mlx, mlx_win.size_x, mlx_win.size_y, "Cub3d");
-	(void)argc;
-	(void)argv;
+	map = appl.map;
+	map.map_sz = get_map_size(open(argv[1], O_RDONLY));
+	if (map.map_sz == -1)
+		return (-1);
+	map.map = load_map(map.map_sz, open(argv[1], O_RDONLY));
+	show_map(map.map);
+
 	mlx_loop(mlx_win.mlx);
-	application_destory(&appl);
+	//application_destory(&appl);
 	return (0);
 }
