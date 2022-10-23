@@ -10,13 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D
-# define CUB3D
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
+#ifndef CUB3D_H
+# define CUB3D_H
 
 #include "libft.h"
 #include "get_next_line.h"
@@ -25,40 +20,63 @@
 #include "mlx_int.h"
 
 #define BYTE 8
+#define PLAYER 'P'
+#define WIDTH	500
+#define HEIGHT	500
 
-typedef struct mlx_s
+typedef struct	s_mlx
 {
 	void	*mlx;
 	void	*img;
 	char	*img_addr;
 	void	*mlx_win;
-	int		size_y;
-	int		size_x;
 	int		line_length;
 	int		bit_per_pixel;
 	int		endian;
-
-}	mlx_t;
+}	t_mlx;
 
 typedef struct	s_map
 {
 	char	**map;
-	ssize_t	map_sz;
 }	t_map;
 
-typedef struct	application_s {
-	t_map	map;
-	mlx_t	mlx_win;
+/*
+ * POS_X Y POS_Y -> POSICION INICIAL DEL JUGADOR EN EL MAPA
+ *
+ * DIR_X Y DIR_Y -> PRIMER VECTOR DE DIRECCION
+ *
+ * TIME -> TIEMPO DEL FRAME ACTUAL
+ * OLD_TIME -> TIEMPO DEL FRAME ANTERIOR
+ *
+ */
+typedef struct	s_player
+{
+	double	pos_x;
+	double	pos_y;
+	double	dir_x;
+	double	dir_y;
+	double	plane_x;
+	double	plane_y;
+	double	time;
+	double	old_time;
 
-} application_t;
+}	t_player;
+
+typedef struct	s_application {
+	t_map		map;
+	t_mlx		mlx_win;
+	t_player	player;
+
+}	t_application;
 
 
-int		application_init(application_t *appl);
-void	application_destory(application_t *appl);
-int		appl_mlx_init(mlx_t	*mlx);
-void	appl_mlx_destroy(mlx_t	*mlx);
+int		application_init(t_application *, char *);
+void	application_destory(t_application *);
+//int		appl_mlx_init(t_mlx	*);
+void	appl_mlx_destroy(t_mlx *);
 
-ssize_t	get_map_size(int);
-char	**load_map(ssize_t, int);
+char	**load_map(char *);
+
+void	logger(char *);
 
 #endif

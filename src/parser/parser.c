@@ -1,34 +1,38 @@
 #include "cub3d.h"
 
-ssize_t	get_map_size(int fd)
+static size_t	get_map_size(char *path)
 {
 	ssize_t	map_sz;
 	char	*line;
+	int		fd;
 
-	map_sz = -1;
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		return (0);
+	map_sz = 0;
 	while (1)
 	{
 		line = get_next_line(fd);
 		if (!line)
 			break ;
+		free(line);
 		map_sz++;
 	}
 	close(fd);
 	return (map_sz);
 }
 
-char	**load_map(ssize_t sz, int fd)
+char **load_map_file(char *path, size_t	sz)
 {
-	char	*line;
 	char	**map;
+	char	*line;
+	int		fd;
 
 	map = ft_calloc(sizeof(char *), sz + 1);
 	if (!map)
-	{
-		close(fd);
 		return (NULL);
-	}
 	sz = 0;
+	fd = open(path, O_RDONLY);
 	while (1)
 	{
 		line = get_next_line(fd);
@@ -38,4 +42,14 @@ char	**load_map(ssize_t sz, int fd)
 	}
 	close(fd);
 	return (map);
+}
+
+char	**load_map(char *path)
+{
+	size_t	sz;
+
+	sz = get_map_size(path);
+	if (!sz)
+		return (NULL);
+	return (load_map_file(path, sz));
 }

@@ -12,6 +12,7 @@ FILES	= src/main \
 		  src/parser/parser \
 		  src/render/render \
 		  src/utils/utils \
+		  src/utils/logger \
 		  src/utils/init_destroy
 
 SRC		= $(addsuffix .c, $(FILES))
@@ -34,7 +35,7 @@ fclean: clean
 re: fclean all
 
 run: all
-	./$(NAME)
+	./$(NAME) ./map/map_first.txt
 
 debug: all
 	gdb ./$(NAME)

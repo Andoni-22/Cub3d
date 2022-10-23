@@ -1,36 +1,78 @@
 #include "cub3d.h"
 
-int	application_init(application_t *appl)
+static int	appl_mlx_init(t_mlx	*mlx)
 {
-	memset(appl, 0, sizeof(application_t));
-	if (appl_mlx_init(&appl->mlx_win) < 0)
+	mlx->mlx = mlx_init();
+	mlx->mlx_win = mlx_new_window(mlx->mlx, WIDTH, HEIGHT, "Cub3d");
+	mlx->img = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
+	mlx->img_addr = mlx_get_data_addr(mlx->img, &mlx->bit_per_pixel, &mlx->line_length, &mlx->endian);
+	return (0);
+}
+
+static int	appl_map_init(t_map *map, char *path)
+{
+	map->map = load_map(path);
+	if (!map->map == -1)
 		return (-1);
 	return (0);
 }
 
-void	application_destory(application_t *appl)
+static void	locate_player(t_player *player, t_map *map)
 {
-	appl_mlx_destroy(&appl->mlx_win);
-	if (appl)
-		free(appl);
+	char	*player_pos;
+	size_t	i;
+
+	i = -1;
+	while (map->map[++i])
+	{
+		player_pos = ft_strchr(map->map[i], PLAYER);
+		if (player_pos)
+		{
+			player->pos_x = player_pos - map->map[i];
+			break ;
+		}
+		player->pos_y++;
+	}
 }
 
-int	appl_mlx_init(mlx_t	*mlx)
+static int	appl_player_init(t_player *player, t_map *map)
 {
-	mlx->mlx = mlx_init();
-	mlx->mlx_win = mlx_new_window(mlx->mlx, 500, 500, "Cub3d");
-	mlx->img = mlx_new_image(mlx->mlx, 500, 500);
-	mlx->img_addr = mlx_get_data_addr(mlx->img, &mlx->bit_per_pixel, &mlx->line_length, &mlx->endian);
-
-	mlx->size_x = 500;
-	mlx->size_y = 500;
+	memset(player, 0, sizeof(t_player));
+	player->dir_x = -1;
+	player->plane_y = 0.66;
+	locate_player(player, map);
 	return (0);
 }
 
-void	appl_mlx_destroy(mlx_t	*mlx)
+int	application_init(t_application *appl, char *path)
 {
-	if (mlx)
-		free(mlx);
-	mlx->size_x = 0;
-	mlx->size_y = 0;
+	memset(appl, 0, sizeof(t_application));
+	if (appl_mlx_init(&appl->mlx_win) < 0)
+		return (-1);
+	if (appl_map_init(&appl->map, path) < 0)
+		return (-1);
+	if (appl_player_init(&appl->player, &appl->map))
+		return (-1);
+	return (0);
+}
+
+static void	appl_map_destroy(t_map *map)
+{
+	size_t	i;
+
+	i = -1;
+	while (map->map[++i])
+		free(map->map[i]);
+	free(map->map);
+}
+
+void	application_destory(t_application *appl)
+{
+	appl_mlx_destroy(&appl->mlx_win);
+	appl_map_destroy(&appl->map);
+}
+
+void	appl_mlx_destroy(t_mlx	*mlx)
+{
+	(void)mlx;
 }
