@@ -55,31 +55,31 @@ void	game(t_player *player, t_map *map)
 	x = -1;
 	while (++x <= WIDTH)
 	{
-		sprintf(buffer, "X_POS: %ld\n", x);
-		logger(buffer);
+		//sprintf(buffer, "X_POS: %ld\n", x);
+		//logger(buffer);
 		camera_x = 2 * x / (double)WIDTH - 1;
 		ray_dir_y = player->dir_y + player->plane_y + camera_x;
 		ray_dir_x = player->dir_x + player->plane_x + camera_x;
 		delta_dist_x = abs(1 / ray_dir_x);
 		delta_dist_y = abs(1 / ray_dir_y);
 
-		sprintf(buffer, "CAMERA_X: %lf\n", camera_x);
-		logger(buffer);
+		//sprintf(buffer, "CAMERA_X: %lf\n", camera_x);
+		//logger(buffer);
 
-		sprintf(buffer, "RAY_COORD_Y: %lf\n", ray_dir_y);
-		logger(buffer);
-		sprintf(buffer, "RAY_COORD_X: %lf\n", ray_dir_x);
-		logger(buffer);
+		//sprintf(buffer, "RAY_COORD_Y: %lf\n", ray_dir_y);
+		//logger(buffer);
+		//sprintf(buffer, "RAY_COORD_X: %lf\n", ray_dir_x);
+		//logger(buffer);
 
 		if (!ray_dir_x)
 			delta_dist_x = 1e30;
 		if (!ray_dir_y)
 			delta_dist_y = 1e30;
 
-		sprintf(buffer, "DELTA_DIST_X: %lf\n", delta_dist_x);
-		logger(buffer);
-		sprintf(buffer, "DELTA_DIST_Y: %lf\n", delta_dist_y);
-		logger(buffer);
+		//sprintf(buffer, "DELTA_DIST_X: %lf\n", delta_dist_x);
+		//logger(buffer);
+		//sprintf(buffer, "DELTA_DIST_Y: %lf\n", delta_dist_y);
+		//logger(buffer);
 
 		map_x = player->pos_x;
 		map_y = player->pos_y;
@@ -104,7 +104,7 @@ void	game(t_player *player, t_map *map)
 			step_y = 1;
 			side_dist_y = (player->pos_y + 1.0 - map_y) * delta_dist_y;
 		}
-		while (!hit)
+		while (0 && !hit)
 		{
 			if (side_dist_x < side_dist_y)
 			{
@@ -139,7 +139,7 @@ int main(int argc, char **argv)
 		return (-1);
 	game(player, map);
 	//show_map(map.map);
-	//mlx_loop(mlx_win.mlx);
+	mlx_loop(mlx_win->mlx);
 	application_destory(&appl);
 	return (0);
 }

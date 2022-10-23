@@ -6,6 +6,7 @@ CC		= gcc
 CFLAGS 	= -g3 #-Wall -Werror -Wextra #-Wpedantic
 SNTZ	= -fsanitize=address
 RM		= rm -rf
+RUN		=  ./$(NAME) $(MAP)
 
 FILES	= src/main \
 		  src/hooks/hooks \
@@ -35,9 +36,9 @@ fclean: clean
 re: fclean all
 
 run: all
-	./$(NAME) ./map/map_first.txt
+	$(RUN)
 
 debug: all
-	gdb ./$(NAME)
+	gdb --args $(RUN)
 
 .PHONY: all clean fclean re run
