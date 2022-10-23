@@ -1,7 +1,7 @@
 NAME 	= Cub3d
 
 INC 	= -I ./include -I ./include/inc
-LIB		= -L ./include/lib -lft -lmlx_Linux -lXext -lX11 -lm -lbsd
+LIB		= -L ./include/lib -lft -lmlx_Linux -lgnl -lXext -lX11 -lm -lbsd
 CC		= gcc
 CFLAGS 	= -g3 #-Wall -Werror -Wextra #-Wpedantic
 SNTZ	= -fsanitize=address
@@ -12,6 +12,8 @@ FILES	= src/main \
 		  src/parser/parser \
 		  src/render/render \
 		  src/utils/utils \
+		  src/utils/logger \
+		  src/utils/init_destroy
 
 SRC		= $(addsuffix .c, $(FILES))
 OBJ		= $(addsuffix .o, $(FILES))
@@ -33,7 +35,7 @@ fclean: clean
 re: fclean all
 
 run: all
-	./$(NAME)
+	./$(NAME) ./map/map_first.txt
 
 debug: all
 	gdb ./$(NAME)
