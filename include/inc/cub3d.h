@@ -38,6 +38,8 @@ typedef struct	s_mlx
 typedef struct	s_map
 {
 	char	**map;
+	int		hit;
+	int		side;
 }	t_map;
 
 /*
@@ -55,12 +57,33 @@ typedef struct	s_player
 	double	pos_y;
 	double	dir_x;
 	double	dir_y;
-	double	plane_x;
-	double	plane_y;
-	double	time;
-	double	old_time;
 
 }	t_player;
+
+typedef struct	s_ray
+{
+	int		sq_pos_x;
+	int		sq_pos_y;
+	double	pos_x;
+	double	pos_y;
+	double	dir_x;
+	double	dir_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	step_x;
+	double	step_y;
+}	t_ray;
+
+typedef struct s_camera
+{
+	double	plane_x;
+	double	plane_y;
+	double	past;
+	double	now;
+	double	coord_x;
+}	t_camera;
 
 typedef struct	s_application {
 	t_map		map;
@@ -74,6 +97,7 @@ int		application_init(t_application *, char *);
 void	application_destory(t_application *);
 //int		appl_mlx_init(t_mlx	*);
 void	appl_mlx_destroy(t_mlx *);
+void	game(t_player *, t_map *);
 
 char	**load_map(char *);
 

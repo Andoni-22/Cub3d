@@ -12,6 +12,7 @@ FILES	= src/main \
 		  src/hooks/hooks \
 		  src/parser/parser \
 		  src/render/render \
+		  src/render/dda \
 		  src/utils/utils \
 		  src/utils/logger \
 		  src/utils/init_destroy

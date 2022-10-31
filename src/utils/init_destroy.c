@@ -39,7 +39,7 @@ static int	appl_player_init(t_player *player, t_map *map)
 {
 	memset(player, 0, sizeof(t_player));
 	player->dir_x = -1;
-	player->plane_y = 0.66;
+	player->dir_y = 0;
 	locate_player(player, map);
 	return (0);
 }
