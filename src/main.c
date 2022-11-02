@@ -48,6 +48,7 @@ int main(int argc, char **argv)
 	if (!map->map)
 		return (-1);
 	game(player, map, mlx_win);
+	mlx_put_image_to_window(mlx_win->mlx, mlx_win->mlx_win, mlx_win->img, 0, 0);
 	//show_map(map.map);
 	mlx_loop(mlx_win->mlx);
 	application_destory(&appl);
