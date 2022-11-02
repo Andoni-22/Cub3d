@@ -23,6 +23,8 @@
 #define PLAYER 'P'
 #define WIDTH	500
 #define HEIGHT	500
+#define	WALL	'1'
+#define	FLOOR	'0'
 
 typedef struct	s_mlx
 {
@@ -62,8 +64,8 @@ typedef struct	s_player
 
 typedef struct	s_ray
 {
-	int		sq_pos_x;
-	int		sq_pos_y;
+	int		map_x;
+	int		map_y;
 	double	pos_x;
 	double	pos_y;
 	double	dir_x;
@@ -72,8 +74,11 @@ typedef struct	s_ray
 	double	delta_dist_y;
 	double	side_dist_x;
 	double	side_dist_y;
-	double	step_x;
-	double	step_y;
+	int		step_x;
+	int		step_y;
+	int		hit;
+	int		side;
+
 }	t_ray;
 
 typedef struct s_camera
@@ -97,10 +102,12 @@ int		application_init(t_application *, char *);
 void	application_destory(t_application *);
 //int		appl_mlx_init(t_mlx	*);
 void	appl_mlx_destroy(t_mlx *);
-void	game(t_player *, t_map *);
+void	game(t_player *, t_map *, t_mlx *);
 
 char	**load_map(char *);
 
 void	logger(char *);
+
+void	my_pixel_put(t_mlx*, int, int, int);
 
 #endif

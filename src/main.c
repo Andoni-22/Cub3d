@@ -2,7 +2,7 @@
 
 #include <math.h>
 
-static void	my_pixel_put(t_mlx* mlx, int x, int y, int color)
+void	my_pixel_put(t_mlx* mlx, int x, int y, int color)
 {
 	char	*pix_position;
 	int		y_coord_offset;
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 	player = &appl.player;
 	if (!map->map)
 		return (-1);
-	game(player, map);
+	game(player, map, mlx_win);
 	//show_map(map.map);
 	mlx_loop(mlx_win->mlx);
 	application_destory(&appl);
