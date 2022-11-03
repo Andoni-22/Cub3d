@@ -19,4 +19,9 @@
 # define ZOOM_OUT		4
 # define ZOOM_IN		5
 
+#define LEFT	65361
+#define UP		65362
+#define RIGHT	65363
+#define DOWN	65364
+
 #endif
