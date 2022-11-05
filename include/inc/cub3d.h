@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
-# define CUB3D_H
+#define CUB3D_H
 
 #include "libft.h"
 #include "get_next_line.h"
@@ -40,8 +40,10 @@ typedef struct	s_mlx
 typedef struct	s_map
 {
 	char	**map;
-	int		hit;
 	int		side;
+	int		wall_height;
+	int		perp_wall_dist;
+
 }	t_map;
 
 /*
@@ -94,6 +96,8 @@ typedef struct	s_application {
 	t_map		map;
 	t_mlx		mlx_win;
 	t_player	player;
+	t_camera	cam;
+	t_ray		ray;
 
 }	t_application;
 
@@ -102,14 +106,12 @@ int		application_init(t_application *, char *);
 void	application_destory(t_application *);
 //int		appl_mlx_init(t_mlx	*);
 void	appl_mlx_destroy(t_mlx *);
-void	game(t_player *, t_map *, t_mlx *);
+void	game_loop(t_application *appl);//t_player *, t_map *, t_mlx *);
 
 char	**load_map(char *);
 
 void	logger(char *);
 
 void	my_pixel_put(t_mlx*, int, int, int);
-
-void	clear_image(t_mlx *);
 
 #endif

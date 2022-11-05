@@ -47,6 +47,14 @@ static int	appl_player_init(t_player *player, t_map *map)
 	return (0);
 }
 
+static int	appl_cam_init(t_camera *cam)
+{
+	memset(cam, 0, sizeof(cam));
+	cam->plane_x = 0;
+	cam->plane_y = 0.66;
+	return (0);
+}
+
 int	application_init(t_application *appl, char *path)
 {
 	memset(appl, 0, sizeof(t_application));
@@ -55,6 +63,8 @@ int	application_init(t_application *appl, char *path)
 	if (appl_map_init(&appl->map, path) < 0)
 		return (-1);
 	if (appl_player_init(&appl->player, &appl->map))
+		return (-1);
+	if (appl_cam_init(&appl->cam) < 0)
 		return (-1);
 	return (0);
 }

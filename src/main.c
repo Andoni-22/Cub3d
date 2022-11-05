@@ -9,8 +9,6 @@ void	my_pixel_put(t_mlx* mlx, int x, int y, int color)
 	int		y_coord_offset;
 	int		x_coord_offset;
 
-	//fprintf(stderr, "X: %d\n", x);
-	//fprintf(stderr, "Y: %d\n", y);
 	y_coord_offset = y * mlx->line_length;
 	x_coord_offset = x * (mlx->bit_per_pixel / BYTE);
 	pix_position = mlx->img_addr + y_coord_offset + x_coord_offset;
@@ -33,22 +31,6 @@ static void	show_map(char **map)
 	//logger(buffer);
 	while (*map)
 		printf("%s", *map++);
-}
-
-void	clear_image(t_mlx *mlx)
-{
-	//FILE	*log;
-
-	//log = fopen("clear.log", "w");
-	for (int i = 0; i <= HEIGHT; i++)
-	{
-		for (int j = 0; j <= HEIGHT; j++)
-		{
-			mlx->img_addr[i * WIDTH + j] = 0;
-			//fprintf(log, "IMG[%d][%d]\n", i, j);
-		}
-	}
-	//fclose(log);
 }
 
 static int	key_hook(int keycode, t_application *appl)
@@ -87,8 +69,7 @@ static int	key_hook(int keycode, t_application *appl)
 		planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(1);
     }*/
 
-	show_map(appl->map.map);
-	game(&appl->player, &appl->map, &appl->mlx_win);
+	game_loop(appl);
 	return (1);
 }
 
@@ -99,7 +80,6 @@ int main(int argc, char **argv)
 	t_map			*map;
 	t_player		*player;
 
-	//logger("INIT MAIN\n");
 	if (argc != 2 || application_init(&appl, argv[1]) < 0)
 		return (-1);
 	mlx_win = &appl.mlx_win;
@@ -107,9 +87,7 @@ int main(int argc, char **argv)
 	player = &appl.player;
 	if (!map->map)
 		return (-1);
-	//game(player, map, mlx_win);
-	//mlx_put_image_to_window(mlx_win->mlx, mlx_win->mlx_win, mlx_win->img, 0, 0);
-	//show_map(map.map);
+	game_loop(&appl);
 	mlx_key_hook(mlx_win->mlx_win, key_hook, &appl);
 	mlx_loop(mlx_win->mlx);
 	application_destory(&appl);
