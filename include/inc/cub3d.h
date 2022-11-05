@@ -110,4 +110,6 @@ void	logger(char *);
 
 void	my_pixel_put(t_mlx*, int, int, int);
 
+void	clear_image(t_mlx *);
+
 #endif

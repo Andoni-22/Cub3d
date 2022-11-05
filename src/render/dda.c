@@ -10,11 +10,17 @@ static void	game_loop(t_player *p, t_map *m, t_camera *cam, t_mlx *mlx)
 	int		draw_end;
 	int		rgb;
 	double	perp_wall_dist;
+	FILE	*file;
 
 	memset(&ray, 0, sizeof(t_ray));
 	x = -1;
 	ray.pos_x = p->pos_x;
 	ray.pos_y = p->pos_y;
+	for (int i = 0; i <= HEIGHT; i++)
+	{
+		for (int j = 0; j <= HEIGHT; j++)
+			my_pixel_put(mlx, i, j, 0x000000);
+	}
 	while (++x <= WIDTH)
 	{
 		cam->coord_x = 2 * x / (double)WIDTH - 1;
@@ -73,8 +79,6 @@ static void	game_loop(t_player *p, t_map *m, t_camera *cam, t_mlx *mlx)
 		else
 			perp_wall_dist = ray.side_dist_y - ray.delta_dist_y;
 		wall_height = (int)HEIGHT / perp_wall_dist;
-		if (wall_height == -2147483648)
-			wall_height++;
 		draw_start = -wall_height / 2 + HEIGHT / 2;
 		if (draw_start < 0)
 			draw_start = 0;
@@ -91,12 +95,11 @@ static void	game_loop(t_player *p, t_map *m, t_camera *cam, t_mlx *mlx)
 			rgb = 0x0000ff;
 		if (ray.side)
 			rgb /= 2;
-		if (draw_start > 1000)
-			draw_start--;
 		while (draw_start != draw_end)
 			my_pixel_put(mlx, x, draw_start++, rgb);
 		ray.hit = 0;
 	}
+	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->img, 0, 0);
 }
 
 void	game(t_player *p, t_map *m, t_mlx *mlx)

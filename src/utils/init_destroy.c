@@ -29,10 +29,13 @@ static void	locate_player(t_player *player, t_map *map)
 		if (player_pos)
 		{
 			player->pos_x = player_pos - map->map[i];
+			*player_pos = FLOOR;
 			break ;
 		}
 		player->pos_y++;
 	}
+	player->pos_y += 0.1;
+	player->pos_x += 0.1;
 }
 
 static int	appl_player_init(t_player *player, t_map *map)
