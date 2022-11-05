@@ -8,8 +8,6 @@ static void	clear_image(t_mlx *mlx)
 
 static void	ray_coord(t_ray *ray, t_player *pl, t_camera *cam)
 {
-	ray->pos_x = pl->pos_x;
-	ray->pos_y = pl->pos_y;
 	ray->dir_x = pl->dir_x + cam->plane_x  * cam->coord_x;
 	ray->dir_y = pl->dir_y + cam->plane_y  * cam->coord_x;
 	ray->map_x = (int)ray->pos_x;
@@ -40,16 +38,16 @@ static void	ray_next_square_dist(t_ray *ray)
 	}
 }
 
-static void	ray_delta(t_ray *r)
+static void	ray_delta(t_ray *ray)
 {
-	if (!r->dir_x)
-		r->delta_dist_x = 1e30;
+	if (!ray->dir_x)
+		ray->delta_dist_x = 1e30;
 	else
-		r->delta_dist_x = fabs(1 / r->dir_x);
-	if (!r->dir_y)
-		r->delta_dist_y = 1e30;
+		ray->delta_dist_x = fabs(1 / ray->dir_x);
+	if (!ray->dir_y)
+		ray->delta_dist_y = 1e30;
 	else
-		r->delta_dist_y = fabs(1 / r->dir_y);
+		ray->delta_dist_y = fabs(1 / ray->dir_y);
 }
 
 static void	set_ray(t_ray *ray, t_player *pl, t_camera *cam)
@@ -125,6 +123,8 @@ void	game_loop(t_application *appl)//t_player *p, t_map *m, t_camera *cam, t_mlx
 
 	clear_image(&appl->mlx_win);
 	x = -1;
+	appl->ray.pos_x = appl->player.pos_x;
+	appl->ray.pos_y = appl->player.pos_y;
 	while (++x <= WIDTH)
 	{
 		appl->cam.coord_x = 2 * x / (double)WIDTH - 1;

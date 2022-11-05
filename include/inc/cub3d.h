@@ -42,7 +42,7 @@ typedef struct	s_map
 	char	**map;
 	int		side;
 	int		wall_height;
-	int		perp_wall_dist;
+	double	perp_wall_dist;
 
 }	t_map;
 
