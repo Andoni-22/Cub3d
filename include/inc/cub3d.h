@@ -21,10 +21,15 @@
 
 #define BYTE 8
 #define PLAYER 'P'
-#define WIDTH	500
-#define HEIGHT	500
+#define WIDTH	1080
+#define HEIGHT	960
 #define	WALL	'1'
 #define	FLOOR	'0'
+#define ROTATE	0.0625f
+#define	X		0
+#define	Y		1
+#define PLUS	1
+#define MINUS	-1
 
 typedef struct	s_mlx
 {

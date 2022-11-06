@@ -33,42 +33,55 @@ static void	show_map(char **map)
 		printf("%s", *map++);
 }
 
+static int	colission(t_map *map, t_ray *ray, t_player *pl, int sign)
+{
+	int	ret_val;
+
+	if (sign == 1)
+		ret_val = map->map[(int)(pl->pos_x + pl->dir_x)][(int)(pl->pos_y + pl->dir_y)] - 48;
+	else
+		ret_val = map->map[(int)(pl->pos_x - pl->dir_x)][(int)(pl->pos_y - pl->dir_y)] - 48;
+	return (!ret_val);
+}
+
 static int	key_hook(int keycode, t_application *appl)
 {
+	int	ret_val;
+
 	fprintf(stderr, "KEYCODE: %d\n", keycode);
+	fprintf(stderr, "X: %lf\n", appl->player.pos_x);
+	fprintf(stderr, "Y: %lf\n", appl->player.pos_y);
+	fprintf(stderr, "RETVAL: %d\n", ret_val);
 	if (keycode == UP)
 	{
-		appl->player.pos_y += appl->player.dir_y;
-		appl->player.pos_x += appl->player.dir_x;
+		ret_val = colission(&appl->map, &appl->ray, &appl->player, PLUS);
+		appl->player.pos_y += appl->player.dir_y * ret_val / 3;
+		appl->player.pos_x += appl->player.dir_x * ret_val / 3;
 	}
-	else if (keycode == DOWN)
+	if (keycode == DOWN)
 	{
-		appl->player.pos_y -= appl->player.dir_y;
-		appl->player.pos_x -= appl->player.dir_x;
+		ret_val = colission(&appl->map, &appl->ray, &appl->player, MINUS);
+		appl->player.pos_y -= appl->player.dir_y * ret_val / 3;
+		appl->player.pos_x -= appl->player.dir_x * ret_val / 3;
 	}
-	/*else if (keycode == LEFT)
+	if (keycode == LEFT)
 	{
-		//appl->player.pos_x += 0.1f;
-		//both camera direction and camera plane must be rotated
 		double oldDirX = appl->player.dir_x;
-		appl->player.dir_x = appl->player.dir_x * cos(-1) - appl->player.dir_y * sin(-1);
-		appl->player.dir_y = oldDirX * sin(-1) + appl->player.dir_y * cos(-1);
+		appl->player.dir_x = appl->player.dir_x * cos(-ROTATE) - appl->player.dir_y * sin(-ROTATE);
+		appl->player.dir_y = oldDirX * sin(-ROTATE) + appl->player.dir_y * cos(-ROTATE);
 		double oldPlaneX = appl->cam.plane_x;
-		appl->cam.plane_x = appl->cam.plane_x * cos(-1) - appl->cam.plane_y * sin(-1);
-		appl->cam.plane_y = oldPlaneX * sin(-1) + appl->cam.plane_y * cos(-1);
+		appl->cam.plane_x = appl->cam.plane_x * cos(-ROTATE) - appl->cam.plane_y * sin(-ROTATE);
+		appl->cam.plane_y = oldPlaneX * sin(-ROTATE) + appl->cam.plane_y * cos(-ROTATE);
     }
-    //rotate to the left
-	else if (keycode == RIGHT)
+	if (keycode == RIGHT)
 	{	
-		//both camera direction and camera plane must be rotated
-		double oldDirX = dirX;
-		dirX = dirX * cos(rotSpeed) - dirY * sin(1);
-		dirY = oldDirX * sin(rotSpeed) + dirY * cos(1);
-		double oldPlaneX = planeX;
-		planeX = planeX * cos(rotSpeed) - planeY * sin(1);
-		planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(1);
-    }*/
-
+		double oldDirX = appl->player.dir_x;
+		appl->player.dir_x = appl->player.dir_x * cos(ROTATE) - appl->player.dir_y * sin(ROTATE);
+		appl->player.dir_y = oldDirX * sin(ROTATE) + appl->player.dir_y * cos(ROTATE);
+		double oldPlaneX = appl->cam.plane_x;
+		appl->cam.plane_x = appl->cam.plane_x * cos(ROTATE) - appl->cam.plane_y * sin(ROTATE);
+		appl->cam.plane_y = oldPlaneX * sin(ROTATE) + appl->cam.plane_y * cos(ROTATE);
+    }
 	game_loop(appl);
 	return (1);
 }
@@ -88,7 +101,8 @@ int main(int argc, char **argv)
 	if (!map->map)
 		return (-1);
 	game_loop(&appl);
-	mlx_key_hook(mlx_win->mlx_win, key_hook, &appl);
+	//mlx_key_hook(mlx_win->mlx_win, key_hook, &appl);
+	mlx_hook(mlx_win->mlx_win, 2, 1L << 0, key_hook, &appl);
 	mlx_loop(mlx_win->mlx);
 	application_destory(&appl);
 	return (0);

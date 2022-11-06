@@ -28,11 +28,11 @@ static void	locate_player(t_player *player, t_map *map)
 		player_pos = ft_strchr(map->map[i], PLAYER);
 		if (player_pos)
 		{
-			player->pos_x = player_pos - map->map[i];
+			player->pos_y = player_pos - map->map[i];
 			*player_pos = FLOOR;
 			break ;
 		}
-		player->pos_y++;
+		player->pos_x++;
 	}
 	player->pos_y += 0.1;
 	player->pos_x += 0.1;
