@@ -63,7 +63,7 @@ static void	set_texture_colors(char *texture, int y, int x, int color)
 {
 	char	*offset;
 
-	offset = texture + x + y;
+	offset = texture + TEXTURE_WIDTH * y + x;
 	*(unsigned char *)texture = color;
 }
 
@@ -83,14 +83,16 @@ static int	appl_texture_init(t_texture *t)
 			t->ycolor = y * 256 / TEXTURE_HEIGHT;
 			t->xycolor = y * 128 / TEXTURE_HEIGHT + x * 128 / TEXTURE_WIDTH;
 
-			set_texture_colors(t->texture_set[0], y, x, 65536 * 254 * (x != y && x != TEXTURE_WIDTH - y));//flat red texture with black cross
-			set_texture_colors(t->texture_set[1], y, x, t->xycolor + 256 * t->xycolor + 65536 * t->xycolor); //sloped greyscale
-			set_texture_colors(t->texture_set[2], y, x, 256 * t->xycolor + 65536 * t->xycolor); //sloped yellow gradien
-			set_texture_colors(t->texture_set[3], y, x, t->xorcolor + 256 * t->xorcolor + 65536 * t->xorcolor); //t->xor greyscale;
-			set_texture_colors(t->texture_set[4], y, x, 256 * t->xorcolor); //t->xor green;
-			set_texture_colors(t->texture_set[5], y, x, 65536 * 192 * (x % 16 && y % 16)); //red bricks;
-			set_texture_colors(t->texture_set[6], y, x, 65536 * t->ycolor); //red gradient;
-			set_texture_colors(t->texture_set[7], y, x, 128 + 256 * 128 + 65536 * 128); //flat grey texture;
+			//set_texture_colors(t->texture_set[0], y, x, 65536 * 254 * (x != y && x != TEXTURE_WIDTH - y));//flat red texture with black cross
+			t->texture_set[0][TEXTURE_WIDTH * y + x] =  65536 * 254 * (x != y && x != TEXTURE_WIDTH - y);//flat red texture with black cross
+			//set_texture_colors(t->texture_set[1], y, x, t->xycolor + 256 * t->xycolor + 65536 * t->xycolor); //sloped greyscale
+			t->texture_set[1][TEXTURE_WIDTH * y + x] = t->xycolor + 256 * t->xycolor + 65536 * t->xycolor; //sloped greyscale
+			//set_texture_colors(t->texture_set[2], y, x, 256 * t->xycolor + 65536 * t->xycolor); //sloped yellow gradien
+			//set_texture_colors(t->texture_set[3], y, x, t->xorcolor + 256 * t->xorcolor + 65536 * t->xorcolor); //t->xor greyscale;
+			//set_texture_colors(t->texture_set[4], y, x, 256 * t->xorcolor); //t->xor green;
+			//set_texture_colors(t->texture_set[5], y, x, 65536 * 192 * (x % 16 && y % 16)); //red bricks;
+			//set_texture_colors(t->texture_set[6], y, x, 65536 * t->ycolor); //red gradient;
+			//set_texture_colors(t->texture_set[7], y, x, 128 + 256 * 128 + 65536 * 128); //flat grey texture;
 		}
 	}
 	return (0);

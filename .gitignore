@@ -2,5 +2,6 @@
 .swo·E
 .vscode
 test
+*.log
 log
 *.o

@@ -6,7 +6,7 @@
 /*   By: andoni <andoni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 16:42:02 by andoni            #+#    #+#             */
-/*   Updated: 2022/11/06 18:13:26 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/06 20:28:55 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 
 typedef struct	s_texture
 {
-	char	texture_set[8][TEXTURE];
+	int		texture_set[8][TEXTURE];
 	int		xorcolor;
 	int		ycolor;
 	int		xycolor;

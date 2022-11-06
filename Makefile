@@ -6,6 +6,7 @@ CC		= gcc
 CFLAGS 	= -g3 #-Wall -Werror -Wextra #-Wpedantic
 SNTZ	= -fsanitize=address
 RM		= rm -rf
+MAP		= map/map_first.txt
 RUN		=  ./$(NAME) $(MAP)
 FRAME	= -framework OpenGL -framework AppKit
 

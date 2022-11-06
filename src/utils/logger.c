@@ -17,6 +17,6 @@ void	logger(char *log_msg)
 	strftime(buffer, 100, "%Y-%m-%d - %H:%D:%S -> ", ts);
 	strncpy(buffer + 31, log_msg, sizeof(buffer) - 31);
 	fd = fopen("./log/cub3d.log", "a");
-	fprintf(fd, buffer);
+	fprintf(fd, "%s", buffer);
 	fclose(fd);
 }

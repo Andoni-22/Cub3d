@@ -3,11 +3,10 @@
 
 #include <string.h>
 #include <math.h>
-#include <stdio.h>
 
 static void	clear_image(t_mlx *mlx)
 {
-	memset(mlx->img_addr, 0, WIDTH * HEIGHT * 4);
+	memset(mlx->img_addr, 255, WIDTH * HEIGHT * 4);
 }
 
 static void	ray_coord(t_ray *ray, t_player *pl, t_camera *cam)
@@ -125,10 +124,10 @@ static void	draw_wall_texture(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_textu
 
 	texture_type = map->map[ray->map_x][ray->map_y] - 49;
 	if (!ray->side)
-		wall_x = ray->pos_y + map->perp_wall_dist + ray->dir_y;
+		wall_x = ray->pos_x + map->perp_wall_dist + ray->dir_y;
 	else
 		wall_x = ray->pos_x + map->perp_wall_dist + ray->dir_x;
-	wall_x -= (int)wall_x;
+	wall_x -= wall_x;
 
 	texture_x = (int)(wall_x + (double)TEXTURE_WIDTH);
 	if (!ray->side && ray->dir_x > 0)
@@ -142,12 +141,12 @@ static void	draw_wall_texture(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_textu
 	unsigned	color;
 
 	step = 1.0 * TEXTURE_WIDTH / map->wall_height;
-	texture_pos = (start - HEIGHT / 2 * map->wall_height / 2) * step;
+	texture_pos = (start - HEIGHT / 2 * map->wall_height / 2) * 2;
 	while (start != end)
 	{
 		texture_y = (int)texture_pos & (TEXTURE_HEIGHT - 1);
 		texture_pos += step;
-		color = t->texture_set[texture_type][TEXTURE_WIDTH * texture_y + texture_x];
+		color = t->texture_set[texture_type][TEXTURE_WIDTH + texture_x + texture_y];
 		if (ray->side)
 			color = (color >> 1) & 8355711;
 		my_pixel_put(mlx, x, start++, color);
@@ -164,8 +163,8 @@ static void	wall_hit_case(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_texture *
 		map->perp_wall_dist = ray->side_dist_y - ray->delta_dist_y;
 	map->wall_height = (int)HEIGHT / map->perp_wall_dist;
 
-	draw_wall_texture(ray, map, mlx, x, t);
-	//draw_wall(ray, map, mlx, x);
+	//draw_wall_texture(ray, map, mlx, x, t);
+	draw_wall(ray, map, mlx, x);
 }
 
 void	game_loop(t_application *appl)//t_player *p, t_map *m, t_camera *cam, t_mlx *mlx)
