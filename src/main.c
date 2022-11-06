@@ -1,7 +1,9 @@
 #include "cub3d.h"
 #include "hooks.h"
+#include "mlx.h"
 
 #include <math.h>
+#include <stdio.h>
 
 void	my_pixel_put(t_mlx* mlx, int x, int y, int color)
 {
@@ -48,23 +50,23 @@ static int	key_hook(int keycode, t_application *appl)
 {
 	int	ret_val;
 
-	fprintf(stderr, "KEYCODE: %d\n", keycode);
-	fprintf(stderr, "X: %lf\n", appl->player.pos_x);
-	fprintf(stderr, "Y: %lf\n", appl->player.pos_y);
-	fprintf(stderr, "RETVAL: %d\n", ret_val);
+	//fprintf(stderr, "KEYCODE: %d\n", keycode);
+	//fprintf(stderr, "X: %lf\n", appl->player.pos_x);
+	//fprintf(stderr, "Y: %lf\n", appl->player.pos_y);
+	//fprintf(stderr, "RETVAL: %d\n", ret_val);
 	if (keycode == UP)
 	{
 		ret_val = colission(&appl->map, &appl->ray, &appl->player, PLUS);
-		appl->player.pos_y += appl->player.dir_y * ret_val / 3;
-		appl->player.pos_x += appl->player.dir_x * ret_val / 3;
+		appl->player.pos_y += appl->player.dir_y * ret_val / MOVEMENT_K;
+		appl->player.pos_x += appl->player.dir_x * ret_val / MOVEMENT_K;
 	}
 	if (keycode == DOWN)
 	{
 		ret_val = colission(&appl->map, &appl->ray, &appl->player, MINUS);
-		appl->player.pos_y -= appl->player.dir_y * ret_val / 3;
-		appl->player.pos_x -= appl->player.dir_x * ret_val / 3;
+		appl->player.pos_y -= appl->player.dir_y * ret_val / MOVEMENT_K;
+		appl->player.pos_x -= appl->player.dir_x * ret_val / MOVEMENT_K;
 	}
-	if (keycode == LEFT)
+	if (keycode == RIGHT)
 	{
 		double oldDirX = appl->player.dir_x;
 		appl->player.dir_x = appl->player.dir_x * cos(-ROTATE) - appl->player.dir_y * sin(-ROTATE);
@@ -73,7 +75,7 @@ static int	key_hook(int keycode, t_application *appl)
 		appl->cam.plane_x = appl->cam.plane_x * cos(-ROTATE) - appl->cam.plane_y * sin(-ROTATE);
 		appl->cam.plane_y = oldPlaneX * sin(-ROTATE) + appl->cam.plane_y * cos(-ROTATE);
     }
-	if (keycode == RIGHT)
+	if (keycode == LEFT)
 	{	
 		double oldDirX = appl->player.dir_x;
 		appl->player.dir_x = appl->player.dir_x * cos(ROTATE) - appl->player.dir_y * sin(ROTATE);
@@ -83,6 +85,12 @@ static int	key_hook(int keycode, t_application *appl)
 		appl->cam.plane_y = oldPlaneX * sin(ROTATE) + appl->cam.plane_y * cos(ROTATE);
     }
 	game_loop(appl);
+	return (1);
+}
+
+static int	release_hook(int keycode, t_application *appl)
+{
+	fprintf(stderr, "KEYCODE: %d\n", keycode);
 	return (1);
 }
 
@@ -103,6 +111,7 @@ int main(int argc, char **argv)
 	game_loop(&appl);
 	//mlx_key_hook(mlx_win->mlx_win, key_hook, &appl);
 	mlx_hook(mlx_win->mlx_win, 2, 1L << 0, key_hook, &appl);
+	mlx_hook(mlx_win->mlx_win, 3, 1L << 1, release_hook, &appl);
 	mlx_loop(mlx_win->mlx);
 	application_destory(&appl);
 	return (0);

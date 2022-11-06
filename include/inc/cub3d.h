@@ -6,7 +6,7 @@
 /*   By: andoni <andoni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 16:42:02 by andoni            #+#    #+#             */
-/*   Updated: 2022/10/19 23:01:26 by andoni           ###   ########.fr       */
+/*   Updated: 2022/11/06 18:13:26 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,33 @@
 #include "libft.h"
 #include "get_next_line.h"
 
-#include "mlx.h"
-#include "mlx_int.h"
-
-#define BYTE 8
+#define BYTE 	8
 #define PLAYER 'P'
 #define WIDTH	1080
 #define HEIGHT	960
 #define	WALL	'1'
 #define	FLOOR	'0'
-#define ROTATE	0.0625f
+
+#define BUFFER_SIZE 1000
+#define MOVEMENT_K	2
+#define ROTATE		0.125f
+
 #define	X		0
 #define	Y		1
 #define PLUS	1
 #define MINUS	-1
+
+#define TEXTURE_WIDTH	64
+#define TEXTURE_HEIGHT	64
+#define TEXTURE			16384
+
+typedef struct	s_texture
+{
+	char	texture_set[8][TEXTURE];
+	int		xorcolor;
+	int		ycolor;
+	int		xycolor;
+}	t_texture;
 
 typedef struct	s_mlx
 {
@@ -103,6 +116,7 @@ typedef struct	s_application {
 	t_player	player;
 	t_camera	cam;
 	t_ray		ray;
+	t_texture	texture;
 
 }	t_application;
 

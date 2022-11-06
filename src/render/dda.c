@@ -1,4 +1,7 @@
 #include "cub3d.h"
+#include "mlx.h"
+
+#include <string.h>
 #include <math.h>
 
 static void	clear_image(t_mlx *mlx)
@@ -104,7 +107,53 @@ static void	draw_wall(t_ray *ray, t_map *map, t_mlx *mlx, int x)
 		my_pixel_put(mlx, x, start++, rgb);
 }
 
-static int	wall_hit_case(t_ray *ray, t_map *map, t_mlx *mlx, int x)
+static void	draw_wall_texture(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_texture *t)
+{
+	int		texture_type;
+	double	wall_x;
+	int		texture_x;
+	int		start;
+	int		end;
+
+	start = -map->wall_height / 2 + HEIGHT / 2;
+	if (start < 0)
+		start = 0;
+	end = map->wall_height / 2 + HEIGHT / 2;
+	if (end >= HEIGHT)
+		end = HEIGHT - 1;
+
+	texture_type = map->map[ray->map_x][ray->map_y] - 49;
+	if (!ray->side)
+		wall_x = ray->pos_x + map->perp_wall_dist + ray->dir_y;
+	else
+		wall_x = ray->pos_x + map->perp_wall_dist + ray->dir_x;
+	wall_x -= wall_x;
+
+	texture_x = (int)(wall_x + (double)TEXTURE_WIDTH);
+	if (!ray->side && ray->dir_x > 0)
+		texture_x = TEXTURE_WIDTH - texture_x - 1;
+	if (ray->side && ray->dir_y < 0)
+		texture_x = TEXTURE_WIDTH - texture_x - 1;
+
+	double		step;
+	double		texture_pos;
+	int			texture_y;
+	unsigned	color;
+
+	step = 1.0 * TEXTURE_WIDTH / map->wall_height;
+	texture_pos = (start - HEIGHT / 2 * map->wall_height / 2) * 2;
+	while (start != end)
+	{
+		texture_y = (int)texture_pos & (TEXTURE_HEIGHT - 1);
+		texture_pos += step;
+		color = t->texture_set[texture_type][TEXTURE_WIDTH + texture_x + texture_y];
+		if (ray->side)
+			color = (color >> 1) & 8355711;
+		my_pixel_put(mlx, x, start++, color);
+	}
+}
+
+static void	wall_hit_case(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_texture *t)
 {
 	hit_wall_side(ray, map);
 
@@ -114,7 +163,8 @@ static int	wall_hit_case(t_ray *ray, t_map *map, t_mlx *mlx, int x)
 		map->perp_wall_dist = ray->side_dist_y - ray->delta_dist_y;
 	map->wall_height = (int)HEIGHT / map->perp_wall_dist;
 
-	draw_wall(ray, map, mlx, x);
+	draw_wall_texture(ray, map, mlx, x, t);
+	//draw_wall(ray, map, mlx, x);
 }
 
 void	game_loop(t_application *appl)//t_player *p, t_map *m, t_camera *cam, t_mlx *mlx)
@@ -129,7 +179,7 @@ void	game_loop(t_application *appl)//t_player *p, t_map *m, t_camera *cam, t_mlx
 	{
 		appl->cam.coord_x = 2 * x / (double)WIDTH - 1;
 		set_ray(&appl->ray, &appl->player, &appl->cam);
-		wall_hit_case(&appl->ray, &appl->map, &appl->mlx_win, x);
+		wall_hit_case(&appl->ray, &appl->map, &appl->mlx_win, x, &appl->texture);
 	}
 	mlx_put_image_to_window(appl->mlx_win.mlx, appl->mlx_win.mlx_win, appl->mlx_win.img, 0, 0);
 }
