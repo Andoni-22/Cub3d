@@ -1,18 +1,24 @@
 NAME 	= Cub3d
 
 INC 	= -I ./include -I ./include/inc
-LIB		= -L ./include/lib -lft -lmlx_Linux -lgnl -lXext -lX11 -lm -lbsd
+LIB		= -L ./include/lib -lft -lmlx #-lmlx_Linux -lgnl -lXext -lX11 -lm -lbsd
 CC		= gcc
 CFLAGS 	= -g3 #-Wall -Werror -Wextra #-Wpedantic
 SNTZ	= -fsanitize=address
 RM		= rm -rf
+MAP		= map/map_first.txt
+RUN		=  ./$(NAME) $(MAP)
+FRAME	= -framework OpenGL -framework AppKit
 
 FILES	= src/main \
 		  src/hooks/hooks \
 		  src/parser/parser \
 		  src/render/render \
+		  src/render/dda \
 		  src/utils/utils \
 		  src/utils/logger \
+		  src/utils/get_next_line \
+		  src/utils/get_next_line_utils \
 		  src/utils/init_destroy
 
 SRC		= $(addsuffix .c, $(FILES))
@@ -22,7 +28,7 @@ OBJ		= $(addsuffix .o, $(FILES))
 	$(CC) $(CFLAGS) $(SNTZ) $(INC) -o $@ -c $^
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(SNTZ) -o $(NAME) $(OBJ) $(LIB)
+	$(CC) $(CFLAGS) $(SNTZ) -o $(NAME) $(OBJ) $(LIB) $(FRAME)
 
 all: $(NAME)
 
@@ -35,9 +41,9 @@ fclean: clean
 re: fclean all
 
 run: all
-	./$(NAME) ./map/map_first.txt
+	$(RUN)
 
 debug: all
-	gdb ./$(NAME)
+	gdb --args $(RUN)
 
 .PHONY: all clean fclean re run

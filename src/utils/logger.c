@@ -16,7 +16,7 @@ void	logger(char *log_msg)
 	ts = localtime(&my_time);
 	strftime(buffer, 100, "%Y-%m-%d - %H:%D:%S -> ", ts);
 	strncpy(buffer + 31, log_msg, sizeof(buffer) - 31);
-	fd = fopen("/home/lukas/MyProjects/Cub3d/log/cub3d.log", "a");
-	fprintf(fd, buffer);
+	fd = fopen("./log/cub3d.log", "a");
+	fprintf(fd, "%s", buffer);
 	fclose(fd);
 }

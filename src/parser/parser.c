@@ -1,8 +1,12 @@
 #include "cub3d.h"
 
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdlib.h>
+
 static size_t	get_map_size(char *path)
 {
-	ssize_t	map_sz;
+	size_t	map_sz;
 	char	*line;
 	int		fd;
 

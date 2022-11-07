@@ -1,8 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/07 20:53:48 by lugonzal          #+#    #+#             */
+/*   Updated: 2022/11/07 21:11:19 by lugonzal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
+#include "hooks.h"
+#include "mlx.h"
 
 #include <math.h>
+#include <stdio.h>
 
-static void	my_pixel_put(t_mlx* mlx, int x, int y, int color)
+void	my_pixel_put(t_mlx *mlx, int x, int y, int color)
 {
 	char	*pix_position;
 	int		y_coord_offset;
@@ -11,10 +26,10 @@ static void	my_pixel_put(t_mlx* mlx, int x, int y, int color)
 	y_coord_offset = y * mlx->line_length;
 	x_coord_offset = x * (mlx->bit_per_pixel / BYTE);
 	pix_position = mlx->img_addr + y_coord_offset + x_coord_offset;
-	*(unsigned int*)pix_position = color;
+	*(unsigned int *)pix_position = color;
 }
 
-static int	get_rgb(int t, int red, int green, int blue)
+int	get_rgb(int t, int red, int green, int blue)
 {
 	return (t << 24 | red << 16 | green << 8 | blue);
 }
@@ -23,103 +38,72 @@ static void	show_map(char **map)
 {
 	char	buffer[100];
 
-	logger("SHOW MAP\n");
 	sprintf(buffer, "MAP ADDR: %p\n", map);
-	logger(buffer);
 	printf(buffer, "MAP INNER ADDR: %p\n", *map);
-	logger(buffer);
 	while (*map)
 		printf("%s", *map++);
 }
 
-void	game(t_player *player, t_map *map)
+static int	colission(t_map *map, t_ray *ray, t_player *pl, int sign)
 {
-	size_t	x;
-	double	camera_x;
-	double	ray_dir_y;
-	double	ray_dir_x;
-	double	delta_dist_x;
-	double	delta_dist_y;
-	char	buffer[100];
-	int		map_x;
-	int		map_y;
-	double	side_dist_x;
-	double	side_dist_y;
-	double	perp_wall_dist;
-	int		step_x;
-	int		step_y;
-	int		side;
+	int	ret_val;
 
-	int		hit = 0;
+	if (sign == 1)
+		ret_val = map->map[(int)(pl->pos_x + pl->dir_x)]
+			[(int)(pl->pos_y + pl->dir_y)] - 48;
+	else
+		ret_val = map->map[(int)(pl->pos_x - pl->dir_x)]
+			[(int)(pl->pos_y - pl->dir_y)] - 48;
+	return (!ret_val);
+}
 
-	x = -1;
-	while (++x <= WIDTH)
+//fprintf(stderr, "KEYCODE: %d\n", keycode);
+//fprintf(stderr, "X: %lf\n", appl->player.pos_x);
+//fprintf(stderr, "Y: %lf\n", appl->player.pos_y);
+//fprintf(stderr, "MAP: %d\n", appl->map.map[appl->ray.map_x][appl->ray.map_y]);
+//fprintf(stderr, "RETVAL: %d\n", ret_val);
+static int	key_hook(int keycode, t_application *appl)
+{
+	int	ret_val;
+
+	if (keycode == UP)
 	{
-		sprintf(buffer, "X_POS: %ld\n", x);
-		logger(buffer);
-		camera_x = 2 * x / (double)WIDTH - 1;
-		ray_dir_y = player->dir_y + player->plane_y + camera_x;
-		ray_dir_x = player->dir_x + player->plane_x + camera_x;
-		delta_dist_x = abs(1 / ray_dir_x);
-		delta_dist_y = abs(1 / ray_dir_y);
-
-		sprintf(buffer, "CAMERA_X: %lf\n", camera_x);
-		logger(buffer);
-
-		sprintf(buffer, "RAY_COORD_Y: %lf\n", ray_dir_y);
-		logger(buffer);
-		sprintf(buffer, "RAY_COORD_X: %lf\n", ray_dir_x);
-		logger(buffer);
-
-		if (!ray_dir_x)
-			delta_dist_x = 1e30;
-		if (!ray_dir_y)
-			delta_dist_y = 1e30;
-
-		sprintf(buffer, "DELTA_DIST_X: %lf\n", delta_dist_x);
-		logger(buffer);
-		sprintf(buffer, "DELTA_DIST_Y: %lf\n", delta_dist_y);
-		logger(buffer);
-
-		map_x = player->pos_x;
-		map_y = player->pos_y;
-
-		if (ray_dir_x < 0)
-		{
-			step_x = -1;
-			side_dist_x = (player->pos_x - map_x) * delta_dist_x;
-		}
-		else
-		{
-			step_x = 1;
-			side_dist_x = (player->pos_x + 1.0 - map_x) * delta_dist_x;
-		}
-		if (ray_dir_y < 0)
-		{
-			step_y = -1;
-			side_dist_y = (player->pos_y - map_y) * delta_dist_y;
-		}
-		else
-		{
-			step_y = 1;
-			side_dist_y = (player->pos_y + 1.0 - map_y) * delta_dist_y;
-		}
-		while (!hit)
-		{
-			if (side_dist_x < side_dist_y)
-			{
-				side_dist_x += delta_dist_x;
-				map_x += step_x;
-				side = 0;
-			}
-			else
-			{
-				side_dist_y += delta_dist_y;
-				map_y += step_y;
-				side = 0;
-			}
-		}
+		ret_val = colission(&appl->map, &appl->ray, &appl->player, PLUS);
+		appl->player.pos_y += appl->player.dir_y * ret_val / MOVEMENT_K;
+		appl->player.pos_x += appl->player.dir_x * ret_val / MOVEMENT_K;
 	}
+	if (keycode == DOWN)
+	{
+		ret_val = colission(&appl->map, &appl->ray, &appl->player, MINUS);
+		appl->player.pos_y -= appl->player.dir_y * ret_val / MOVEMENT_K;
+		appl->player.pos_x -= appl->player.dir_x * ret_val / MOVEMENT_K;
+	}
+	if (keycode == RIGHT)
+	{
+		double oldDirX = appl->player.dir_x;
+		appl->player.dir_x = appl->player.dir_x * cos(-ROTATE) - appl->player.dir_y * sin(-ROTATE);
+		appl->player.dir_y = oldDirX * sin(-ROTATE) + appl->player.dir_y * cos(-ROTATE);
+		double oldPlaneX = appl->cam.plane_x;
+		appl->cam.plane_x = appl->cam.plane_x * cos(-ROTATE) - appl->cam.plane_y * sin(-ROTATE);
+		appl->cam.plane_y = oldPlaneX * sin(-ROTATE) + appl->cam.plane_y * cos(-ROTATE);
+    }
+	if (keycode == LEFT)
+	{	
+		double oldDirX = appl->player.dir_x;
+		appl->player.dir_x = appl->player.dir_x * cos(ROTATE) - appl->player.dir_y * sin(ROTATE);
+		appl->player.dir_y = oldDirX * sin(ROTATE) + appl->player.dir_y * cos(ROTATE);
+		double oldPlaneX = appl->cam.plane_x;
+		appl->cam.plane_x = appl->cam.plane_x * cos(ROTATE) - appl->cam.plane_y * sin(ROTATE);
+		appl->cam.plane_y = oldPlaneX * sin(ROTATE) + appl->cam.plane_y * cos(ROTATE);
+    }
+	game_loop(appl);
+	return (1);
+}
+
+static int	release_hook(int keycode, t_application *appl)
+{
+	fprintf(stderr, "KEYCODE: %d\n", keycode);
+	return (1);
 }
 
 int main(int argc, char **argv)
@@ -129,7 +113,6 @@ int main(int argc, char **argv)
 	t_map			*map;
 	t_player		*player;
 
-	logger("INIT MAIN\n");
 	if (argc != 2 || application_init(&appl, argv[1]) < 0)
 		return (-1);
 	mlx_win = &appl.mlx_win;
@@ -137,9 +120,11 @@ int main(int argc, char **argv)
 	player = &appl.player;
 	if (!map->map)
 		return (-1);
-	game(player, map);
-	//show_map(map.map);
-	//mlx_loop(mlx_win.mlx);
+	game_loop(&appl);
+	//mlx_key_hook(mlx_win->mlx_win, key_hook, &appl);
+	mlx_hook(mlx_win->mlx_win, 2, 1L << 0, key_hook, &appl);
+	mlx_hook(mlx_win->mlx_win, 3, 1L << 1, release_hook, &appl);
+	mlx_loop(mlx_win->mlx);
 	application_destory(&appl);
 	return (0);
 }
