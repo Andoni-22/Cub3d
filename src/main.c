@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/07 20:53:48 by lugonzal          #+#    #+#             */
+/*   Updated: 2022/11/07 21:11:19 by lugonzal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 #include "hooks.h"
 #include "mlx.h"
@@ -5,7 +17,7 @@
 #include <math.h>
 #include <stdio.h>
 
-void	my_pixel_put(t_mlx* mlx, int x, int y, int color)
+void	my_pixel_put(t_mlx *mlx, int x, int y, int color)
 {
 	char	*pix_position;
 	int		y_coord_offset;
@@ -14,10 +26,10 @@ void	my_pixel_put(t_mlx* mlx, int x, int y, int color)
 	y_coord_offset = y * mlx->line_length;
 	x_coord_offset = x * (mlx->bit_per_pixel / BYTE);
 	pix_position = mlx->img_addr + y_coord_offset + x_coord_offset;
-	*(unsigned int*)pix_position = color;
+	*(unsigned int *)pix_position = color;
 }
 
-static int	get_rgb(int t, int red, int green, int blue)
+int	get_rgb(int t, int red, int green, int blue)
 {
 	return (t << 24 | red << 16 | green << 8 | blue);
 }
@@ -26,11 +38,8 @@ static void	show_map(char **map)
 {
 	char	buffer[100];
 
-	//logger("SHOW MAP\n");
 	sprintf(buffer, "MAP ADDR: %p\n", map);
-	//logger(buffer);
 	printf(buffer, "MAP INNER ADDR: %p\n", *map);
-	//logger(buffer);
 	while (*map)
 		printf("%s", *map++);
 }
@@ -40,20 +49,23 @@ static int	colission(t_map *map, t_ray *ray, t_player *pl, int sign)
 	int	ret_val;
 
 	if (sign == 1)
-		ret_val = map->map[(int)(pl->pos_x + pl->dir_x)][(int)(pl->pos_y + pl->dir_y)] - 48;
+		ret_val = map->map[(int)(pl->pos_x + pl->dir_x)]
+			[(int)(pl->pos_y + pl->dir_y)] - 48;
 	else
-		ret_val = map->map[(int)(pl->pos_x - pl->dir_x)][(int)(pl->pos_y - pl->dir_y)] - 48;
+		ret_val = map->map[(int)(pl->pos_x - pl->dir_x)]
+			[(int)(pl->pos_y - pl->dir_y)] - 48;
 	return (!ret_val);
 }
 
+//fprintf(stderr, "KEYCODE: %d\n", keycode);
+//fprintf(stderr, "X: %lf\n", appl->player.pos_x);
+//fprintf(stderr, "Y: %lf\n", appl->player.pos_y);
+//fprintf(stderr, "MAP: %d\n", appl->map.map[appl->ray.map_x][appl->ray.map_y]);
+//fprintf(stderr, "RETVAL: %d\n", ret_val);
 static int	key_hook(int keycode, t_application *appl)
 {
 	int	ret_val;
 
-	//fprintf(stderr, "KEYCODE: %d\n", keycode);
-	//fprintf(stderr, "X: %lf\n", appl->player.pos_x);
-	//fprintf(stderr, "Y: %lf\n", appl->player.pos_y);
-	//fprintf(stderr, "RETVAL: %d\n", ret_val);
 	if (keycode == UP)
 	{
 		ret_val = colission(&appl->map, &appl->ray, &appl->player, PLUS);

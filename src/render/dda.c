@@ -7,7 +7,22 @@
 
 static void	clear_image(t_mlx *mlx)
 {
-	memset(mlx->img_addr, 0, WIDTH * HEIGHT * 4);
+	int	x;
+	int	y;
+	int	color[2];
+	
+	color[0] = get_rgb(0, 51, 153, 255);
+	color[1] = get_rgb(0, 224, 224, 224);
+	y = -1;
+	while (++y < HEIGHT / 2)
+	{
+		x = -1;
+		while (++x < WIDTH)
+		{
+			my_pixel_put(mlx, x, y, color[0]);
+			my_pixel_put(mlx, x, y + HEIGHT / 2, color[1]);
+		}
+	}
 }
 
 static void	ray_coord(t_ray *ray, t_player *pl, t_camera *cam)
@@ -111,11 +126,12 @@ static void	draw_wall(t_ray *ray, t_map *map, t_mlx *mlx, int x)
 static void	draw_wall_texture(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_texture *t)
 {
 	int		texture_type;
-	double	wall_x;
 	int		texture_x;
 	int		start;
 	int		end;
 
+	texture_type = map->map[ray->map_x][ray->map_y] - 49;
+	double	wall_x;
 	start = -map->wall_height / 2 + HEIGHT / 2;
 	if (start < 0)
 		start = 0;
@@ -123,14 +139,13 @@ static void	draw_wall_texture(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_textu
 	if (end >= HEIGHT)
 		end = HEIGHT - 1;
 
-	texture_type = map->map[ray->map_x][ray->map_y] - 49;
 	if (!ray->side)
-		wall_x = ray->pos_y + map->perp_wall_dist + ray->dir_y;
+		wall_x = ray->pos_y + map->perp_wall_dist * ray->dir_y;
 	else
-		wall_x = ray->pos_x + map->perp_wall_dist + ray->dir_x;
-	wall_x -= (int)wall_x;
+		wall_x = ray->pos_x + map->perp_wall_dist * ray->dir_x;
+	wall_x -= floor(wall_x);
 
-	texture_x = (int)(wall_x + (double)TEXTURE_WIDTH);
+	texture_x = (int)(wall_x * (double)TEXTURE_WIDTH);
 	if (!ray->side && ray->dir_x > 0)
 		texture_x = TEXTURE_WIDTH - texture_x - 1;
 	if (ray->side && ray->dir_y < 0)
@@ -142,7 +157,7 @@ static void	draw_wall_texture(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_textu
 	unsigned	color;
 
 	step = 1.0 * TEXTURE_WIDTH / map->wall_height;
-	texture_pos = (start - HEIGHT / 2 * map->wall_height / 2) * step;
+	texture_pos = (start - HEIGHT / 2 + map->wall_height / 2) * step;
 	while (start != end)
 	{
 		texture_y = (int)texture_pos & (TEXTURE_HEIGHT - 1);

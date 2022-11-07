@@ -6,37 +6,36 @@
 /*   By: andoni <andoni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 16:42:02 by andoni            #+#    #+#             */
-/*   Updated: 2022/11/06 20:28:55 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/07 21:08:57 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
-#define CUB3D_H
+# define CUB3D_H
 
-#include "libft.h"
-#include "get_next_line.h"
+# include "libft.h"
+# include "get_next_line.h"
 
-#define BYTE 	8
-#define PLAYER 'P'
-#define WIDTH	1080
-#define HEIGHT	960
-#define	WALL	'1'
-#define	FLOOR	'0'
+# define BYTE 			8
+# define PLAYER 		'P'
+# define WIDTH			1080
+# define HEIGHT			960
+# define WALL			'1'
+# define FLOOR			'0'
 
-#define BUFFER_SIZE 1000
-#define MOVEMENT_K	2
-#define ROTATE		0.125f
+# define BUFFER_SIZE 	1000
+# define MOVEMENT_K		2
+# define ROTATE			0.125f
 
-#define	X		0
-#define	Y		1
-#define PLUS	1
-#define MINUS	-1
+# define X				0
+# define Y				1
+# define PLUS			1
+# define MINUS			-1
+# define TEXTURE_WIDTH	64
+# define TEXTURE_HEIGHT	64
+# define TEXTURE		4096
 
-#define TEXTURE_WIDTH	64
-#define TEXTURE_HEIGHT	64
-#define TEXTURE			16384
-
-typedef struct	s_texture
+typedef struct s_texture
 {
 	int		texture_set[8][TEXTURE];
 	int		xorcolor;
@@ -44,7 +43,7 @@ typedef struct	s_texture
 	int		xycolor;
 }	t_texture;
 
-typedef struct	s_mlx
+typedef struct s_mlx
 {
 	void	*mlx;
 	void	*img;
@@ -55,7 +54,7 @@ typedef struct	s_mlx
 	int		endian;
 }	t_mlx;
 
-typedef struct	s_map
+typedef struct s_map
 {
 	char	**map;
 	int		side;
@@ -73,16 +72,17 @@ typedef struct	s_map
  * OLD_TIME -> TIEMPO DEL FRAME ANTERIOR
  *
  */
-typedef struct	s_player
+typedef struct s_player
 {
 	double	pos_x;
 	double	pos_y;
 	double	dir_x;
 	double	dir_y;
+	double	old_dir_x;
 
 }	t_player;
 
-typedef struct	s_ray
+typedef struct s_ray
 {
 	int		map_x;
 	int		map_y;
@@ -108,9 +108,10 @@ typedef struct s_camera
 	double	past;
 	double	now;
 	double	coord_x;
+	double	old_plane_x;
 }	t_camera;
 
-typedef struct	s_application {
+typedef struct s_application {
 	t_map		map;
 	t_mlx		mlx_win;
 	t_player	player;
@@ -120,17 +121,14 @@ typedef struct	s_application {
 
 }	t_application;
 
+int		application_init(t_application *appl, char *path);
+void	application_destory(t_application *appl);
+void	appl_mlx_destroy(t_mlx *mlx);
+void	game_loop(t_application *appl);
+char	**load_map(char *path);
 
-int		application_init(t_application *, char *);
-void	application_destory(t_application *);
-//int		appl_mlx_init(t_mlx	*);
-void	appl_mlx_destroy(t_mlx *);
-void	game_loop(t_application *appl);//t_player *, t_map *, t_mlx *);
-
-char	**load_map(char *);
-
-void	logger(char *);
-
-void	my_pixel_put(t_mlx*, int, int, int);
+void	logger(char *msg);
+int		get_rgb(int t, int red, int green, int blue);
+void	my_pixel_put(t_mlx *mlx, int x, int y, int color);
 
 #endif
