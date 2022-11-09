@@ -1,14 +1,14 @@
 NAME 	= Cub3d
 
 INC 	= -I ./include -I ./include/inc
-LIB		= -L ./include/lib -lft -lmlx #-lmlx_Linux -lgnl -lXext -lX11 -lm -lbsd
+LIB		= -L ./include/lib -lft_linux -lmlx -lmlx_Linux -lgnl -lXext -lX11 -lm -lbsd
 CC		= gcc
 CFLAGS 	= -g3 #-Wall -Werror -Wextra #-Wpedantic
 SNTZ	= -fsanitize=address
 RM		= rm -rf
 MAP		= map/map_first.txt
 RUN		=  ./$(NAME) $(MAP)
-FRAME	= -framework OpenGL -framework AppKit
+#FRAME	= -framework OpenGL -framework AppKit
 
 FILES	= src/main \
 		  src/hooks/hooks \

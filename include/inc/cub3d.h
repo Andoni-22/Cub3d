@@ -35,6 +35,13 @@
 # define TEXTURE_HEIGHT	64
 # define TEXTURE		4096
 
+typedef struct s_wall_face
+{
+	int		width;
+	int		height;
+	void	*img;
+}	t_wall_face;
+
 typedef struct s_texture
 {
 	int		texture_set[8][TEXTURE];
@@ -118,6 +125,7 @@ typedef struct s_application {
 	t_camera	cam;
 	t_ray		ray;
 	t_texture	texture;
+	t_wall_face wall_face[4];
 
 }	t_application;
 

@@ -96,6 +96,10 @@ static int	key_hook(int keycode, t_application *appl)
 		appl->cam.plane_x = appl->cam.plane_x * cos(ROTATE) - appl->cam.plane_y * sin(ROTATE);
 		appl->cam.plane_y = oldPlaneX * sin(ROTATE) + appl->cam.plane_y * cos(ROTATE);
     }
+	fprintf(stderr, "DIR_X: %lf\n", appl->player.dir_x);
+	fprintf(stderr, "DIR_Y: %lf\n", appl->player.dir_y);
+	fprintf(stderr, "PLANE_X: %lf\n", appl->cam.plane_x);
+	fprintf(stderr, "PLANE_Y: %lf\n", appl->cam.plane_y);
 	game_loop(appl);
 	return (1);
 }
@@ -121,9 +125,8 @@ int main(int argc, char **argv)
 	if (!map->map)
 		return (-1);
 	game_loop(&appl);
-	//mlx_key_hook(mlx_win->mlx_win, key_hook, &appl);
 	mlx_hook(mlx_win->mlx_win, 2, 1L << 0, key_hook, &appl);
-	mlx_hook(mlx_win->mlx_win, 3, 1L << 1, release_hook, &appl);
+	//mlx_hook(mlx_win->mlx_win, 3, 1L << 1, release_hook, &appl);
 	mlx_loop(mlx_win->mlx);
 	application_destory(&appl);
 	return (0);
