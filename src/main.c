@@ -6,7 +6,7 @@
 /*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 20:53:48 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/11/07 21:11:19 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/09 20:07:37 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	my_pixel_put(t_mlx *mlx, int x, int y, int color)
 	int		y_coord_offset;
 	int		x_coord_offset;
 
+	//fprintf(stderr, "X: %d\n", x);
+	//fprintf(stderr, "Y: %d\n", y);
 	y_coord_offset = y * mlx->line_length;
 	x_coord_offset = x * (mlx->bit_per_pixel / BYTE);
 	pix_position = mlx->img_addr + y_coord_offset + x_coord_offset;
@@ -34,17 +36,13 @@ int	get_rgb(int t, int red, int green, int blue)
 	return (t << 24 | red << 16 | green << 8 | blue);
 }
 
-static void	show_map(char **map)
+void	show_map(char **map)
 {
-	char	buffer[100];
-
-	sprintf(buffer, "MAP ADDR: %p\n", map);
-	printf(buffer, "MAP INNER ADDR: %p\n", *map);
 	while (*map)
 		printf("%s", *map++);
 }
 
-static int	colission(t_map *map, t_ray *ray, t_player *pl, int sign)
+static int	colission(t_map *map, t_player *pl, int sign)
 {
 	int	ret_val;
 
@@ -68,13 +66,13 @@ static int	key_hook(int keycode, t_application *appl)
 
 	if (keycode == UP)
 	{
-		ret_val = colission(&appl->map, &appl->ray, &appl->player, PLUS);
+		ret_val = colission(&appl->map, &appl->player, PLUS);
 		appl->player.pos_y += appl->player.dir_y * ret_val / MOVEMENT_K;
 		appl->player.pos_x += appl->player.dir_x * ret_val / MOVEMENT_K;
 	}
 	if (keycode == DOWN)
 	{
-		ret_val = colission(&appl->map, &appl->ray, &appl->player, MINUS);
+		ret_val = colission(&appl->map, &appl->player, MINUS);
 		appl->player.pos_y -= appl->player.dir_y * ret_val / MOVEMENT_K;
 		appl->player.pos_x -= appl->player.dir_x * ret_val / MOVEMENT_K;
 	}
@@ -104,8 +102,9 @@ static int	key_hook(int keycode, t_application *appl)
 	return (1);
 }
 
-static int	release_hook(int keycode, t_application *appl)
+int	release_hook(int keycode, t_application *appl)
 {
+	(void)appl;
 	fprintf(stderr, "KEYCODE: %d\n", keycode);
 	return (1);
 }

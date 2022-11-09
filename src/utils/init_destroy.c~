@@ -7,23 +7,10 @@
 
 static int	appl_mlx_init(t_mlx	*mlx)
 {
-	void	*raw_img;
-	int		width;
-	int		height;
-	int		bit_per_pixel;
-	int		size_line;
-	int		endian;
-
 	mlx->mlx = mlx_init();
 	mlx->mlx_win = mlx_new_window(mlx->mlx, WIDTH, HEIGHT, "Cub3d");
 	mlx->img = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 	mlx->img_addr = mlx_get_data_addr(mlx->img, &mlx->bit_per_pixel, &mlx->line_length, &mlx->endian);
-
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &width, &height);
-	mlx->wall_face[0].img = mlx_get_data_addr(raw_img, &bit_per_pixel, &size_line, &endian);
-	//mlx->wall_face[1].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &mlx->wall_face[1].width, &mlx->wall_face[1].height);
-	//mlx->wall_face[2].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &mlx->wall_face[2].width, &mlx->wall_face[2].height);
-	//mlx->wall_face[3].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &mlx->wall_face[3].width, &mlx->wall_face[3].height);
 	return (0);
 }
 
@@ -152,6 +139,15 @@ static int	appl_texture_init(t_texture *t)
 	return (0);
 }
 
+static int	appl_wall_face_init(t_wall_face *wall_face, t_mlx *mlx)
+{
+	wall_face[0].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &wall_face[0].width, &wall_face[0].height);
+	wall_face[1].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &wall_face[1].width, &wall_face[1].height);
+	wall_face[2].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &wall_face[2].width, &wall_face[2].height);
+	wall_face[3].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &wall_face[3].width, &wall_face[3].height);
+	return (0);
+}
+
 int	application_init(t_application *appl, char *path)
 {
 	memset(appl, 0, sizeof(t_application));
@@ -164,6 +160,8 @@ int	application_init(t_application *appl, char *path)
 	if (appl_player_init(&appl->player, &appl->map, &appl->cam))
 		return (-1);
 	if (appl_texture_init(&appl->texture) < 0)
+		return (-1);
+	if (appl_wall_face_init(appl->wall_face, &appl->mlx_win) < 0)
 		return (-1);
 	return (0);
 }
