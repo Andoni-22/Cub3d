@@ -154,7 +154,8 @@ static void	draw_wall_texture(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_textu
 	double		step;
 	double		texture_pos;
 	int			texture_y;
-	unsigned	color;
+	int			color[4];
+	int			final_color;
 
 	step = 1.0 * TEXTURE_WIDTH / map->wall_height;
 	texture_pos = (start - HEIGHT / 2 + map->wall_height / 2) * step;
@@ -162,10 +163,14 @@ static void	draw_wall_texture(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_textu
 	{
 		texture_y = (int)texture_pos & (TEXTURE_HEIGHT - 1);
 		texture_pos += step;
-		color = t->texture_set[texture_type][TEXTURE_WIDTH * texture_y + texture_x];
+		color[0] = t->img[texture_type][texture_y * 256 + texture_x * 4 + 0];
+		color[1] = t->img[texture_type][texture_y * 256 + texture_x * 4 + 1];
+		color[2] = t->img[texture_type][texture_y * 256 + texture_x * 4 + 2];
+		color[3] = t->img[texture_type][texture_y * 256 + texture_x * 4 + 3];
+		final_color = get_rgb(color[3], color[2], color[1], color[0]);
 		if (ray->side)
-			color = (color >> 1) & 8355711;
-		my_pixel_put(mlx, x, start++, color);
+			final_color = (final_color >> 1) & 8355711;
+		my_pixel_put(mlx, x, start++, final_color);
 	}
 }
 

@@ -46,15 +46,23 @@ static void	show_map(char **map)
 
 static int	colission(t_map *map, t_ray *ray, t_player *pl, int sign)
 {
-	int	ret_val;
+	int	ret_val[2];
 
 	if (sign == 1)
-		ret_val = map->map[(int)(pl->pos_x + pl->dir_x)]
-			[(int)(pl->pos_y + pl->dir_y)] - 48;
+	{
+		ret_val[0] = map->map[(int)(pl->pos_x + pl->dir_x / 2)]
+			[(int)pl->pos_y] - 48;
+		ret_val[1] = map->map[(int)pl->pos_x]
+			[(int)(pl->pos_y + pl->dir_y / 2)] - 48;
+	}
 	else
-		ret_val = map->map[(int)(pl->pos_x - pl->dir_x)]
-			[(int)(pl->pos_y - pl->dir_y)] - 48;
-	return (!ret_val);
+	{
+		ret_val[0] = map->map[(int)pl->pos_x]
+			[(int)(pl->pos_y - pl->dir_y / 2)] - 48;
+		ret_val[1] = map->map[(int)(pl->pos_x - pl->dir_x / 2)]
+			[(int)pl->pos_y] - 48;
+	}
+	return (!ret_val[0] * !ret_val[1]);
 }
 
 //fprintf(stderr, "KEYCODE: %d\n", keycode);

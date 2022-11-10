@@ -117,13 +117,29 @@ static void	set_texture_colors(char *texture, int y, int x, int color)
 	*(unsigned char *)texture = color;
 }
 
-static int	appl_texture_init(t_texture *t)
+static int	appl_texture_init(t_texture *t, t_mlx *mlx)
 {
 	size_t	x;
 	size_t	y;
+	void	*raw_img;
+	int		bit_per_pixel;
+	int		line_length;
+	int		endian;
+	int		width;
+	int		height;
 
 	memset(t, 0, sizeof(t_texture));
 	x = -1;
+	raw_img = mlx_xpm_file_to_image(mlx->mlx, "/home/lukas/MyProjects/Cub3d/xpm_images/AnyConv.com__eagle.xpm", &width, &height);
+	t->img[0] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
+	raw_img = mlx_xpm_file_to_image(mlx->mlx, "/home/lukas/MyProjects/Cub3d/xpm_images/AnyConv.com__eagle.xpm", &width, &height);
+	t->img[1] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
+	raw_img = mlx_xpm_file_to_image(mlx->mlx, "/home/lukas/MyProjects/Cub3d/xpm_images/AnyConv.com__eagle.xpm", &width, &height);
+	t->img[2] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
+	raw_img = mlx_xpm_file_to_image(mlx->mlx, "/home/lukas/MyProjects/Cub3d/xpm_images/AnyConv.com__eagle.xpm", &width, &height);
+	t->img[3] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
+
+	/*
 	while (++x < TEXTURE_WIDTH)
 	{
 		y = -1;
@@ -145,7 +161,7 @@ static int	appl_texture_init(t_texture *t)
 			//set_texture_colors(t->texture_set[6], y, x, 65536 * t->ycolor); //red gradient;
 			//set_texture_colors(t->texture_set[7], y, x, 128 + 256 * 128 + 65536 * 128); //flat grey texture;
 		}
-	}
+	}*/
 	return (0);
 }
 
@@ -169,7 +185,7 @@ int	application_init(t_application *appl, char *path)
 		return (-1);
 	if (appl_player_init(&appl->player, &appl->map, &appl->cam))
 		return (-1);
-	if (appl_texture_init(&appl->texture) < 0)
+	if (appl_texture_init(&appl->texture, &appl->mlx_win) < 0)
 		return (-1);
 	if (appl_wall_face(appl->wall_face, &appl->mlx_win) < 0)
 		return (-1);

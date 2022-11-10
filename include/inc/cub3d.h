@@ -44,7 +44,7 @@ typedef struct s_wall_face
 
 typedef struct s_texture
 {
-	int		texture_set[8][TEXTURE];
+	char	*img[4];//int		texture_set[8][TEXTURE];
 	int		xorcolor;
 	int		ycolor;
 	int		xycolor;
