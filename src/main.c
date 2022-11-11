@@ -117,7 +117,10 @@ int main(int argc, char **argv)
 	t_player		*player;
 
 	if (argc != 2 || application_init(&appl, argv[1]) < 0)
-		return (-1);
+    {
+        fprintf(stderr, ".Error\n");
+        return (-1);
+    }
 	mlx_win = &appl.mlx_win;
 	map = &appl.map;
 	player = &appl.player;

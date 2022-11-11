@@ -136,7 +136,7 @@ static void	draw_wall_texture(t_ray *ray, t_map *map, t_mlx *mlx, int x)
 	{
 		texture_y = (int)texture_pos & (TEXTURE_HEIGHT - 1);
 		texture_pos += step;
-		fprintf(stderr, "POS: %d\n", TEXTURE_WIDTH * texture_y + texture_x);
+		//fprintf(stderr, "POS: %d\n", TEXTURE_WIDTH * texture_y + texture_x);
 		color = mlx->wall_face[texture_type].img[TEXTURE_WIDTH * texture_y + texture_x];
 			if (ray->side)
 			color = (color >> 1) & 8355711;

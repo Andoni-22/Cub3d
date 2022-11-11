@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <tclDecls.h>
 
 static int	appl_mlx_init(t_mlx	*mlx)
 {
@@ -27,10 +28,20 @@ static int	appl_mlx_init(t_mlx	*mlx)
 	return (0);
 }
 
-static int	appl_map_init(t_map *map, char *path)
+/**
+ * map struct initialization method
+ * first we control the path,
+ * then we read the data
+ * @param appl struct with all the data
+ * @param path file path string
+ * @return -1 if error, 0 if it's correct
+ */
+static int	appl_map_init(t_application *appl, char *path)
 {
-	map->map = load_map(path);
-	if (!map->map)
+    if (check_path_format(path) < 0)
+        return -1;
+    appl->map.map = load_map(appl, path);
+	if (!appl->map.map)
 		return (-1);
 	return (0);
 }
@@ -157,7 +168,7 @@ int	application_init(t_application *appl, char *path)
 	memset(appl, 0, sizeof(t_application));
 	if (appl_mlx_init(&appl->mlx_win) < 0)
 		return (-1);
-	if (appl_map_init(&appl->map, path) < 0)
+	if (appl_map_init(appl, path) < 0)
 		return (-1);
 	if (appl_cam_init(&appl->cam) < 0)
 		return (-1);

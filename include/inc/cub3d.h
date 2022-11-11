@@ -35,6 +35,8 @@
 # define TEXTURE_HEIGHT	64
 # define TEXTURE		4096
 
+# define FILE_FORMAT	"cub"
+
 typedef struct s_wall_face
 {
 	int				width;
@@ -48,6 +50,8 @@ typedef struct s_texture
 	int		xorcolor;
 	int		ycolor;
 	int		xycolor;
+	int 	floor_color;
+	int 	sky_color;
 }	t_texture;
 
 typedef struct s_mlx
@@ -132,7 +136,10 @@ int		application_init(t_application *appl, char *path);
 void	application_destory(t_application *appl);
 void	appl_mlx_destroy(t_mlx *mlx);
 void	game_loop(t_application *appl);
-char	**load_map(char *path);
+
+//PARSER
+int 	check_path_format(char *path);
+char	**load_map(t_application *appl, char *path);
 
 void	logger(char *msg);
 int		get_rgb(int t, int red, int green, int blue);
