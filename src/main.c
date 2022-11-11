@@ -34,25 +34,17 @@ int	get_rgb(int t, int red, int green, int blue)
 	return (t << 24 | red << 16 | green << 8 | blue);
 }
 
-static void	show_map(char **map)
+static int	colission(t_map *map, t_player *pl, int sign)
 {
-	char	buffer[100];
-
-	sprintf(buffer, "MAP ADDR: %p\n", map);
-	printf(buffer, "MAP INNER ADDR: %p\n", *map);
-	while (*map)
-		printf("%s", *map++);
-}
-
-static int	colission(t_map *map, t_ray *ray, t_player *pl, int sign)
-{
-	int	ret_val[2];
+	int	ret_val[3];
 
 	if (sign == 1)
 	{
 		ret_val[0] = map->map[(int)(pl->pos_x + pl->dir_x / 2)]
 			[(int)pl->pos_y] - 48;
 		ret_val[1] = map->map[(int)pl->pos_x]
+			[(int)(pl->pos_y + pl->dir_y / 2)] - 48;
+		ret_val[2] = map->map[(int)(pl->pos_x + pl->dir_x)]
 			[(int)(pl->pos_y + pl->dir_y / 2)] - 48;
 	}
 	else
@@ -61,28 +53,25 @@ static int	colission(t_map *map, t_ray *ray, t_player *pl, int sign)
 			[(int)(pl->pos_y - pl->dir_y / 2)] - 48;
 		ret_val[1] = map->map[(int)(pl->pos_x - pl->dir_x / 2)]
 			[(int)pl->pos_y] - 48;
+		ret_val[2] = map->map[(int)(pl->pos_x - pl->dir_x)]
+			[(int)(pl->pos_y - pl->dir_y / 2)] - 48;
 	}
-	return (!ret_val[0] * !ret_val[1]);
+	return (!ret_val[0] * !ret_val[1] * !ret_val[2]);
 }
 
-//fprintf(stderr, "KEYCODE: %d\n", keycode);
-//fprintf(stderr, "X: %lf\n", appl->player.pos_x);
-//fprintf(stderr, "Y: %lf\n", appl->player.pos_y);
-//fprintf(stderr, "MAP: %d\n", appl->map.map[appl->ray.map_x][appl->ray.map_y]);
-//fprintf(stderr, "RETVAL: %d\n", ret_val);
 static int	key_hook(int keycode, t_application *appl)
 {
 	int	ret_val;
 
 	if (keycode == UP)
 	{
-		ret_val = colission(&appl->map, &appl->ray, &appl->player, PLUS);
+		ret_val = colission(&appl->map, &appl->player, PLUS);
 		appl->player.pos_y += appl->player.dir_y * ret_val / MOVEMENT_K;
 		appl->player.pos_x += appl->player.dir_x * ret_val / MOVEMENT_K;
 	}
 	if (keycode == DOWN)
 	{
-		ret_val = colission(&appl->map, &appl->ray, &appl->player, MINUS);
+		ret_val = colission(&appl->map, &appl->player, MINUS);
 		appl->player.pos_y -= appl->player.dir_y * ret_val / MOVEMENT_K;
 		appl->player.pos_x -= appl->player.dir_x * ret_val / MOVEMENT_K;
 	}
@@ -104,17 +93,8 @@ static int	key_hook(int keycode, t_application *appl)
 		appl->cam.plane_x = appl->cam.plane_x * cos(ROTATE) - appl->cam.plane_y * sin(ROTATE);
 		appl->cam.plane_y = oldPlaneX * sin(ROTATE) + appl->cam.plane_y * cos(ROTATE);
     }
-	fprintf(stderr, "DIR_X: %lf\n", appl->player.dir_x);
-	fprintf(stderr, "DIR_Y: %lf\n", appl->player.dir_y);
-	fprintf(stderr, "PLANE_X: %lf\n", appl->cam.plane_x);
-	fprintf(stderr, "PLANE_Y: %lf\n", appl->cam.plane_y);
-	game_loop(appl);
-	return (1);
-}
-
-static int	release_hook(int keycode, t_application *appl)
-{
 	fprintf(stderr, "KEYCODE: %d\n", keycode);
+	game_loop(appl);
 	return (1);
 }
 
@@ -123,18 +103,16 @@ int main(int argc, char **argv)
 	t_application	appl;
 	t_mlx			*mlx_win;
 	t_map			*map;
-	t_player		*player;
 
 	if (argc != 2 || application_init(&appl, argv[1]) < 0)
 		return (-1);
 	mlx_win = &appl.mlx_win;
 	map = &appl.map;
-	player = &appl.player;
 	if (!map->map)
 		return (-1);
+	//mlx_loop_hook(mlx_win->mlx_win, game_loop, &appl);
 	game_loop(&appl);
 	mlx_hook(mlx_win->mlx_win, 2, 1L << 0, key_hook, &appl);
-	//mlx_hook(mlx_win->mlx_win, 3, 1L << 1, release_hook, &appl);
 	mlx_loop(mlx_win->mlx);
 	application_destory(&appl);
 	return (0);

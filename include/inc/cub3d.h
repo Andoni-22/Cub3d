@@ -6,7 +6,7 @@
 /*   By: andoni <andoni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 16:42:02 by andoni            #+#    #+#             */
-/*   Updated: 2022/11/07 21:08:57 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/09 21:54:38 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@
 
 typedef struct s_wall_face
 {
-	int		width;
-	int		height;
-	void	*img;
+	int				width;
+	int				height;
+	char	*img;
 }	t_wall_face;
 
 typedef struct s_texture
@@ -59,6 +59,7 @@ typedef struct s_mlx
 	int		line_length;
 	int		bit_per_pixel;
 	int		endian;
+	t_wall_face wall_face[4];
 }	t_mlx;
 
 typedef struct s_map
@@ -125,14 +126,12 @@ typedef struct s_application {
 	t_camera	cam;
 	t_ray		ray;
 	t_texture	texture;
-	t_wall_face wall_face[4];
-
 }	t_application;
 
 int		application_init(t_application *appl, char *path);
 void	application_destory(t_application *appl);
 void	appl_mlx_destroy(t_mlx *mlx);
-void	game_loop(t_application *appl);
+int		game_loop(t_application *appl);
 char	**load_map(char *path);
 
 void	logger(char *msg);

@@ -7,23 +7,10 @@
 
 static int	appl_mlx_init(t_mlx	*mlx)
 {
-	void	*raw_img;
-	int		width;
-	int		height;
-	int		bit_per_pixel;
-	int		size_line;
-	int		endian;
-
 	mlx->mlx = mlx_init();
 	mlx->mlx_win = mlx_new_window(mlx->mlx, WIDTH, HEIGHT, "Cub3d");
 	mlx->img = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 	mlx->img_addr = mlx_get_data_addr(mlx->img, &mlx->bit_per_pixel, &mlx->line_length, &mlx->endian);
-
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &width, &height);
-	mlx->wall_face[0].img = mlx_get_data_addr(raw_img, &bit_per_pixel, &size_line, &endian);
-	//mlx->wall_face[1].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &mlx->wall_face[1].width, &mlx->wall_face[1].height);
-	//mlx->wall_face[2].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &mlx->wall_face[2].width, &mlx->wall_face[2].height);
-	//mlx->wall_face[3].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &mlx->wall_face[3].width, &mlx->wall_face[3].height);
 	return (0);
 }
 
@@ -121,23 +108,43 @@ static int	appl_cam_init(t_camera *cam)
 	return (0);
 }
 
-static int	appl_texture_init(t_texture *t, t_mlx *mlx)
+static int	appl_texture_init(t_texture *t)
 {
-	void	*raw_img;
-	int		bit_per_pixel;
-	int		line_length;
-	int		endian;
-	int		width;
-	int		height;
+	size_t	x;
+	size_t	y;
 
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, "/home/lukas/MyProjects/Cub3d/xpm_images/AnyConv.com__eagle.xpm", &width, &height);
-	t->img[0] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, "/home/lukas/MyProjects/Cub3d/xpm_images/AnyConv.com__eagle.xpm", &width, &height);
-	t->img[1] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, "/home/lukas/MyProjects/Cub3d/xpm_images/AnyConv.com__eagle.xpm", &width, &height);
-	t->img[2] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, "/home/lukas/MyProjects/Cub3d/xpm_images/AnyConv.com__eagle.xpm", &width, &height);
-	t->img[3] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
+	x = -1;
+	while (++x < TEXTURE_WIDTH)
+	{
+		y = -1;
+		while (++y < TEXTURE_HEIGHT)
+		{
+			t->xorcolor = (x * 256 / TEXTURE_WIDTH) ^ (y * 256 / TEXTURE_HEIGHT);
+			t->ycolor = y * 256 / TEXTURE_HEIGHT;
+			t->xycolor = y * 128 / TEXTURE_HEIGHT + x * 128 / TEXTURE_WIDTH;
+
+			//set_texture_colors(t->texture_set[0], y, x, 65536 * 254 * (x != y && x != TEXTURE_WIDTH - y));//flat red texture with black cross
+			//t->texture_set[0][TEXTURE_WIDTH * y + x] =  65536 * 254 * (x != y && x != TEXTURE_WIDTH - y);//flat red texture with black cross
+			//set_texture_colors(t->texture_set[1], y, x, t->xycolor + 256 * t->xycolor + 65536 * t->xycolor); //sloped greyscale
+			t->texture_set[1][TEXTURE_WIDTH * y + x] = t->xycolor + 256 * t->xycolor + 65536 * t->xycolor; //sloped greyscale
+			//set_texture_colors(t->texture_set[2], y, x, 256 * t->xycolor + 65536 * t->xycolor); //sloped yellow gradien
+			//set_texture_colors(t->texture_set[3], y, x, t->xorcolor + 256 * t->xorcolor + 65536 * t->xorcolor); //t->xor greyscale;
+			//set_texture_colors(t->texture_set[4], y, x, 256 * t->xorcolor); //t->xor green;
+			//set_texture_colors(t->texture_set[5], y, x, 65536 * 192 * (x % 16 && y % 16)); //red bricks;
+			t->texture_set[0][TEXTURE_WIDTH * y + x] = 65536 * 192 * (x % 16 && y % 16); //red bricks;
+			//set_texture_colors(t->texture_set[6], y, x, 65536 * t->ycolor); //red gradient;
+			//set_texture_colors(t->texture_set[7], y, x, 128 + 256 * 128 + 65536 * 128); //flat grey texture;
+		}
+	}
+	return (0);
+}
+
+static int	appl_wall_face_init(t_wall_face *wall_face, t_mlx *mlx)
+{
+	wall_face[0].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &wall_face[0].width, &wall_face[0].height);
+	wall_face[1].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &wall_face[1].width, &wall_face[1].height);
+	wall_face[2].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &wall_face[2].width, &wall_face[2].height);
+	wall_face[3].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &wall_face[3].width, &wall_face[3].height);
 	return (0);
 }
 
@@ -152,7 +159,9 @@ int	application_init(t_application *appl, char *path)
 		return (-1);
 	if (appl_player_init(&appl->player, &appl->map, &appl->cam))
 		return (-1);
-	if (appl_texture_init(&appl->texture, &appl->mlx_win) < 0)
+	if (appl_texture_init(&appl->texture) < 0)
+		return (-1);
+	if (appl_wall_face_init(appl->wall_face, &appl->mlx_win) < 0)
 		return (-1);
 	return (0);
 }
