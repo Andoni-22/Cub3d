@@ -6,7 +6,7 @@
 /*   By: andoni <andoni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 16:42:02 by andoni            #+#    #+#             */
-/*   Updated: 2022/11/09 21:54:38 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/12 13:58:30 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,15 @@
 # define FLOOR			'0'
 
 # define BUFFER_SIZE 	1000
-# define MOVEMENT_K		2
+# define MOVEMENT_K		4
 # define ROTATE			0.125f
 
 # define X				0
 # define Y				1
 # define PLUS			1
+# define PLUS_SIDE		2
 # define MINUS			-1
+# define MINUS_SIDE		-2
 # define TEXTURE_WIDTH	64
 # define TEXTURE_HEIGHT	64
 # define TEXTURE		4096

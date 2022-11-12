@@ -130,13 +130,13 @@ static int	appl_texture_init(t_texture *t, t_mlx *mlx)
 	int		width;
 	int		height;
 
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, "/home/lukas/MyProjects/Cub3d/xpm_images/AnyConv.com__eagle.xpm", &width, &height);
+	raw_img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &width, &height);
 	t->img[0] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, "/home/lukas/MyProjects/Cub3d/xpm_images/AnyConv.com__eagle.xpm", &width, &height);
+	raw_img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &width, &height);
 	t->img[1] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, "/home/lukas/MyProjects/Cub3d/xpm_images/AnyConv.com__eagle.xpm", &width, &height);
+	raw_img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &width, &height);
 	t->img[2] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, "/home/lukas/MyProjects/Cub3d/xpm_images/AnyConv.com__eagle.xpm", &width, &height);
+	raw_img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &width, &height);
 	t->img[3] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
 	return (0);
 }

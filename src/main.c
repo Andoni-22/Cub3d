@@ -6,7 +6,7 @@
 /*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 20:53:48 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/11/07 21:11:19 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/12 15:11:05 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 
 void	my_pixel_put(t_mlx *mlx, int x, int y, int color)
 {
@@ -38,7 +39,7 @@ static int	colission(t_map *map, t_player *pl, int sign)
 {
 	int	ret_val[3];
 
-	if (sign == 1)
+	if (sign > 0)
 	{
 		ret_val[0] = map->map[(int)(pl->pos_x + pl->dir_x / 2)]
 			[(int)pl->pos_y] - 48;
@@ -47,14 +48,39 @@ static int	colission(t_map *map, t_player *pl, int sign)
 		ret_val[2] = map->map[(int)(pl->pos_x + pl->dir_x)]
 			[(int)(pl->pos_y + pl->dir_y / 2)] - 48;
 	}
-	else
+	else if (sign < 0)
 	{
-		ret_val[0] = map->map[(int)pl->pos_x]
-			[(int)(pl->pos_y - pl->dir_y / 2)] - 48;
-		ret_val[1] = map->map[(int)(pl->pos_x - pl->dir_x / 2)]
+		ret_val[0] = map->map[(int)(pl->pos_x - pl->dir_x / 2)]
 			[(int)pl->pos_y] - 48;
+		ret_val[1] = map->map[(int)pl->pos_x]
+			[(int)(pl->pos_y - pl->dir_y / 2)] - 48;
 		ret_val[2] = map->map[(int)(pl->pos_x - pl->dir_x)]
 			[(int)(pl->pos_y - pl->dir_y / 2)] - 48;
+	}
+	return (!ret_val[0] * !ret_val[1] * !ret_val[2]);
+}
+
+static int	side_colission(t_map *map, t_player *pl, int sign)
+{
+	int	ret_val[3];
+
+	if (sign > 0)
+	{
+		ret_val[0] = map->map[(int)(pl->pos_x + pl->dir_y / 2)]
+			[(int)pl->pos_y] - 48;
+		ret_val[1] = map->map[(int)pl->pos_x]
+			[(int)(pl->pos_y + pl->dir_x / 2)] - 48;
+		ret_val[2] = map->map[(int)(pl->pos_x + pl->dir_y)]
+			[(int)(pl->pos_y + pl->dir_x / 2)] - 48;
+	}
+	else if (sign < 0)
+	{
+		ret_val[0] = map->map[(int)(pl->pos_x - pl->dir_y / 2)]
+			[(int)pl->pos_y] - 48;
+		ret_val[1] = map->map[(int)pl->pos_x]
+			[(int)(pl->pos_y - pl->dir_x / 2)] - 48;
+		ret_val[2] = map->map[(int)(pl->pos_x - pl->dir_y)]
+			[(int)(pl->pos_y - pl->dir_x / 2)] - 48;
 	}
 	return (!ret_val[0] * !ret_val[1] * !ret_val[2]);
 }
@@ -75,7 +101,19 @@ static int	key_hook(int keycode, t_application *appl)
 		appl->player.pos_y -= appl->player.dir_y * ret_val / MOVEMENT_K;
 		appl->player.pos_x -= appl->player.dir_x * ret_val / MOVEMENT_K;
 	}
-	if (keycode == RIGHT)
+	else if (keycode == RIGHT)
+	{
+		//ret_val = side_colission(&appl->map, &appl->player, PLUS);
+		appl->player.pos_y += fabs(appl->player.dir_x) * ret_val / MOVEMENT_K;
+		appl->player.pos_x += fabs(appl->player.dir_y) * ret_val / MOVEMENT_K;
+	}
+	else if (keycode == LEFT)
+	{
+		appl->player.pos_y -= fabs(appl->player.dir_x) * ret_val / MOVEMENT_K;
+		appl->player.pos_x -= fabs(appl->player.dir_y) * ret_val / MOVEMENT_K;
+		ret_val = side_colission(&appl->map, &appl->player, MINUS);
+	}
+	else if (keycode == ROTATE_RIGHT)
 	{
 		double oldDirX = appl->player.dir_x;
 		appl->player.dir_x = appl->player.dir_x * cos(-ROTATE) - appl->player.dir_y * sin(-ROTATE);
@@ -84,7 +122,7 @@ static int	key_hook(int keycode, t_application *appl)
 		appl->cam.plane_x = appl->cam.plane_x * cos(-ROTATE) - appl->cam.plane_y * sin(-ROTATE);
 		appl->cam.plane_y = oldPlaneX * sin(-ROTATE) + appl->cam.plane_y * cos(-ROTATE);
     }
-	if (keycode == LEFT)
+	else if (keycode == ROTATE_LEFT)
 	{	
 		double oldDirX = appl->player.dir_x;
 		appl->player.dir_x = appl->player.dir_x * cos(ROTATE) - appl->player.dir_y * sin(ROTATE);
@@ -92,8 +130,7 @@ static int	key_hook(int keycode, t_application *appl)
 		double oldPlaneX = appl->cam.plane_x;
 		appl->cam.plane_x = appl->cam.plane_x * cos(ROTATE) - appl->cam.plane_y * sin(ROTATE);
 		appl->cam.plane_y = oldPlaneX * sin(ROTATE) + appl->cam.plane_y * cos(ROTATE);
-    }
-	fprintf(stderr, "KEYCODE: %d\n", keycode);
+	}
 	game_loop(appl);
 	return (1);
 }
