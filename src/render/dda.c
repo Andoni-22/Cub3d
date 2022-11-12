@@ -95,16 +95,18 @@ static void	hit_wall_side(t_ray *ray, t_map *map)
 		if (map->map[ray->map_x][ray->map_y] != FLOOR)
 			break ;
 	}
+	fprintf(stderr, "RAY_X: %lf\n", ray->dir_x);
+	fprintf(stderr, "RAY_Y: %lf\n", ray->dir_x);
 }
 
 static void	draw_wall_texture(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_texture *t)
 {
-	int		texture_type;
+	int		type;
 	int		texture_x;
 	int		start;
 	int		end;
 
-	texture_type = map->map[ray->map_x][ray->map_y] - 49;
+	type = 0;//map->map[ray->map_x][ray->map_y] - 49;
 	double	wall_x;
 	start = -map->wall_height / 2 + HEIGHT / 2;
 	if (start < 0)
@@ -137,10 +139,10 @@ static void	draw_wall_texture(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_textu
 	{
 		texture_y = (int)texture_pos & (TEXTURE_HEIGHT - 1);
 		texture_pos += step;
-		color[0] = t->img[texture_type][texture_y * 256 + texture_x * 4 + 0];
-		color[1] = t->img[texture_type][texture_y * 256 + texture_x * 4 + 1];
-		color[2] = t->img[texture_type][texture_y * 256 + texture_x * 4 + 2];
-		color[3] = t->img[texture_type][texture_y * 256 + texture_x * 4 + 3];
+		color[0] = t[type].img[texture_y * 256 + texture_x * 4 + 0];
+		color[1] = t[type].img[texture_y * 256 + texture_x * 4 + 1];
+		color[2] = t[type].img[texture_y * 256 + texture_x * 4 + 2];
+		color[3] = t[type].img[texture_y * 256 + texture_x * 4 + 3];
 		final_color = get_rgb(color[3], color[2], color[1], color[0]);
 		if (ray->side)
 			final_color = (final_color >> 1) & 8355711;
@@ -159,10 +161,9 @@ static void	wall_hit_case(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_texture *
 	map->wall_height = (int)HEIGHT / map->perp_wall_dist;
 
 	draw_wall_texture(ray, map, mlx, x, t);
-	//draw_wall(ray, map, mlx, x);
 }
 
-int	game_loop(t_application *appl)//t_player *p, t_map *m, t_camera *cam, t_mlx *mlx)
+int	game_loop(t_application *appl)
 {
 	int		x;
 
@@ -174,7 +175,7 @@ int	game_loop(t_application *appl)//t_player *p, t_map *m, t_camera *cam, t_mlx 
 	{
 		appl->cam.coord_x = 2 * x / (double)WIDTH - 1;
 		set_ray(&appl->ray, &appl->player, &appl->cam);
-		wall_hit_case(&appl->ray, &appl->map, &appl->mlx_win, x, &appl->texture);
+		wall_hit_case(&appl->ray, &appl->map, &appl->mlx_win, x, appl->texture);
 	}
 	mlx_put_image_to_window(appl->mlx_win.mlx, appl->mlx_win.mlx_win, appl->mlx_win.img, 0, 0);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 20:53:48 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/11/12 19:54:04 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/12 17:21:16 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,26 +80,31 @@ static int	key_hook(int keycode, t_application *appl)
 	if (keycode == UP)
 	{
 		ret_val = colission(&appl->map, &appl->player, appl->player.dir_x, appl->player.dir_y);
-		appl->player.pos_y += appl->player.dir_y * ret_val * 0.75;
-		appl->player.pos_x += appl->player.dir_x * ret_val * 0.75;
+		appl->player.pos_y += appl->player.dir_y * ret_val;
+		appl->player.pos_x += appl->player.dir_x * ret_val;
 	}
 	if (keycode == DOWN)
 	{
 		ret_val = colission(&appl->map, &appl->player, -appl->player.dir_x, -appl->player.dir_y);
-		appl->player.pos_y -= appl->player.dir_y * ret_val * 0.75;
-		appl->player.pos_x -= appl->player.dir_x * ret_val * 0.75;
+		appl->player.pos_y -= appl->player.dir_y * ret_val;
+		appl->player.pos_x -= appl->player.dir_x * ret_val;
 	}
 	else if (keycode == RIGHT)
 	{
-		ret_val = colission(&appl->map, &appl->player, appl->cam.plane_x, appl->cam.plane_y);
-		appl->player.pos_y += appl->cam.plane_y * ret_val * 0.75;
-		appl->player.pos_x += appl->cam.plane_x * ret_val * 0.75;
+		double tmp_dir[2];
+
+		fprintf(stderr, "RIGHT\n");
+		tmp_dir[0] = appl->player.dir_x * cos(-90) - appl->player.dir_y * sin(-90);
+		tmp_dir[1] = appl->player.dir_x * sin(-90) + appl->player.dir_y * cos(-90);
+		ret_val = colission(&appl->map, &appl->player, tmp_dir[0], tmp_dir[1]);
+		appl->player.pos_x += tmp_dir[0] * ret_val;
+		appl->player.pos_y += tmp_dir[1] * ret_val;
 	}
 	else if (keycode == LEFT)
 	{
 		ret_val = colission(&appl->map, &appl->player, -appl->cam.plane_x, -appl->cam.plane_y);
-		appl->player.pos_y -= appl->cam.plane_y * ret_val * 0.75;
-		appl->player.pos_x -= appl->cam.plane_x * ret_val * 0.75;
+		appl->player.pos_y -= appl->cam.plane_y * ret_val;
+		appl->player.pos_x -= appl->cam.plane_x * ret_val;
 	}
 	else if (keycode == ROTATE_RIGHT)
 	{
@@ -119,6 +124,7 @@ static int	key_hook(int keycode, t_application *appl)
 		appl->cam.plane_x = appl->cam.plane_x * cos(ROTATE) - appl->cam.plane_y * sin(ROTATE);
 		appl->cam.plane_y = oldPlaneX * sin(ROTATE) + appl->cam.plane_y * cos(ROTATE);
 	}
+	//fprintf(stderr, "KEYCODE: %d\n", keycode);
 	game_loop(appl);
 	return (1);
 }

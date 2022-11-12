@@ -7,23 +7,10 @@
 
 static int	appl_mlx_init(t_mlx	*mlx)
 {
-	void	*raw_img;
-	int		width;
-	int		height;
-	int		bit_per_pixel;
-	int		size_line;
-	int		endian;
-
 	mlx->mlx = mlx_init();
 	mlx->mlx_win = mlx_new_window(mlx->mlx, WIDTH, HEIGHT, "Cub3d");
 	mlx->img = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 	mlx->img_addr = mlx_get_data_addr(mlx->img, &mlx->bit_per_pixel, &mlx->line_length, &mlx->endian);
-
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &width, &height);
-	mlx->wall_face[0].img = mlx_get_data_addr(raw_img, &bit_per_pixel, &size_line, &endian);
-	//mlx->wall_face[1].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &mlx->wall_face[1].width, &mlx->wall_face[1].height);
-	//mlx->wall_face[2].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &mlx->wall_face[2].width, &mlx->wall_face[2].height);
-	//mlx->wall_face[3].img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &mlx->wall_face[3].width, &mlx->wall_face[3].height);
 	return (0);
 }
 
@@ -121,23 +108,34 @@ static int	appl_cam_init(t_camera *cam)
 	return (0);
 }
 
-static int	appl_texture_init(t_texture *t, t_mlx *mlx)
+static int	process_image(t_texture *t, t_mlx *mlx, char *xpm_file)
 {
 	void	*raw_img;
-	int		bit_per_pixel;
-	int		line_length;
-	int		endian;
-	int		width;
-	int		height;
 
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &width, &height);
-	t->img[0] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &width, &height);
-	t->img[1] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &width, &height);
-	t->img[2] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, "./xpm_images/AnyConv.com__eagle.xpm", &width, &height);
-	t->img[3] = mlx_get_data_addr(raw_img, &bit_per_pixel, &line_length, &endian);
+	raw_img = mlx_xpm_file_to_image(mlx->mlx, xpm_file, &t->width, &t->height);
+	if (!raw_img)
+		return (1);
+	t->img = mlx_get_data_addr(raw_img, &t->bit_per_pixel, &t->line_length, &t->endian);
+	return (0);
+}
+
+static int	appl_texture_init(t_texture t[4], t_mlx *mlx)
+{
+	int		ret_val;
+	size_t	i;
+	char	*wall_texture[4];
+
+	wall_texture[0] = "./xpm_images/AnyConv.com__eagle.xpm";
+	wall_texture[1] = "./xpm_images/AnyConv.com__redbrick.xpm";
+	wall_texture[2] = "./xpm_images/AnyConv.com__colorstone.xpm";
+	wall_texture[3] = "./xpm_images/AnyConv.com__greystone.xpm";
+	i = -1;
+	while (++i < 4)
+	{	
+		ret_val = process_image(&t[i], mlx, wall_texture[i]);
+		if (ret_val)
+			return (-1);
+	}
 	return (0);
 }
 
@@ -152,7 +150,7 @@ int	application_init(t_application *appl, char *path)
 		return (-1);
 	if (appl_player_init(&appl->player, &appl->map, &appl->cam))
 		return (-1);
-	if (appl_texture_init(&appl->texture, &appl->mlx_win) < 0)
+	if (appl_texture_init(appl->texture, &appl->mlx_win) < 0)
 		return (-1);
 	return (0);
 }
