@@ -108,7 +108,7 @@ static int	appl_cam_init(t_camera *cam)
 	return (0);
 }
 
-static int	process_image(t_texture *t, t_mlx *mlx, char *xpm_file)
+static int	process_image(t_tx *t, t_mlx *mlx, char *xpm_file)
 {
 	void	*raw_img;
 
@@ -119,20 +119,20 @@ static int	process_image(t_texture *t, t_mlx *mlx, char *xpm_file)
 	return (0);
 }
 
-static int	appl_texture_init(t_texture t[4], t_mlx *mlx)
+static int	appl_tx_init(t_tx t[4], t_mlx *mlx)
 {
 	int		ret_val;
 	size_t	i;
-	char	*wall_texture[4];
+	char	*wall_tx[4];
 
-	wall_texture[0] = "./xpm_images/AnyConv.com__eagle.xpm";
-	wall_texture[1] = "./xpm_images/AnyConv.com__redbrick.xpm";
-	wall_texture[2] = "./xpm_images/AnyConv.com__colorstone.xpm";
-	wall_texture[3] = "./xpm_images/AnyConv.com__greystone.xpm";
+	wall_tx[0] = "./xpm_images/AnyConv.com__eagle.xpm";
+	wall_tx[1] = "./xpm_images/AnyConv.com__redbrick.xpm";
+	wall_tx[2] = "./xpm_images/AnyConv.com__colorstone.xpm";
+	wall_tx[3] = "./xpm_images/AnyConv.com__greystone.xpm";
 	i = -1;
 	while (++i < 4)
 	{	
-		ret_val = process_image(&t[i], mlx, wall_texture[i]);
+		ret_val = process_image(&t[i], mlx, wall_tx[i]);
 		if (ret_val)
 			return (-1);
 	}
@@ -150,7 +150,7 @@ int	application_init(t_application *appl, char *path)
 		return (-1);
 	if (appl_player_init(&appl->player, &appl->map, &appl->cam))
 		return (-1);
-	if (appl_texture_init(appl->texture, &appl->mlx_win) < 0)
+	if (appl_tx_init(appl->tx, &appl->mlx_win) < 0)
 		return (-1);
 	return (0);
 }

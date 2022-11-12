@@ -1,5 +1,6 @@
-#include "cub3d.h"
+
 #include "mlx.h"
+#include "cub3d.h"
 
 #include <string.h>
 #include <math.h>
@@ -99,15 +100,34 @@ static void	hit_wall_side(t_ray *ray, t_map *map)
 	fprintf(stderr, "RAY_Y: %lf\n", ray->dir_x);
 }
 
-static void	draw_wall_texture(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_texture *t)
+static int	get_tx_color(t_tx t[4], int tx_y, int tx_x, int tx_type)
 {
-	int		type;
-	int		texture_x;
-	int		start;
-	int		end;
+	int	color[4];
+	int	len;
 
-	type = 0;//map->map[ray->map_x][ray->map_y] - 49;
-	double	wall_x;
+	len = t[tx_type].line_length;
+
+	color[0] = t[tx_type].img[tx_y * len + tx_x * 4 + 0];
+	color[1] = t[tx_type].img[tx_y * len + tx_x * 4 + 1];
+	color[2] = t[tx_type].img[tx_y * len + tx_x * 4 + 2];
+	color[3] = t[tx_type].img[tx_y * len + tx_x * 4 + 3];
+	return (get_rgb(color[3], color[2], color[1], color[0]));
+}
+
+static void	draw_wall_tx(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_tx *t)
+{
+	int			tx_type;
+	int			tx_x;
+	double		tx_pos;
+	int			tx_y;
+	int			start;
+	int			end;
+	double		wall_x;
+	double		step;
+	int			final_color;
+
+
+	tx_type = 0;//map->map[ray->map_x][ray->map_y] - 49;
 	start = -map->wall_height / 2 + HEIGHT / 2;
 	if (start < 0)
 		start = 0;
@@ -121,36 +141,26 @@ static void	draw_wall_texture(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_textu
 		wall_x = ray->pos_x + map->perp_wall_dist * ray->dir_x;
 	wall_x -= floor(wall_x);
 
-	texture_x = (int)(wall_x * (double)TEXTURE_WIDTH);
+	tx_x = (int)(wall_x * (double)t[tx_type].width);
 	if (!ray->side && ray->dir_x > 0)
-		texture_x = TEXTURE_WIDTH - texture_x - 1;
+		tx_x = t[tx_type].width - tx_x - 1;
 	if (ray->side && ray->dir_y < 0)
-		texture_x = TEXTURE_WIDTH - texture_x - 1;
+		tx_x = t[tx_type].width - tx_x - 1;
 
-	double		step;
-	double		texture_pos;
-	int			texture_y;
-	int			color[4];
-	int			final_color;
-
-	step = 1.0 * TEXTURE_WIDTH / map->wall_height;
-	texture_pos = (start - HEIGHT / 2 + map->wall_height / 2) * step;
+	step = 1.0 * t[tx_type].width / map->wall_height;
+	tx_pos = (start - HEIGHT / 2 + map->wall_height / 2) * step;
 	while (start != end)
 	{
-		texture_y = (int)texture_pos & (TEXTURE_HEIGHT - 1);
-		texture_pos += step;
-		color[0] = t[type].img[texture_y * 256 + texture_x * 4 + 0];
-		color[1] = t[type].img[texture_y * 256 + texture_x * 4 + 1];
-		color[2] = t[type].img[texture_y * 256 + texture_x * 4 + 2];
-		color[3] = t[type].img[texture_y * 256 + texture_x * 4 + 3];
-		final_color = get_rgb(color[3], color[2], color[1], color[0]);
+		tx_y = (int)tx_pos & (t[tx_type].width - 1);
+		tx_pos += step;
+		final_color = get_tx_color(t, tx_y, tx_x, tx_type);
 		if (ray->side)
 			final_color = (final_color >> 1) & 8355711;
 		my_pixel_put(mlx, x, start++, final_color);
 	}
 }
 
-static void	wall_hit_case(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_texture *t)
+static void	wall_hit_case(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_tx *t)
 {
 	hit_wall_side(ray, map);
 
@@ -160,7 +170,7 @@ static void	wall_hit_case(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_texture *
 		map->perp_wall_dist = ray->side_dist_y - ray->delta_dist_y;
 	map->wall_height = (int)HEIGHT / map->perp_wall_dist;
 
-	draw_wall_texture(ray, map, mlx, x, t);
+	draw_wall_tx(ray, map, mlx, x, t);
 }
 
 int	game_loop(t_application *appl)
@@ -175,7 +185,7 @@ int	game_loop(t_application *appl)
 	{
 		appl->cam.coord_x = 2 * x / (double)WIDTH - 1;
 		set_ray(&appl->ray, &appl->player, &appl->cam);
-		wall_hit_case(&appl->ray, &appl->map, &appl->mlx_win, x, appl->texture);
+		wall_hit_case(&appl->ray, &appl->map, &appl->mlx_win, x, appl->tx);
 	}
 	mlx_put_image_to_window(appl->mlx_win.mlx, appl->mlx_win.mlx_win, appl->mlx_win.img, 0, 0);
 	return (1);

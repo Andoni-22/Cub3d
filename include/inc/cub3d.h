@@ -6,7 +6,7 @@
 /*   By: andoni <andoni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 16:42:02 by andoni            #+#    #+#             */
-/*   Updated: 2022/11/12 19:54:03 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/12 20:17:01 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,9 @@
 # define MINUS			-1
 # define MINUS_REV		2
 
-# define TEXTURE_WIDTH	64
-# define TEXTURE_HEIGHT	64
 # define TEXTURE		4096
 
-typedef struct s_texture
+typedef struct s_tx
 {
 	char	*img;
 	int		xorcolor;
@@ -49,7 +47,7 @@ typedef struct s_texture
 	int		line_length;
 	int		bit_per_pixel;
 	int		endian;
-}	t_texture;
+}	t_tx;
 
 typedef struct s_mlx
 {
@@ -125,7 +123,7 @@ typedef struct s_application {
 	t_player	player;
 	t_camera	cam;
 	t_ray		ray;
-	t_texture	texture[4];
+	t_tx		tx[4];
 }	t_application;
 
 int		application_init(t_application *appl, char *path);
