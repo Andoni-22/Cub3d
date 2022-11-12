@@ -1,5 +1,7 @@
 
 #include "cub3d.h"
+#include "libft.h"
+#include <stdlib.h>
 
 /**
  * Buscamos saber si la linea recibida
@@ -25,24 +27,53 @@ int map_first_row_chrs(char *line)
     return (0);
 }
 
+static int  is_config_param(char *str)
+{
+    int size;
+
+    size = ft_strlen(str);
+    if (size == 1 || size == 2)
+    {
+        if (ft_strncmp(str, "NO", 2) == 0)
+            return (0);
+        if (ft_strncmp(str, "SO", 2) == 0)
+            return (0);
+        if (ft_strncmp(str, "EA", 2) == 0)
+            return (0);
+        if (ft_strncmp(str, "WE", 2) == 0)
+            return (0);
+        if (ft_strncmp(str, "F", 1) == 0)
+            return (0);
+        if (ft_strncmp(str, "C", 1) == 0)
+            return (0);
+    }
+    return (-1);
+}
+
 //TODO
 /**
  * Comprobamos si es una fila de configuracion,
- * color o textura
+ * en si podriamos comprobar mas cosas, pero
+ * de momento solo nos interesa saber si es una posible
+ * linea de config
  * @param line
- * @return
+ * @return -1 si hay error, 0 si esta bien
  */
 int is_config_line(char *line)
 {
-    int i;
+    char    **tmp;
+    int     i;
+    int     ret;
 
-    i = 0;
-    while (line[i])
-    {
-
-        i++;
-    }
-    return (0);
+    tmp = ft_split(line, ' ');
+    ret = 0;
+    if (!tmp)
+        ret = -1;
+    if (is_config_param(tmp[0]) < 0)
+        ret = -1;
+    i = -1;
+    free_str_array(tmp);
+    return (ret);
 }
 
 /**

@@ -4,7 +4,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <tclDecls.h>
 
 static int	appl_mlx_init(t_mlx	*mlx)
 {
@@ -36,7 +35,7 @@ static int	appl_mlx_init(t_mlx	*mlx)
  * @param path file path string
  * @return -1 if error, 0 if it's correct
  */
-static int	appl_map_init(t_application *appl, char *path)
+int	appl_map_init(t_application *appl, char *path)
 {
     if (check_path_format(path) < 0)
         return -1;

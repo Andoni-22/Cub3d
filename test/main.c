@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include "cub3d.h"
+
 
 #define WIDTH	500
 #define HEIGHT	500

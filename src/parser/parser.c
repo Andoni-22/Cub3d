@@ -125,17 +125,18 @@ static char **process_raw_data(t_texture *texture, char **raw)
     if (map_type == 0)
     {
         //MAPA DE TIPO SIMPLE
-        fprintf(stderr, "Mapa de tipo simple\n");
+        printf("Mapa de tipo simple\n");
         return (NULL);
     }
     else if (map_type == 1)
     {
-        fprintf(stderr, "Mapa de tipo complejo\n");
+        printf("Mapa de tipo complejo\n");
         return (NULL);
         //MAPA COMPLEJO
     }
     else if (map_type == -1)
         return (NULL);
+    texture = NULL;
     return (NULL);
 }
 
@@ -151,12 +152,20 @@ char    **load_map(t_application *appl, char *path)
 {
 	size_t	sz;
     char    **tmp;
+    char    **tmp_tmp;
     char    **map;
+    int     i;
 
-	sz = get_map_size(path);
-	if (!sz)
-		return (NULL);
+    i = -1;
+    sz = get_map_size(path);
+    if (!sz)
+        return (NULL);
     tmp = load_raw_file_data(path, sz);
+    tmp_tmp = str_array_copy(tmp);
+    free_str_array(tmp);
+    tmp = ft_calloc(sizeof(char *), sz + 1);
+    while (tmp_tmp[++i])
+        tmp[i] = ft_strtrim(tmp_tmp[i], "1/n");
     map = process_raw_data(&appl->texture, tmp);
     if (!map)
         return (NULL);

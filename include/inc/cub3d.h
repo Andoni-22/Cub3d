@@ -144,9 +144,14 @@ int     map_first_row_chrs(char *line);
 int     is_config_line(char *line);
 int     is_valid_map_line(char *line);
 int     line_contain_data(char *line);
+int 	appl_map_init(t_application *appl, char *path);
 
 void	logger(char *msg);
 int		get_rgb(int t, int red, int green, int blue);
 void	my_pixel_put(t_mlx *mlx, int x, int y, int color);
 
+//UTILS
+char    **str_array_copy(char **src);
+int     str_array_get_size(char **src);
+void    free_str_array(char **tmp);
 #endif

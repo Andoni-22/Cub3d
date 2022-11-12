@@ -29,11 +29,13 @@ RUN			=  ./$(NAME) $(MAP)
 
 FRAME		= -framework OpenGL -framework AppKit
 
-FILES		= src/main \
+FILES		= test/testmap \
 			  src/utils/init_destroy \
 			  src/parser/parser \
 			  src/render/dda \
 			  src/utils/logger \
+			  src/utils/utils \
+			  src/utils/chr_array_utils \
 			  src/utils/parser_utils \
 			  src/utils/get_next_line \
 			  src/utils/get_next_line_utils \
