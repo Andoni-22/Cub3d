@@ -140,6 +140,10 @@ void	game_loop(t_application *appl);
 //PARSER
 int 	check_path_format(char *path);
 char	**load_map(t_application *appl, char *path);
+int     map_first_row_chrs(char *line);
+int     is_config_line(char *line);
+int     is_valid_map_line(char *line);
+int     line_contain_data(char *line);
 
 void	logger(char *msg);
 int		get_rgb(int t, int red, int green, int blue);

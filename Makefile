@@ -34,6 +34,7 @@ FILES		= src/main \
 			  src/parser/parser \
 			  src/render/dda \
 			  src/utils/logger \
+			  src/utils/parser_utils \
 			  src/utils/get_next_line \
 			  src/utils/get_next_line_utils \
 			  #src/hooks/hooks
