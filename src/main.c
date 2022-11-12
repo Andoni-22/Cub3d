@@ -60,7 +60,7 @@ static int	colission(t_map *map, t_player *pl, int sign)
 	return (!ret_val[0] * !ret_val[1] * !ret_val[2]);
 }
 
-static int	side_colission(t_map *map, t_player *pl, int sign)
+int	side_colission(t_map *map, t_player *pl, int sign)
 {
 	int	ret_val[3];
 
@@ -104,14 +104,30 @@ static int	key_hook(int keycode, t_application *appl)
 	else if (keycode == RIGHT)
 	{
 		//ret_val = side_colission(&appl->map, &appl->player, PLUS);
-		appl->player.pos_y += fabs(appl->player.dir_x) * ret_val / MOVEMENT_K;
-		appl->player.pos_x += fabs(appl->player.dir_y) * ret_val / MOVEMENT_K;
+		if (appl->cam.plane_y < 0)
+		{
+			appl->player.pos_y += appl->cam.plane_y;// * ret_val / MOVEMENT_K;
+			appl->player.pos_x += appl->cam.plane_x;// * ret_val / MOVEMENT_K;
+		}
+		else
+		{
+			appl->player.pos_x += appl->cam.plane_y;// * ret_val / MOVEMENT_K;
+			appl->player.pos_y += appl->cam.plane_x;// * ret_val / MOVEMENT_K;
+		}
 	}
 	else if (keycode == LEFT)
 	{
-		appl->player.pos_y -= fabs(appl->player.dir_x) * ret_val / MOVEMENT_K;
-		appl->player.pos_x -= fabs(appl->player.dir_y) * ret_val / MOVEMENT_K;
-		ret_val = side_colission(&appl->map, &appl->player, MINUS);
+		//ret_val = side_colission(&appl->map, &appl->player, MINUS);
+		if (appl->cam.plane_y < 0)
+		{
+			appl->player.pos_y -= appl->cam.plane_y;// * ret_val / MOVEMENT_K;
+			appl->player.pos_x -= appl->cam.plane_x;// * ret_val / MOVEMENT_K;
+		}
+		else
+		{
+			appl->player.pos_x -= appl->cam.plane_y;// * ret_val / MOVEMENT_K;
+			appl->player.pos_y -= appl->cam.plane_x;// * ret_val / MOVEMENT_K;
+		}
 	}
 	else if (keycode == ROTATE_RIGHT)
 	{
@@ -131,6 +147,7 @@ static int	key_hook(int keycode, t_application *appl)
 		appl->cam.plane_x = appl->cam.plane_x * cos(ROTATE) - appl->cam.plane_y * sin(ROTATE);
 		appl->cam.plane_y = oldPlaneX * sin(ROTATE) + appl->cam.plane_y * cos(ROTATE);
 	}
+	//fprintf(stderr, "KEYCODE: %d\n", keycode);
 	game_loop(appl);
 	return (1);
 }
