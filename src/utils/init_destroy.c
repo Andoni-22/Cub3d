@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_destroy.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/13 01:38:18 by lugonzal          #+#    #+#             */
+/*   Updated: 2022/11/13 01:47:51 by lugonzal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 #include "mlx.h"
 
@@ -10,7 +22,8 @@ static int	appl_mlx_init(t_mlx	*mlx)
 	mlx->mlx = mlx_init();
 	mlx->mlx_win = mlx_new_window(mlx->mlx, WIDTH, HEIGHT, "Cub3d");
 	mlx->img = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	mlx->img_addr = mlx_get_data_addr(mlx->img, &mlx->bit_per_pixel, &mlx->line_length, &mlx->endian);
+	mlx->img_addr = mlx_get_data_addr(mlx->img, &mlx->bit_per_pixel,
+			&mlx->line_length, &mlx->endian);
 	return (0);
 }
 
@@ -36,11 +49,10 @@ static char	*find_player(char *line, const char *set)
 	return (NULL);
 }
 
-static void	set_player_pos(t_player *player, t_camera *cam, int dir)
+static void	vertical_player_pos(t_player *player, t_camera *cam, int dir)
 {
 	if (dir == 'N')
 	{
-		fprintf(stderr, "NORTH");
 		player->dir_x = -1;
 		player->dir_y = 0;
 		cam->plane_x = 0;
@@ -48,15 +60,17 @@ static void	set_player_pos(t_player *player, t_camera *cam, int dir)
 	}
 	else if (dir == 'S')
 	{
-		fprintf(stderr, "SOUTH");
 		player->dir_x = 1;
 		player->dir_y = 0;
 		cam->plane_x = 0;
 		cam->plane_y = -0.66;
 	}
-	else if (dir == 'E')
+}
+
+static void	horizontal_player_pos(t_player *player, t_camera *cam, int dir)
+{
+	if (dir == 'E')
 	{
-		fprintf(stderr, "EAST");
 		player->dir_x = 0;
 		player->dir_y = 1;
 		cam->plane_x = 0.66;
@@ -64,12 +78,17 @@ static void	set_player_pos(t_player *player, t_camera *cam, int dir)
 	}
 	else if (dir == 'W')
 	{
-		fprintf(stderr, "EAST");
 		player->dir_x = 0;
 		player->dir_y = -1;
 		cam->plane_x = -0.66;
 		cam->plane_y = 0;
 	}
+}
+
+static void	set_player_pos(t_player *player, t_camera *cam, int dir)
+{
+	horizontal_player_pos(player, cam, dir);
+	vertical_player_pos(player, cam, dir);
 }
 
 static void	locate_player(t_player *player, t_map *map, t_camera *cam)
@@ -115,7 +134,8 @@ static int	process_image(t_tx *t, t_mlx *mlx, char *xpm_file)
 	raw_img = mlx_xpm_file_to_image(mlx->mlx, xpm_file, &t->width, &t->height);
 	if (!raw_img)
 		return (1);
-	t->img = mlx_get_data_addr(raw_img, &t->bit_per_pixel, &t->line_length, &t->endian);
+	t->img = mlx_get_data_addr(raw_img, &t->bit_per_pixel,
+			&t->line_length, &t->endian);
 	return (0);
 }
 

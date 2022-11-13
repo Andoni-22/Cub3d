@@ -1,5 +1,17 @@
-#ifndef HOOKS
-# define HOOKS
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hooks.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/13 01:32:52 by lugonzal          #+#    #+#             */
+/*   Updated: 2022/11/13 01:34:40 by lugonzal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef HOOKS_H
+# define HOOKS_H
 
 # define EXIT_MAC		53
 # define EXIT_LINUX		65307
@@ -13,7 +25,6 @@
 
 # define ZOOM_OUT		4
 # define ZOOM_IN		5
-
 
 /*
 # define ROTATE_LEFT 65361

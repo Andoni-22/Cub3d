@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dda.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/13 00:35:12 by lugonzal          #+#    #+#             */
+/*   Updated: 2022/11/13 01:31:36 by lugonzal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "mlx.h"
 #include "cub3d.h"
@@ -6,12 +17,29 @@
 #include <math.h>
 #include <stdio.h>
 
+static void	my_pixel_put(t_mlx *mlx, int x, int y, int color)
+{
+	char	*pix_position;
+	int		y_coord_offset;
+	int		x_coord_offset;
+
+	y_coord_offset = y * mlx->line_length;
+	x_coord_offset = x * (mlx->bit_per_pixel / BYTE);
+	pix_position = mlx->img_addr + y_coord_offset + x_coord_offset;
+	*(unsigned int *)pix_position = color;
+}
+
+static int	get_rgb(int t, int red, int green, int blue)
+{
+	return (t << 24 | red << 16 | green << 8 | blue);
+}
+
 static void	clear_image(t_mlx *mlx)
 {
 	int	x;
 	int	y;
 	int	color[2];
-	
+
 	color[0] = get_rgb(0, 51, 153, 255);
 	color[1] = get_rgb(0, 224, 224, 224);
 	y = -1;
@@ -28,8 +56,8 @@ static void	clear_image(t_mlx *mlx)
 
 static void	ray_coord(t_ray *ray, t_player *pl, t_camera *cam)
 {
-	ray->dir_x = pl->dir_x + cam->plane_x  * cam->coord_x;
-	ray->dir_y = pl->dir_y + cam->plane_y  * cam->coord_x;
+	ray->dir_x = pl->dir_x + cam->plane_x * cam->coord_x;
+	ray->dir_y = pl->dir_y + cam->plane_y * cam->coord_x;
 	ray->map_x = (int)ray->pos_x;
 	ray->map_y = (int)ray->pos_y;
 }
@@ -96,8 +124,6 @@ static void	hit_wall_side(t_ray *ray, t_map *map)
 		if (map->map[ray->map_x][ray->map_y] != FLOOR)
 			break ;
 	}
-	fprintf(stderr, "RAY_X: %lf\n", ray->dir_x);
-	fprintf(stderr, "RAY_Y: %lf\n", ray->dir_x);
 }
 
 static int	get_tx_color(t_tx t[4], int tx_y, int tx_x, int tx_type)
@@ -106,7 +132,6 @@ static int	get_tx_color(t_tx t[4], int tx_y, int tx_x, int tx_type)
 	int	len;
 
 	len = t[tx_type].line_length;
-
 	color[0] = t[tx_type].img[tx_y * len + tx_x * 4 + 0];
 	color[1] = t[tx_type].img[tx_y * len + tx_x * 4 + 1];
 	color[2] = t[tx_type].img[tx_y * len + tx_x * 4 + 2];
@@ -114,79 +139,91 @@ static int	get_tx_color(t_tx t[4], int tx_y, int tx_x, int tx_type)
 	return (get_rgb(color[3], color[2], color[1], color[0]));
 }
 
-static void	draw_wall_tx(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_tx *t)
+static int	set_tx(t_ray *ray)
 {
-	int			tx_type;
-	int			tx_x;
-	double		tx_pos;
-	int			tx_y;
-	int			start;
-	int			end;
-	double		wall_x;
-	double		step;
-	int			final_color;
+	int	tx_type;
 
-
-	tx_type = 0;//map->map[ray->map_x][ray->map_y] - 49;
-	start = -map->wall_height / 2 + HEIGHT / 2;
-	if (start < 0)
-		start = 0;
-	end = map->wall_height / 2 + HEIGHT / 2;
-	if (end >= HEIGHT)
-		end = HEIGHT - 1;
-
-	if (!ray->side)
-		wall_x = ray->pos_y + map->perp_wall_dist * ray->dir_y;
-	else
-		wall_x = ray->pos_x + map->perp_wall_dist * ray->dir_x;
-	wall_x -= floor(wall_x);
-
-	tx_x = (int)(wall_x * (double)t[tx_type].width);
-	if (!ray->side && ray->dir_x > 0)
-		tx_x = t[tx_type].width - tx_x - 1;
-	if (ray->side && ray->dir_y < 0)
-		tx_x = t[tx_type].width - tx_x - 1;
-
-	step = 1.0 * t[tx_type].width / map->wall_height;
-	tx_pos = (start - HEIGHT / 2 + map->wall_height / 2) * step;
-	while (start != end)
+	if (ray->dir_x >= 0)
 	{
-		tx_y = (int)tx_pos & (t[tx_type].width - 1);
-		tx_pos += step;
-		final_color = get_tx_color(t, tx_y, tx_x, tx_type);
-		if (ray->side)
-			final_color = (final_color >> 1) & 8355711;
-		my_pixel_put(mlx, x, start++, final_color);
+		tx_type = 3;
+		if (ray->side && ray->dir_y >= 0)
+			tx_type = 2;
+		else if (ray->side && ray->dir_y < 0)
+			tx_type = 1;
+	}
+	else
+	{
+		tx_type = 0;
+		if (ray->side && ray->dir_y >= 0)
+			tx_type = 2;
+		else if (ray->side && ray->dir_y < 0)
+			tx_type = 1;
+	}
+	return (tx_type);
+}
+
+static void	wall_start_end(t_wall_info *wall, t_ray *ray, t_map *map)
+{
+	wall->start = -map->wall_height / 2 + HEIGHT / 2;
+	if (wall->start < 0)
+		wall->start = 0;
+	wall->end = map->wall_height / 2 + HEIGHT / 2;
+	if (wall->end >= HEIGHT)
+		wall->end = HEIGHT - 1;
+	if (!ray->side)
+		wall->x_pos = ray->pos_y + map->perp_wall_dist * ray->dir_y;
+	else
+		wall->x_pos = ray->pos_x + map->perp_wall_dist * ray->dir_x;
+	wall->x_pos -= floor(wall->x_pos);
+}
+
+static void	draw_wall_tx(t_ray *ray, t_map *map, t_mlx *mlx, t_tx *t)
+{
+	t_wall_info	wall;
+
+	wall.type = set_tx(ray);
+	wall_start_end(&wall, ray, map);
+	wall.x = (int)(wall.x_pos * (double)t[wall.type].width);
+	if (!ray->side && ray->dir_x > 0)
+		wall.x = t[wall.type].width - wall.x - 1;
+	if (ray->side && ray->dir_y < 0)
+		wall.x = t[wall.type].width - wall.x - 1;
+	wall.step = 1.0 * t[wall.type].width / map->wall_height;
+	wall.pos = (wall.start - HEIGHT / 2 + map->wall_height / 2) * wall.step;
+	while (wall.start != wall.end)
+	{
+		wall.y = (int)wall.pos & (t[wall.type].width - 1);
+		wall.pos += wall.step;
+		wall.color = get_tx_color(t, wall.y, wall.x, wall.type);
+		wall.color = (wall.color >> 1) & 8355711;
+		my_pixel_put(mlx, mlx->x, wall.start++, wall.color);
 	}
 }
 
-static void	wall_hit_case(t_ray *ray, t_map *map, t_mlx *mlx, int x, t_tx *t)
+static void	wall_hit_case(t_ray *ray, t_map *map, t_mlx *mlx, t_tx *t)
 {
 	hit_wall_side(ray, map);
-
 	if (!ray->side)
 		map->perp_wall_dist = ray->side_dist_x - ray->delta_dist_x;
 	else
 		map->perp_wall_dist = ray->side_dist_y - ray->delta_dist_y;
 	map->wall_height = (int)HEIGHT / map->perp_wall_dist;
-
-	draw_wall_tx(ray, map, mlx, x, t);
+	draw_wall_tx(ray, map, mlx, t);
 }
 
-int	game_loop(t_application *appl)
+int	game_loop(t_application *a)
 {
-	int		x;
-
-	clear_image(&appl->mlx_win);
-	x = -1;
-	appl->ray.pos_x = appl->player.pos_x;
-	appl->ray.pos_y = appl->player.pos_y;
-	while (++x <= WIDTH)
+	clear_image(&a->mlx_win);
+	a->mlx_win.x = -1;
+	a->ray.pos_x = a->player.pos_x;
+	a->ray.pos_y = a->player.pos_y;
+	while (++a->mlx_win.x <= WIDTH)
 	{
-		appl->cam.coord_x = 2 * x / (double)WIDTH - 1;
-		set_ray(&appl->ray, &appl->player, &appl->cam);
-		wall_hit_case(&appl->ray, &appl->map, &appl->mlx_win, x, appl->tx);
+		a->cam.coord_x = 2 * a->mlx_win.x / (double)WIDTH - 1;
+		set_ray(&a->ray, &a->player, &a->cam);
+		wall_hit_case(&a->ray, &a->map, &a->mlx_win, a->tx);
 	}
-	mlx_put_image_to_window(appl->mlx_win.mlx, appl->mlx_win.mlx_win, appl->mlx_win.img, 0, 0);
+	mlx_put_image_to_window(a->mlx_win.mlx, a->mlx_win.mlx_win,
+		a->mlx_win.img, 0, 0);
 	return (1);
 }
