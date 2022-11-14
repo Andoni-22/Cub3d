@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/13 01:37:19 by lugonzal          #+#    #+#             */
+/*   Updated: 2022/11/13 01:37:59 by lugonzal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 #include <unistd.h>
@@ -26,7 +38,7 @@ static size_t	get_map_size(char *path)
 	return (map_sz);
 }
 
-char **load_map_file(char *path, size_t	sz)
+char	**load_map_file(char *path, size_t	sz)
 {
 	char	**map;
 	char	*line;
