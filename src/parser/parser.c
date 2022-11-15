@@ -108,6 +108,29 @@ static int get_map_type(char **raw)
     return (255);
 }
 
+static char **process_map(char **raw)
+{
+    char    **tmp;
+    int     size;
+    int     i;
+
+    size = str_array_get_size(raw);
+    if (size == 0)
+        return (NULL);
+    tmp = malloc(sizeof(char*) * size);
+    if (!tmp)
+        return (NULL);
+    i = 0;
+    while (raw[i])
+    {
+        //TODO la logica del mapa tendria que ir aqui, en caso
+        //TODO de que sea correcta, copiaremos la linea
+        tmp[i] = ft_strdup(raw[i]);
+        i++;
+    }
+    return (tmp);
+}
+
 /**
  * First we are going to check if it is a simple map
  * or a complex one. If the first row with data is formed
@@ -119,14 +142,15 @@ static int get_map_type(char **raw)
  */
 static char **process_raw_data(t_texture *texture, char **raw)
 {
-    int map_type;
+    int     map_type;
+    char    **map;
 
     map_type = get_map_type(raw);
     if (map_type == 0)
     {
-        //MAPA DE TIPO SIMPLE
+        map = process_map(raw);
         printf("Mapa de tipo simple\n");
-        return (NULL);
+        return (map);
     }
     else if (map_type == 1)
     {
@@ -165,11 +189,12 @@ char    **load_map(t_application *appl, char *path)
     free_str_array(tmp);
     tmp = ft_calloc(sizeof(char *), sz + 1);
     while (tmp_tmp[++i])
-        tmp[i] = ft_strtrim(tmp_tmp[i], "1/n");
+        tmp[i] = chr_cut_back(tmp_tmp[i], 10);
     map = process_raw_data(&appl->texture, tmp);
+    free_str_array(tmp);
     if (!map)
         return (NULL);
-	return (tmp);
+	return (map);
 }
 
 /**

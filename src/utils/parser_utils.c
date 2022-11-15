@@ -22,7 +22,7 @@ int map_first_row_chrs(char *line)
             cont++;
         i++;
     }
-    if (cont != (i - 1))
+    if (cont != (i))
         return (-1);
     return (0);
 }
@@ -106,7 +106,7 @@ int is_valid_map_line(char *line)
             cont++;
         }
     }
-    if (cont != (i - 1))
+    if (cont != (i))
         return (-1);
     if (dir_cont > 1)
         return (-1);

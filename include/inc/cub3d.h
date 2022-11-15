@@ -154,4 +154,6 @@ void	my_pixel_put(t_mlx *mlx, int x, int y, int color);
 char    **str_array_copy(char **src);
 int     str_array_get_size(char **src);
 void    free_str_array(char **tmp);
+char	*chr_cut_back(char *dir, char c);
+
 #endif

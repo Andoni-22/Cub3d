@@ -35,6 +35,7 @@ FILES		= test/testmap \
 			  src/render/dda \
 			  src/utils/logger \
 			  src/utils/utils \
+			  src/utils/chr_utils \
 			  src/utils/chr_array_utils \
 			  src/utils/parser_utils \
 			  src/utils/get_next_line \
