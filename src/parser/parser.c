@@ -92,7 +92,7 @@ static int get_map_type(char **raw)
                 config_start = i;
             if ((config_start >= 0) && (is_config_line(raw[i]) == 0))
                 config_end = i;
-            if (config_start > map_start)
+            if ((map_start >= 0) && config_start > map_start)
                 return (-1);
             if ((map_start >= 0) && (is_valid_map_line(raw[i]) < 0))
                 return (-1);
@@ -155,6 +155,7 @@ static char **process_raw_data(t_texture *texture, char **raw)
     else if (map_type == 1)
     {
         printf("Mapa de tipo complejo\n");
+
         return (NULL);
         //MAPA COMPLEJO
     }
@@ -206,7 +207,7 @@ char    **load_map(t_application *appl, char *path)
  * @param path la ruta del mapa
  * @return -1 if any error, 0 if it is correct
  */
-int  check_path_format(char *path)
+int check_path_format(char *path, char *term)
 {
     char    **tmp;
     int     size;
@@ -221,7 +222,7 @@ int  check_path_format(char *path)
         fprintf(stderr, "tmp[%d] -> %s\n", i, tmp[i]);
     if (size == 1)
         return (-1);
-    if (ft_strncmp(FILE_FORMAT, tmp[size - 1], ft_strlen(FILE_FORMAT) - 1) != 0)
+    if (ft_strncmp(term, tmp[size - 1], ft_strlen(term) - 1) != 0)
         return (-1);
     fd = open(path, O_RDONLY);
     if (fd <= 0)

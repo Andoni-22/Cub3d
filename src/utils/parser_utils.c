@@ -62,16 +62,16 @@ static int  is_config_param(char *str)
 int is_config_line(char *line)
 {
     char    **tmp;
-    int     i;
     int     ret;
 
     tmp = ft_split(line, ' ');
     ret = 0;
-    if (!tmp)
-        ret = -1;
+    if (!tmp[1])
+        return (-1);
     if (is_config_param(tmp[0]) < 0)
         ret = -1;
-    i = -1;
+    if (check_path_format(tmp[1], FILE_FORMAT_XPM) < 0 )
+        ret = -1;
     free_str_array(tmp);
     return (ret);
 }

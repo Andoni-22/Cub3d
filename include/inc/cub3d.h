@@ -23,19 +23,20 @@
 # define WALL			'1'
 # define FLOOR			'0'
 
-# define BUFFER_SIZE 	1000
-# define MOVEMENT_K		2
-# define ROTATE			0.125f
+# define BUFFER_SIZE 	    1000
+# define MOVEMENT_K		    2
+# define ROTATE			    0.125f
 
-# define X				0
-# define Y				1
-# define PLUS			1
-# define MINUS			-1
-# define TEXTURE_WIDTH	64
-# define TEXTURE_HEIGHT	64
-# define TEXTURE		4096
+# define X				    0
+# define Y				    1
+# define PLUS			    1
+# define MINUS			    -1
+# define TEXTURE_WIDTH	    64
+# define TEXTURE_HEIGHT	    64
+# define TEXTURE		    4096
 
-# define FILE_FORMAT	"cub"
+# define FILE_FORMAT_CUB	"cub"
+# define FILE_FORMAT_XPM    "xpm"
 
 typedef struct s_wall_face
 {
@@ -138,7 +139,7 @@ void	appl_mlx_destroy(t_mlx *mlx);
 void	game_loop(t_application *appl);
 
 //PARSER
-int 	check_path_format(char *path);
+int check_path_format(char *path, char *term);
 char	**load_map(t_application *appl, char *path);
 int     map_first_row_chrs(char *line);
 int     is_config_line(char *line);

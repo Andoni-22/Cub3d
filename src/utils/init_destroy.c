@@ -37,7 +37,7 @@ static int	appl_mlx_init(t_mlx	*mlx)
  */
 int	appl_map_init(t_application *appl, char *path)
 {
-    if (check_path_format(path) < 0)
+    if (check_path_format(path, FILE_FORMAT_CUB) < 0)
         return -1;
     appl->map.map = load_map(appl, path);
 	if (!appl->map.map)

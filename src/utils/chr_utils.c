@@ -12,19 +12,17 @@ char	*chr_cut_back(char *str, char c)
     int		i;
     char	*new_str;
 
-    size = 0;
-    while (str[size])
-        size++;
+    size = ft_strlen(str);
     if (str[size - 1] != c)
         return (NULL);
     new_str = (char *) malloc(sizeof(char) * (size));
     i = 0;
-    while (i < size - 1)
+    while (i != size - 1)
     {
         new_str[i] = str[i];
         i++;
     }
-    new_str[i -1] = '\0';
+    new_str[i] = '\0';
     return (new_str);
 }
 
