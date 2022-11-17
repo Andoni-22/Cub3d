@@ -35,19 +35,76 @@ static int  is_config_param(char *str)
     if (size == 1 || size == 2)
     {
         if (ft_strncmp(str, "NO", 2) == 0)
-            return (0);
+            return (1);
         if (ft_strncmp(str, "SO", 2) == 0)
-            return (0);
+            return (1);
         if (ft_strncmp(str, "EA", 2) == 0)
-            return (0);
+            return (1);
         if (ft_strncmp(str, "WE", 2) == 0)
-            return (0);
+            return (1);
         if (ft_strncmp(str, "F", 1) == 0)
-            return (0);
+            return (2);
         if (ft_strncmp(str, "C", 1) == 0)
-            return (0);
+            return (2);
     }
     return (-1);
+}
+
+static int  posible_color_code(char *str)
+{
+    int color;
+    int i;
+
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] >= '0' && str[i] <= '9')
+            return (-1);
+        i++;
+    }
+    color = ft_atoi(str);
+    if (color == 0 && str[0] != '0')
+        return (-1);
+    if (color < 0 || color > 255)
+        return (-1);
+    return (0);
+}
+
+/**
+ * comprobamos si el str que recibimos cumple
+ * con los formatos de rgb
+ * @param str
+ * @return
+ */
+static int check_color_format(char *str)
+{
+    char    **tmp;
+    int     i;
+    int     ret;
+
+    tmp = ft_split(str, ',');
+    if (!tmp)
+        return (-1);
+    if (str_array_get_size(tmp) != 3)
+    {
+        free_str_array(tmp);
+        return (-1);
+    }
+    i = 0;
+    ret = 0;
+    while (tmp[i] != NULL)
+    {
+        if (posible_color_code(tmp[i]) < 0)
+        {
+            ret = -1;
+            break;
+        }
+        i++;
+    }
+    free_str_array(tmp);
+    if (ret)
+        return -1;
+    return (0);
 }
 
 //TODO
@@ -62,15 +119,19 @@ static int  is_config_param(char *str)
 int is_config_line(char *line)
 {
     char    **tmp;
+    int     config_type;
     int     ret;
 
     tmp = ft_split(line, ' ');
     ret = 0;
     if (!tmp[1])
         return (-1);
-    if (is_config_param(tmp[0]) < 0)
+    config_type = is_config_param(tmp[0]);
+    if (config_type < 0)
         ret = -1;
-    if (check_path_format(tmp[1], FILE_FORMAT_XPM) < 0 )
+    if (config_type == 1 && check_path_format(tmp[1], FILE_FORMAT_XPM) < 0)
+        ret = -1;
+    if (config_type == 2 && check_color_format(tmp[1]) < 0)
         ret = -1;
     free_str_array(tmp);
     return (ret);
