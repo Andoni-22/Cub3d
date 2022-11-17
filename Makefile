@@ -6,7 +6,7 @@
 #    By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/09 20:06:14 by lugonzal          #+#    #+#              #
-#    Updated: 2022/11/09 21:54:40 by lugonzal         ###   ########.fr        #
+#    Updated: 2022/11/12 18:55:41 by lugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SNTZ		= -fsanitize=address
 
 INC 		= -I ./include -I ./include/inc
 LIB			= -L ./include/lib -lft_mac -lmlx
-LIB_LINUX 	= -lmlx_Linux -lft_linux -lgnl -lXext -lX11 -lm -lbsd
+LIB_LINUX 	= -L ./include/lib -lmlx_Linux -lft_linux -lgnl -lXext -lX11 -lm -lbsd
 
 RM			= rm -rf
 

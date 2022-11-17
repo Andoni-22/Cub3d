@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lugonzal <lugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/19 20:51:26 by lugonzal          #+#    #+#             */
-/*Updated: 2021/07/19 20:53:00 by lugonzal               ###   ########.fr    */
+/*   Created: 2022/11/13 01:36:25 by lugonzal          #+#    #+#             */
+/*   Updated: 2022/11/13 01:36:34 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>

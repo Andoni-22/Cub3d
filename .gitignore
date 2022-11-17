@@ -5,5 +5,4 @@ test
 *.log
 log
 *.o
-.idea/*
-.idea
+.idea/

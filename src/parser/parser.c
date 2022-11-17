@@ -140,7 +140,7 @@ static char **process_map(char **raw)
  * @param raw map raw data
  * @return
  */
-static char **process_raw_data(t_texture *texture, char **raw)
+static char **process_raw_data(t_tx *tx, char **raw)
 {
     int     map_type;
     char    **map;
@@ -161,7 +161,7 @@ static char **process_raw_data(t_texture *texture, char **raw)
     }
     else if (map_type == -1)
         return (NULL);
-    texture = NULL;
+    tx = NULL;
     return (NULL);
 }
 
@@ -191,7 +191,7 @@ char    **load_map(t_application *appl, char *path)
     tmp = ft_calloc(sizeof(char *), sz + 1);
     while (tmp_tmp[++i])
         tmp[i] = chr_cut_back(tmp_tmp[i], 10);
-    map = process_raw_data(&appl->texture, tmp);
+    map = process_raw_data(&appl->tx[0], tmp);
     free_str_array(tmp);
     if (!map)
         return (NULL);
