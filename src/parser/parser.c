@@ -5,27 +5,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static size_t	get_map_size(char *path)
-{
-	size_t	map_sz;
-	char	*line;
-	int		fd;
-
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-		return (0);
-	map_sz = 0;
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break ;
-		free(line);
-		map_sz++;
-	}
-	close(fd);
-	return (map_sz);
-}
 
 /**
  * Abrimos el fichero y leemos todo la informacion
@@ -55,79 +34,42 @@ char **load_raw_file_data(char *path, size_t sz)
 	return (map);
 }
 
-/**
- * En esta funcion queremos saber si es solo simple
- * o si es complejo, para eso usaremos map_start y
- * config_start, ambas las inicialiceremos a -1
- * si al final de la funcion map_start es 0 y config_rest
- * -1, quiere decir que tenemos un mapa simplem, en caso de que
- * ambos tengan datos, tendremos que comprobar si config_start es mallor a map_start
- * y que no volavmos a tener lineas de config una vez encontrado el map start
- *
- * @param raw
- * @return
- */
-static int get_map_type(char **raw)
-{
-    int i;
-    int map_start;
-    int map_end;
-    int config_start;
-    int config_end;
-
-    i = 0;
-    map_start = -1;
-    map_end = -1;
-    config_start = -1;
-    config_end = -1;
-    while (raw[i])
-    {
-        if (line_contain_data(raw[i]) == 0)
-        {
-            if ((map_start == -1) && (map_first_row_chrs(raw[i]) == 0))
-                map_start = i;
-            if ((map_start >= 0) && (map_first_row_chrs(raw[i]) == 0))
-                map_end = i;
-            if ((config_start == -1) && (is_config_line(raw[i]) == 0))
-                config_start = i;
-            if ((config_start >= 0) && (is_config_line(raw[i]) == 0))
-                config_end = i;
-            if ((map_start >= 0) && config_start > map_start)
-                return (-1);
-            if ((map_start >= 0) && (is_valid_map_line(raw[i]) < 0))
-                return (-1);
-        }
-        i++;
-    }
-    if (config_end > map_end)
-        return (-1);
-    if (config_start == -1 && map_start >= 0)
-        return (0);
-    if (config_end < map_start)
-        return (1);
-    return (255);
-}
-
-static char **process_map(char **raw)
+static char **process_map(char **raw, t_player *player)
 {
     char    **tmp;
     int     size;
-    int     i;
+    int     line;
+    int     column;
+    int     pos_found;
 
+    pos_found = 0;
     size = str_array_get_size(raw);
     if (size == 0)
         return (NULL);
     tmp = malloc(sizeof(char*) * size);
     if (!tmp)
         return (NULL);
-    i = 0;
-    while (raw[i])
+    line = 0;
+    while (raw[line])
     {
-        //TODO la logica del mapa tendria que ir aqui, en caso
-        //TODO de que sea correcta, copiaremos la linea
-        tmp[i] = ft_strdup(raw[i]);
-        i++;
+        column = 0;
+        while (raw[line][column] != '\0')
+        {
+            if (is_player_position(raw[line][column]) == 0)
+            {
+                if (process_player(pos_found, line, column, raw) < 0)
+                    return (NULL);
+                player->pos_y = line;
+                player->dir_x = column;
+                pos_found++;
+            }
+            column++;
+        }
+        tmp[line] = ft_strdup(raw[line]);
+        line++;
     }
+    if (pos_found > 1)
+        return (NULL);
     return (tmp);
 }
 
@@ -140,7 +82,7 @@ static char **process_map(char **raw)
  * @param raw map raw data
  * @return
  */
-static char **process_raw_data(t_tx *tx, char **raw)
+static char **process_raw_data(t_application *appl, char **raw)
 {
     int     map_type;
     char    **map;
@@ -148,7 +90,7 @@ static char **process_raw_data(t_tx *tx, char **raw)
     map_type = get_map_type(raw);
     if (map_type == 0)
     {
-        map = process_map(raw);
+        map = process_map(raw, &(appl->player));
         printf("Mapa de tipo simple\n");
         return (map);
     }
@@ -161,7 +103,7 @@ static char **process_raw_data(t_tx *tx, char **raw)
     }
     else if (map_type == -1)
         return (NULL);
-    tx = NULL;
+    appl = NULL;
     return (NULL);
 }
 
@@ -191,11 +133,11 @@ char    **load_map(t_application *appl, char *path)
     tmp = ft_calloc(sizeof(char *), sz + 1);
     while (tmp_tmp[++i])
         tmp[i] = chr_cut_back(tmp_tmp[i], 10);
-    map = process_raw_data(&appl->tx[0], tmp);
+    map = process_raw_data(appl, tmp);
     free_str_array(tmp);
     if (!map)
         return (NULL);
-	return (map);
+    return (map);
 }
 
 /**

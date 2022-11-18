@@ -31,7 +31,9 @@ FRAME		= -framework OpenGL -framework AppKit
 
 FILES		= test/testmap \
 			  src/utils/init_destroy \
+			  src/parser/map \
 			  src/parser/parser \
+			  src/parser/player \
 			  src/render/dda \
 			  src/utils/logger \
 			  src/utils/utils \

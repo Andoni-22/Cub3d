@@ -89,6 +89,7 @@ typedef struct s_player
 	double	dir_x;
 	double	dir_y;
 	double	old_dir_x;
+    char    **dir;
 
 }	t_player;
 
@@ -156,6 +157,12 @@ int     is_config_line(char *line);
 int     is_valid_map_line(char *line);
 int     line_contain_data(char *line);
 int 	appl_map_init(t_application *appl, char *path);
+//PARSE_PLAYER
+int     is_player_position(char c);
+int     process_player(int pos_found, int line, int colum, char **raw);
+//PARSE_MAP
+size_t	get_map_size(char *path);
+int     get_map_type(char **raw);
 
 void	logger(char *msg);
 
