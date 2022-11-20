@@ -1,4 +1,6 @@
 #include "cub3d.h"
+#include "mlx.h"
+
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
@@ -32,45 +34,6 @@ char **load_raw_file_data(char *path, size_t sz)
 	return (map);
 }
 
-static char **process_map(char **raw, t_player *player)
-{
-    char    **tmp;
-    int     size;
-    int     line;
-    int     column;
-    int     pos_found;
-
-    pos_found = 0;
-    size = str_array_get_size(raw);
-    if (size == 0)
-        return (NULL);
-    tmp = malloc(sizeof(char*) * size);
-    if (!tmp)
-        return (NULL);
-    line = 0;
-    while (raw[line])
-    {
-        column = 0;
-        while (raw[line][column] != '\0')
-        {
-            if (is_player_position(raw[line][column]) == 0)
-            {
-                if (process_player(pos_found, line, column, raw) < 0)
-                    return (NULL);
-                player->pos_y = line;
-                player->dir_x = column;
-                pos_found++;
-            }
-            column++;
-        }
-        tmp[line] = ft_strdup(raw[line]);
-        line++;
-    }
-    if (pos_found > 1)
-        return (NULL);
-    return (tmp);
-}
-
 static void set_texture_keys(t_tx tx[4], t_rgb rgb[2])
 {
     ft_memcpy(tx[0].key, NORTH, 2);
@@ -99,6 +62,7 @@ static int  set_rgb(t_rgb rgb[2], char **rgb_tab, int pos)
         }
         rgb[pos].trgb[i + 1] = num;
     }
+    free_str_array(tab);
     return (0);
 }
 
@@ -182,14 +146,12 @@ static char **get_map(char **raw, int start, size_t sz[2])
 {
     char    **map;
     int     i;
-    int     end;
 
-    end = sz[0] - start - 1;
     map = ft_calloc(sizeof(char *), (sz[0] - start + 3));
     map[0] = ft_calloc(sizeof(char), (sz[1] + 1));
     ft_memset(map[0], SP, sz[1]);
-    map[end] = ft_calloc(sizeof(char), (sz[1] + 1));
-    ft_memset(map[end], SP, sz[1]);
+    map[sz[0] - start + 1] = ft_calloc(sizeof(char), (sz[1] + 1));
+    ft_memset(map[sz[0] - start + 1], SP, sz[1]);
     i = 0;
     while (raw[start])
     {
@@ -197,12 +159,12 @@ static char **get_map(char **raw, int start, size_t sz[2])
         ft_memset(map[i + 1], SP, sz[1]);
         ft_memcpy(map[i + 1], raw[start], ft_strlen(raw[start]));
         free(raw[start]);
-        raw[start] = NULL;
-        start++;
-        if (is_open(map, i))
-            return (NULL);
-        i++;
+        raw[start++] = NULL;
+        if (is_open(map, i++))
+            return (free_str_array(map));
     }
+    if (is_open(map, i))
+        return (free_str_array(map));
     return (map);
 }
 
@@ -211,6 +173,15 @@ static char **complex_map(t_application *appl, char **raw_tab, size_t sz[2])
     int     pos;
 
     pos = set_textures(appl->tx, &appl->mlx_win, appl->rgb, raw_tab);
+    if (pos == -1)
+    {
+        while (++pos < 4)
+        {
+            if (appl->tx[pos].img)
+                mlx_destroy_image(appl->mlx_win.mlx, appl->tx[pos].img);
+        }
+        return (NULL);
+    }
     while (raw_tab[pos] &&
         ft_strchr(raw_tab[pos], '1') == 0)
         pos++;
@@ -234,24 +205,10 @@ static char **process_raw_data(t_application *appl, char **raw, size_t sz[2])
     char    **map;
 
     map_type = get_map_type(raw);
-    if (map_type == 0)
-    {
-        map = process_map(raw, &(appl->player));
-        printf("Mapa de tipo simple\n");
-        return (map);
-    }
-    else if (map_type == 1)
-    {
-        complex_map(appl, raw, sz);
-        printf("Mapa de tipo complejo\n");
-
+    if (map_type == 0 || map_type == -1)
         return (NULL);
-        //MAPA COMPLEJO
-    }
-    else if (map_type == -1)
-        return (NULL);
-    appl = NULL;
-    return (NULL);
+    map = complex_map(appl, raw, sz);
+    return (map);
 }
 
 /**
@@ -305,7 +262,7 @@ int check_path_format(char *path, char *term)
         fprintf(stderr, "tmp[%d] -> %s\n", i, tmp[i]);
     fd = open(path, O_RDONLY);
     close(fd);
-    //GRACIASS NORMINETTE
+
     if (size <= 1 ||
         ft_strncmp(term, tmp[size - 1], ft_strlen(term) + 1) != 0 ||
         fd <= 0)
@@ -313,6 +270,6 @@ int check_path_format(char *path, char *term)
         free_str_array(tmp);
         return (-1);
     }
-    //free_str_array
+    free_str_array(tmp);
     return (0);
 }

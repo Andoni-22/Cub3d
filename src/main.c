@@ -24,6 +24,7 @@ int	main(int argc, char **argv)
 	if (argc != 2 || application_init(&appl, argv[1]) < 0)
     {
         perror("Error");
+		application_destory(&appl);
         return (-1);
     }
 	mlx_win = &appl.mlx_win;

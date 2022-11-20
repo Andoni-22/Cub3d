@@ -1,10 +1,10 @@
+NO ./xpm_images/AnyConv.com__eagle.xpm
+SO ./xpm_images/AnyConv.com__redbrick.xpm
 WE ./xpm_images/AnyConv.com__colorstone.xpm
 EA ./xpm_images/AnyConv.com__greystone.xpm
 
 F 220,100,0
-NO ./xpm_images/AnyConv.com__eagle.xpm
 C 225,30,0
-SO ./xpm_images/AnyConv.com__redbrick.xpm
 
          111111111111111111111111
          100000100000000000000001
@@ -23,6 +23,6 @@ SO ./xpm_images/AnyConv.com__redbrick.xpm
   100000101001000000000001
   100000101001000001000001
   100000101001000001000001
-  1000000000000000001000001
+  100000000000000001000001
   100000000000000000000001
-  11111111111111111111111
+  110111111111111111111111

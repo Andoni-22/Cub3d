@@ -14,6 +14,8 @@
 #include "mlx.h"
 #include <stdlib.h>
 
+#include <stdio.h>
+
 static char	*find_player(char *line, const char *set)
 {
 	char	*player;
@@ -96,19 +98,17 @@ void	locate_player(t_player *player, t_map *map, t_camera *cam)
 
 int	process_image(t_tx *t, t_mlx *mlx, char *xpm_file)
 {
-	void	*raw_img;
-
-	raw_img = mlx_xpm_file_to_image(mlx->mlx, xpm_file, &t->width, &t->height);
-	if (!raw_img)
-		return (1);
-	t->img = mlx_get_data_addr(raw_img, &t->bit_per_pixel,
-			&t->line_length, &t->endian);
+	t->img = mlx_xpm_file_to_image(mlx->mlx, xpm_file, &t->width, &t->height);
 	if (!t->img)
+		return (1);
+	t->img_addr = mlx_get_data_addr(t->img, &t->bit_per_pixel,
+			&t->line_length, &t->endian);
+	if (!t->img_addr)
 		return (1);
 	return (0);
 }
 
-static void	appl_map_destroy(t_map *map)
+void	appl_map_destroy(t_map *map)
 {
 	size_t	i;
 
@@ -121,10 +121,11 @@ static void	appl_map_destroy(t_map *map)
 void	application_destory(t_application *appl)
 {
 	appl_mlx_destroy(&appl->mlx_win);
-	appl_map_destroy(&appl->map);
+	//appl_map_destroy(&appl->map);
 }
 
 void	appl_mlx_destroy(t_mlx	*mlx)
 {
-	(void)mlx;
+	mlx_destroy_image(mlx->mlx, mlx->img);
+	mlx_destroy_window(mlx->mlx, mlx->mlx_win);
 }

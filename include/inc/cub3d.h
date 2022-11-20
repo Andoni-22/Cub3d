@@ -53,7 +53,8 @@
 typedef struct s_tx
 {
 	char	key[3];
-	char	*img;
+	void	*img;
+	char	*img_addr;
 	int		xorcolor;
 	int		ycolor;
 	int		xycolor;
@@ -184,7 +185,7 @@ void	logger(char *msg);
 //UTILS
 char    **str_array_copy(char **src);
 int     str_array_get_size(char **src);
-void    free_str_array(char **tmp);
+char    **free_str_array(char **tmp);
 char	*chr_cut_back(char *dir, char c);
 
 //PIXEL UTILS//
