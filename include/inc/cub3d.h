@@ -6,7 +6,7 @@
 /*   By: andoni <andoni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 16:42:02 by andoni            #+#    #+#             */
-/*   Updated: 2022/11/13 01:32:23 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/20 16:19:10 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "get_next_line.h"
 
 # define BYTE 			8
+# define COMA			','
 # define PLAYER 		'P'
 # define WIDTH			1080
 # define HEIGHT			960
@@ -35,9 +36,23 @@
 # define MINUS_REV		2
 
 # define TEXTURE		4096
+# define SP				32
+# define NL				10
+
+# define F			0
+# define C		1
+
+# define FILE_FORMAT_CUB	"cub"
+# define FILE_FORMAT_XPM    "xpm"
+
+# define NORTH			"NO"
+# define SOUTH			"SO"
+# define WEST			"WE"
+# define EAST			"EA"
 
 typedef struct s_tx
 {
+	char	key[3];
 	char	*img;
 	int		xorcolor;
 	int		ycolor;
@@ -67,7 +82,6 @@ typedef struct s_map
 	int		side;
 	int		wall_height;
 	double	perp_wall_dist;
-
 }	t_map;
 
 /*
@@ -86,7 +100,6 @@ typedef struct s_player
 	double	dir_x;
 	double	dir_y;
 	double	old_dir_x;
-
 }	t_player;
 
 typedef struct s_ray
@@ -112,8 +125,6 @@ typedef struct s_camera
 {
 	double	plane_x;
 	double	plane_y;
-	double	past;
-	double	now;
 	double	coord_x;
 	double	old_plane_x;
 }	t_camera;
@@ -131,21 +142,77 @@ typedef struct s_wall_info
 	int		color;
 }	t_wall_info;
 
-typedef struct s_application {
+typedef	struct s_rgb
+{
+	char	key[2];
+	int		trgb[4];
+}	t_rgb;
+
+typedef struct s_application
+{
 	t_map		map;
 	t_mlx		mlx_win;
 	t_player	player;
 	t_camera	cam;
 	t_ray		ray;
 	t_tx		tx[4];
+	t_rgb		rgb[2];
 }	t_application;
 
 int		application_init(t_application *appl, char *path);
 void	application_destory(t_application *appl);
 void	appl_mlx_destroy(t_mlx *mlx);
 int		game_loop(t_application *appl);
-char	**load_map(char *path);
+
+//PARSER
+int check_path_format(char *path, char *term);
+char	**load_map(t_application *appl, char *path);
+int     map_first_row_chrs(char *line);
+int     is_config_line(char *line);
+int     is_valid_map_line(char *line);
+int     line_contain_data(char *line);
+//int 	appl_map_init(t_application *appl, char *path);
+//PARSE_PLAYER
+int     is_player_position(char c);
+int     process_player(int pos_found, int line, int colum, char **raw);
+//PARSE_MAP
+void	get_map_size(char *path, size_t	sz[2]);
+int     get_map_type(char **raw);
 
 void	logger(char *msg);
+
+//UTILS
+char    **str_array_copy(char **src);
+int     str_array_get_size(char **src);
+void    free_str_array(char **tmp);
+char	*chr_cut_back(char *dir, char c);
+
+//PIXEL UTILS//
+void	clear_image(t_mlx *mlx);
+
+//RAY//
+void	set_ray(t_ray *ray, t_player *pl, t_camera *cam);
+
+//WALL//
+void	wall_hit_case(t_ray *ray, t_map *map, t_mlx *mlx, t_tx *t);
+
+//TEXTURE//
+int	set_tx(t_ray *ray);
+int	get_tx_color(t_tx t[4], int tx_y, int tx_x, int tx_type);
+
+//PIXEL UTILS
+void	set_pixel_color(t_mlx *mlx, int x, int y, int color);
+int	get_rgb(int t, int red, int green, int blue);
+
+//HOOKS
+int	key_hook(int keycode, t_application *appl);
+
+//INIT
+int	application_init(t_application *appl, char *path);
+int	process_image(t_tx *t, t_mlx *mlx, char *xpm_file);
+void	locate_player(t_player *player, t_map *map, t_camera *cam);
+
+//SHOW MAP
+void	show_map(char **map);
 
 #endif
