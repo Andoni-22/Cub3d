@@ -1,5 +1,4 @@
 #include <math.h>
-
 #include "cub3d.h"
 
 static void	ray_coord(t_ray *ray, t_player *pl, t_camera *cam)

@@ -1,7 +1,3 @@
-//
-// Created by Andoni Fiat arriola on 11/18/22.
-//
-
 #include "cub3d.h"
 
 int is_player_position(char c)

@@ -1,10 +1,8 @@
 #include "cub3d.h"
-
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
-
 
 /**
  * Abrimos el fichero y leemos todo la informacion
@@ -28,12 +26,6 @@ char **load_raw_file_data(char *path, size_t sz)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-        //GRACIAS NORMINETTE
-        if (line[0] == NL)
-        {
-            free(line);
-            continue ;
-        }
 		map[sz++] = line;
 	}
 	close(fd);
@@ -148,6 +140,8 @@ static int set_textures(t_tx tx[4], t_mlx *mlx, t_rgb rgb[2], char **raw_tab)
     pos = -1;
     while (raw_tab[++pos] && config_cnt < 6)
     {
+        if (raw_tab[pos][0] == '\0')
+            continue;
         tx_tab = ft_split(raw_tab[pos], SP);
         if (!tx_tab || !tx_tab[0] || !tx_tab[1])
         {
@@ -156,7 +150,8 @@ static int set_textures(t_tx tx[4], t_mlx *mlx, t_rgb rgb[2], char **raw_tab)
         }
         if (query_texture(mlx, tx, rgb, tx_tab) == -1)
             return (-1);
-        config_cnt++;
+        else
+            config_cnt++;
         free_str_array(tx_tab);
     }
     if (config_cnt != 6)
@@ -212,6 +207,11 @@ static char **complex_map(t_application *appl, char **raw_tab, size_t sz[2])
     char    **map;
 
     pos = set_textures(appl->tx, &appl->mlx_win, appl->rgb, raw_tab);
+    while (raw_tab[pos] &&
+        ft_strchr(raw_tab[pos], '1') == 0)
+        pos++;
+    if (!raw_tab[pos])
+        return (NULL);
     map = get_map(raw_tab, pos, sz);
     show_map(map);
     fprintf(stderr, "POS: %d\n", pos);

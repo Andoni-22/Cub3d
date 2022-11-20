@@ -1,5 +1,4 @@
 #include <math.h>
-
 #include "cub3d.h"
 
 static void	hit_wall_side(t_ray *ray, t_map *map)

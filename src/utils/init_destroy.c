@@ -12,10 +12,7 @@
 
 #include "cub3d.h"
 #include "mlx.h"
-
-#include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 static char	*find_player(char *line, const char *set)
 {

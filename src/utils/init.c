@@ -37,12 +37,6 @@ static int	appl_map_init(t_application *appl, char *path)
 	return (0);
 }
 
-static int	appl_player_init(t_player *player, t_map *map, t_camera *cam)
-{
-	locate_player(player, map, cam);
-	return (0);
-}
-
 int	application_init(t_application *appl, char *path)
 {
 	ft_memset(appl, 0, sizeof(t_application));
@@ -50,10 +44,7 @@ int	application_init(t_application *appl, char *path)
 		return (-1);
 	if (appl_map_init(appl, path) < 0)
 		return (-1);
-	if (appl_player_init(&appl->player, &appl->map, &appl->cam))
-		return (-1);
-	//if (appl_tx_init(appl->tx, &appl->mlx_win) < 0)
-	//	return (-1);
+    locate_player(&appl->player, &appl->map, &appl->cam);
 	return (0);
 }
 

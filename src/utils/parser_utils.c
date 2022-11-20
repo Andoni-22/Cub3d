@@ -1,7 +1,6 @@
 
 #include "cub3d.h"
 #include "libft.h"
-#include <stdlib.h>
 
 /**
  * Buscamos saber si la linea recibida
@@ -107,7 +106,6 @@ static int check_color_format(char *str)
     return (0);
 }
 
-//TODO
 /**
  * Comprobamos si es una fila de configuracion,
  * en si podriamos comprobar mas cosas, pero

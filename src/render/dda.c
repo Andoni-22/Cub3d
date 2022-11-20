@@ -1,9 +1,5 @@
 #include "cub3d.h"
 #include "mlx.h"
-#include "cub3d.h"
-
-#include <string.h>
-#include <stdio.h>
 
 int	game_loop(t_application *a)
 {

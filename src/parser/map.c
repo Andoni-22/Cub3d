@@ -1,9 +1,4 @@
 #include <stdio.h>
-//
-//
-// Created by Andoni Fiat arriola on 11/18/22.
-//
-
 #include "cub3d.h"
 #include <unistd.h>
 #include <fcntl.h>
@@ -74,7 +69,7 @@ int get_map_type(char **raw)
         erase_nl(raw[i]);
         if (line_contain_data(raw[i]) == 0)
         {
-            fprintf(stderr, "RETVAL: %d\n", map_first_row_chrs(raw[i]));
+            //fprintf(stderr, "RETVAL: %d\n", map_first_row_chrs(raw[i]));
             if ((map_start == -1) && (map_first_row_chrs(raw[i]) == 0))
                 map_start = i;
             if ((map_start >= 0) && (map_first_row_chrs(raw[i]) == 0))
@@ -91,6 +86,8 @@ int get_map_type(char **raw)
         i++;
     }
     if (config_end >= map_end)
+        return (-1);
+    if ((config_end >= 0) && ((config_end + 1) == map_start))
         return (-1);
     if (config_start == -1 && map_start >= 0)
         return (0);

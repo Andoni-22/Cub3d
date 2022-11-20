@@ -12,7 +12,6 @@
 
 #include "cub3d.h"
 #include "hooks.h"
-
 #include <math.h>
 
 int	cls(t_map *map, t_player *pl, float x, float y)

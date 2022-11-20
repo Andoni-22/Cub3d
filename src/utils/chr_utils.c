@@ -1,12 +1,8 @@
-//
-// Created by Andoni Fiat arriola on 11/15/22.
-//
 
 #include "cub3d.h"
 #include "libft.h"
 #include <stdlib.h>
 
-//STRDUP?
 char	*chr_cut_back(char *str, char c)
 {
     int		size;
