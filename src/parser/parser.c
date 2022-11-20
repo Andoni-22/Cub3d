@@ -193,7 +193,12 @@ static char **get_map(char **raw, int start, size_t sz[2])
     i = 0;
     while (raw[start])
     {
-        map[i + 1] = raw[start++];
+        map[i + 1] = ft_calloc(sizeof(char), (sz[1] + 1));
+        ft_memset(map[i + 1], SP, sz[1]);
+        ft_memcpy(map[i + 1], raw[start], ft_strlen(raw[start]));
+        free(raw[start]);
+        raw[start] = NULL;
+        start++;
         if (is_open(map, i))
             return (NULL);
         i++;
@@ -204,7 +209,6 @@ static char **get_map(char **raw, int start, size_t sz[2])
 static char **complex_map(t_application *appl, char **raw_tab, size_t sz[2])
 {
     int     pos;
-    char    **map;
 
     pos = set_textures(appl->tx, &appl->mlx_win, appl->rgb, raw_tab);
     while (raw_tab[pos] &&
@@ -212,10 +216,7 @@ static char **complex_map(t_application *appl, char **raw_tab, size_t sz[2])
         pos++;
     if (!raw_tab[pos])
         return (NULL);
-    map = get_map(raw_tab, pos, sz);
-    show_map(map);
-    fprintf(stderr, "POS: %d\n", pos);
-    return (NULL);
+    return (get_map(raw_tab, pos, sz));
 }
 
 /**

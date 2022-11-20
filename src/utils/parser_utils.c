@@ -17,7 +17,7 @@ int map_first_row_chrs(char *line)
     cont = 0;
     while (line[i])
     {
-        if (line[i] == '1' || line[i] == ' ' || line[i] == '0')
+        if (line[i] == '1' || line[i] == ' ')
             cont++;
         i++;
     }
@@ -152,19 +152,20 @@ int is_valid_map_line(char *line)
 {
     int i;
     int cont;
+    int one_find;
     int dir_cont;
 
     i = -1;
     cont = 0;
     dir_cont = 0;
+    one_find = 0;
     while (line[++i])
     {
+        if (line[i] == '1')
+            one_find++;
         if (line[i] == '1' || line[i] == '0' || line[i] == ' ')
-        {
             cont++;
-        }
-        else if (line[i] == 'N' || line[i] == 'S' ||
-                 line[i] == 'E' || line[i] == 'W')
+        else if (is_player_position(line[i]) == 0)
         {
             dir_cont++;
             cont++;
@@ -173,6 +174,8 @@ int is_valid_map_line(char *line)
     if (cont != (i))
         return (-1);
     if (dir_cont > 1)
+        return (-1);
+    if (one_find == 0)
         return (-1);
     return (0);
 }
