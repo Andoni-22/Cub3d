@@ -18,7 +18,7 @@ int map_first_row_chrs(char *line)
     cont = 0;
     while (line[i])
     {
-        if (line[i] == '1' || line[i] == ' ')
+        if (line[i] == '1' || line[i] == ' ' || line[i] == '0')
             cont++;
         i++;
     }
@@ -34,17 +34,17 @@ static int  is_config_param(char *str)
     size = ft_strlen(str);
     if (size == 1 || size == 2)
     {
-        if (ft_strncmp(str, "NO", 2) == 0)
+        if (ft_strncmp(str, "NO", 3) == 0)
             return (1);
-        if (ft_strncmp(str, "SO", 2) == 0)
+        if (ft_strncmp(str, "SO", 3) == 0)
             return (1);
-        if (ft_strncmp(str, "EA", 2) == 0)
+        if (ft_strncmp(str, "EA", 3) == 0)
             return (1);
-        if (ft_strncmp(str, "WE", 2) == 0)
+        if (ft_strncmp(str, "WE", 3) == 0)
             return (1);
-        if (ft_strncmp(str, "F", 1) == 0)
+        if (ft_strncmp(str, "F", 2) == 0)
             return (2);
-        if (ft_strncmp(str, "C", 1) == 0)
+        if (ft_strncmp(str, "C", 2) == 0)
             return (2);
     }
     return (-1);
@@ -123,9 +123,14 @@ int is_config_line(char *line)
     int     ret;
 
     tmp = ft_split(line, ' ');
-    ret = 0;
-    if (!tmp[1])
+    if (!tmp)
         return (-1);
+    ret = 0;
+    if (!tmp[0] || !tmp[1])
+    {
+        free_str_array(tmp);
+        return (-1);
+    }
     config_type = is_config_param(tmp[0]);
     if (config_type < 0)
         ret = -1;
@@ -187,6 +192,8 @@ int line_contain_data(char *line)
 
     i = 0;
     cont = 0;
+    if (!*line)
+        return (-1);
     while (line[i])
     {
         if (line[i] == ' ' || line[i] == 9)

@@ -1,14 +1,7 @@
-NO ./xpm_images/AnyConv.com__eagle.xpm
-SO ./xpm_images/AnyConv.com__redbrick.xpm
-WE ./xpm_images/AnyConv.com__colorstone.xpm
-EA ./xpm_images/AnyConv.com__greystone.xpm
-
-F 220,100,0
-C 225,30,0
-
-         111111111111111111111111
-         100000100000000000000001
-  111111100000000000000000111111
+NO /Users/afiat-ar/Cursus/Cub3d/xpm_images/AnyConv.com__barrel.xpm
+  111111111111111111111111
+  100000100000000000000001
+  100000100000000000000001
   100000100000000111000001
   100000100000000000000001
   100000100000000000000001

@@ -24,25 +24,30 @@ LIB_LINUX 	= -L ./include/lib -lmlx_Linux -lft_linux -lgnl -lXext -lX11 -lm -lbs
 RM			= rm -rf
 
 UNAME 		= $(shell uname)
-MAP			= map/map_first.txt
+MAP			= map/map_first.cub
 RUN			=  ./$(NAME) $(MAP)
 
 FRAME		= -framework OpenGL -framework AppKit
 
-FILES		= test/testmap \
+FILES		= src/main \
 			  src/utils/init_destroy \
 			  src/parser/map \
 			  src/parser/parser \
 			  src/parser/player \
 			  src/render/dda \
-			  src/utils/logger \
+			  src/render/ray \
+			  src/render/wall \
+			  src/render/texture \
+			  src/render/pixel_utils \
+			  src/utils/init \
 			  src/utils/utils \
 			  src/utils/chr_utils \
 			  src/utils/chr_array_utils \
 			  src/utils/parser_utils \
 			  src/utils/get_next_line \
 			  src/utils/get_next_line_utils \
-			  #src/hooks/hooks
+			  src/hooks/hooks
+			  #src/utils/logger \
 			  #src/render/render \
 			  #src/utils/utils \
 
@@ -76,4 +81,4 @@ run: all
 debug: all
 	gdb --args $(RUN)
 
-.PHONY: all clean Darwin fclean Linux re run
+.PHONY: all clean Darwin fclean Linux re run Darwin Linux

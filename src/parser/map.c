@@ -1,3 +1,5 @@
+#include <stdio.h>
+//
 //
 // Created by Andoni Fiat arriola on 11/18/22.
 //
@@ -29,13 +31,23 @@ size_t	get_map_size(char *path)
     return (map_sz);
 }
 
+static void erase_nl(char *line)
+{
+    while (*line)
+    {
+        if (*line == '\n')
+            *line = 0;
+        line++;
+    }
+}
+
 /**
  * En esta funcion queremos saber si es solo simple
  * o si es complejo, para eso usaremos map_start y
  * config_start, ambas las inicialiceremos a -1
  * si al final de la funcion map_start es 0 y config_rest
  * -1, quiere decir que tenemos un mapa simplem, en caso de que
- * ambos tengan datos, tendremos que comprobar si config_start es mallor a map_start
+ * ambos tengan datos, tendremos que comprobar si config_start es mauor a map_start
  * y que no volavmos a tener lineas de config una vez encontrado el map start
  *
  * @param raw
@@ -56,8 +68,10 @@ int get_map_type(char **raw)
     config_end = -1;
     while (raw[i])
     {
+        erase_nl(raw[i]);
         if (line_contain_data(raw[i]) == 0)
         {
+            fprintf(stderr, "RETVAL: %d\n", map_first_row_chrs(raw[i]));
             if ((map_start == -1) && (map_first_row_chrs(raw[i]) == 0))
                 map_start = i;
             if ((map_start >= 0) && (map_first_row_chrs(raw[i]) == 0))
@@ -73,7 +87,7 @@ int get_map_type(char **raw)
         }
         i++;
     }
-    if (config_end > map_end)
+    if (config_end >= map_end)
         return (-1);
     if (config_start == -1 && map_start >= 0)
         return (0);

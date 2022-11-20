@@ -6,6 +6,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
+//STRDUP?
 char	*chr_cut_back(char *str, char c)
 {
     int		size;
