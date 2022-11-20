@@ -9,26 +9,29 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-size_t	get_map_size(char *path)
+void  get_map_size(char *path, size_t sz[2])
 {
-    size_t	map_sz;
     char	*line;
+    size_t  len;
     int		fd;
 
     fd = open(path, O_RDONLY);
     if (fd == -1)
-        return (0);
-    map_sz = 0;
+        return ;
+    sz[0] = 0;
+    sz[1] = 0;
     while (1)
     {
         line = get_next_line(fd);
         if (!line)
             break ;
+        len = ft_strlen(line);
+        if (len > sz[1])
+            sz[1] = len;
         free(line);
-        map_sz++;
+        sz[0]++;
     }
     close(fd);
-    return (map_sz);
 }
 
 static void erase_nl(char *line)

@@ -1,27 +1,6 @@
 #include "cub3d.h"
 #include "mlx.h"
 
-//DEPRECATED//
-/*static int	appl_tx_init(t_tx t[4], t_mlx *mlx)
-{
-	int		ret_val;
-	size_t	i;
-	char	*wall_tx[4];
-
-	wall_tx[0] = "./xpm_images/AnyConv.com__eagle.xpm";
-	wall_tx[1] = "./xpm_images/AnyConv.com__redbrick.xpm";
-	wall_tx[2] = "./xpm_images/AnyConv.com__colorstone.xpm";
-	wall_tx[3] = "./xpm_images/AnyConv.com__greystone.xpm";
-	i = -1;
-	while (++i < 4)
-	{	
-		ret_val = process_image(&t[i], mlx, wall_tx[i]);
-		if (ret_val)
-			return (-1);
-	}
-	return (0);
-}*/
-
 static int	appl_mlx_init(t_mlx	*mlx)
 {
 	mlx->mlx = mlx_init();

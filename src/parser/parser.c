@@ -28,6 +28,12 @@ char **load_raw_file_data(char *path, size_t sz)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
+        //GRACIAS NORMINETTE
+        if (line[0] == NL)
+        {
+            free(line);
+            continue ;
+        }
 		map[sz++] = line;
 	}
 	close(fd);
@@ -104,59 +110,111 @@ static int  set_rgb(t_rgb rgb[2], char **rgb_tab, int pos)
     return (0);
 }
 
+static int query_texture(t_mlx *mlx, t_tx tx[4], t_rgb rgb[2], char **tx_tab)
+{
+    size_t  i;
+
+    i = -1;
+    while (++i < 4)
+    {
+        if (!ft_strncmp(tx[i].key, tx_tab[0], 3))
+        {
+            if (process_image(&tx[i], mlx, tx_tab[1]))
+                return (-1);
+            break ;
+            }
+        else if (!ft_strncmp(rgb[0].key, tx_tab[0], 2))
+        {
+            set_rgb(rgb, tx_tab, F);
+            break ;
+        }
+        else if (!ft_strncmp(rgb[1].key, tx_tab[0], 2))
+        {
+            set_rgb(rgb, tx_tab, C);
+            break ;
+        }
+    }
+    return (0);
+}
+
 static int set_textures(t_tx tx[4], t_mlx *mlx, t_rgb rgb[2], char **raw_tab)
 {
-    char **tx_tab;
-    size_t  i;
-    size_t  config_cnt;
+    char    **tx_tab;
+    int     pos;
+    int     config_cnt;
 
     set_texture_keys(tx, rgb);
     config_cnt = 0;
-    while (*raw_tab && config_cnt < 6)
+    pos = -1;
+    while (raw_tab[++pos] && config_cnt < 6)
     {
-        if (!**raw_tab)
-        {
-            raw_tab++;
-            continue ;
-        }
-        tx_tab = ft_split(*raw_tab, SP);
+        tx_tab = ft_split(raw_tab[pos], SP);
         if (!tx_tab || !tx_tab[0] || !tx_tab[1])
         {
             free_str_array(tx_tab);
             return (-1);
         }
-        i = -1;
-        while (++i < 4)
-        {
-            if (!ft_strncmp(tx[i].key, tx_tab[0], 3))
-            {
-                if (process_image(&tx[i], mlx, tx_tab[1]))
-                    return (-1);
-                break ;
-                }
-            else if (!ft_strncmp(rgb[0].key, tx_tab[0], 2))
-            {
-                set_rgb(rgb, tx_tab, F);
-                break ;
-            }
-            else if (!ft_strncmp(rgb[1].key, tx_tab[0], 2))
-            {
-                set_rgb(rgb, tx_tab, C);
-                break ;
-            }
-        }
+        if (query_texture(mlx, tx, rgb, tx_tab) == -1)
+            return (-1);
         config_cnt++;
-        raw_tab++;
         free_str_array(tx_tab);
     }
-    if (config_cnt != 4)
+    if (config_cnt != 6)
         return (-1);
+    return (pos);
+}
+
+static int  is_open(char **map, int i)
+{
+    int sum[2];
+    int col;
+    
+    col = 1;
+    while (map[i][col] && map[i + 1][col])
+    {
+        sum[0] = map[i + 1][col] + map[i][col];
+        sum[1] = map[i][col + 1] + map[i][col];
+        if (sum[0] == 80 || sum[1] == 80 || sum[0] == 48 || sum[1] == 48)
+            return (1);
+        col++;
+    }
+    if (map[i + 1][col] == '0' || map[i][col] == '0')
+        return (1);
     return (0);
 }
 
-static char **complex_map(t_application *appl, char **raw_tab)
+static char **get_map(char **raw, int start, size_t sz[2])
 {
-    set_textures(appl->tx, &appl->mlx_win, appl->rgb, raw_tab);
+    char    **map;
+    int     i;
+    int     end;
+
+    end = sz[0] - start - 1;
+    map = ft_calloc(sizeof(char *), (sz[0] - start + 3));
+    map[0] = ft_calloc(sizeof(char), (sz[1] + 1));
+    ft_memset(map[0], SP, sz[1]);
+    map[end] = ft_calloc(sizeof(char), (sz[1] + 1));
+    ft_memset(map[end], SP, sz[1]);
+    i = 0;
+    while (raw[start])
+    {
+        map[i + 1] = raw[start++];
+        if (is_open(map, i))
+            return (NULL);
+        i++;
+    }
+    return (map);
+}
+
+static char **complex_map(t_application *appl, char **raw_tab, size_t sz[2])
+{
+    int     pos;
+    char    **map;
+
+    pos = set_textures(appl->tx, &appl->mlx_win, appl->rgb, raw_tab);
+    map = get_map(raw_tab, pos, sz);
+    show_map(map);
+    fprintf(stderr, "POS: %d\n", pos);
     return (NULL);
 }
 
@@ -169,7 +227,7 @@ static char **complex_map(t_application *appl, char **raw_tab)
  * @param raw map raw data
  * @return
  */
-static char **process_raw_data(t_application *appl, char **raw)
+static char **process_raw_data(t_application *appl, char **raw, size_t sz[2])
 {
     int     map_type;
     char    **map;
@@ -183,7 +241,7 @@ static char **process_raw_data(t_application *appl, char **raw)
     }
     else if (map_type == 1)
     {
-        complex_map(appl, raw);
+        complex_map(appl, raw, sz);
         printf("Mapa de tipo complejo\n");
 
         return (NULL);
@@ -205,25 +263,15 @@ static char **process_raw_data(t_application *appl, char **raw)
  */
 char    **load_map(t_application *appl, char *path)
 {
-	size_t	sz;
+	size_t	sz[2];
     char    **tmp;
     char    **map;
-    //int     i;
 
-    //i = -1;
-    sz = get_map_size(path);
-    if (!sz)
+    get_map_size(path, sz);
+    if (!sz[0])
         return (NULL);
-    tmp = load_raw_file_data(path, sz);
-    //TRIM?
-    /*
-    while (tmp[++i])
-    {
-        place_holder = chr_cut_back(tmp[i], 10);
-        free(tmp[i]);
-        tmp[i] = place_holder;
-    }*/
-    map = process_raw_data(appl, tmp);
+    tmp = load_raw_file_data(path, sz[0]);
+    map = process_raw_data(appl, tmp, sz);
     free_str_array(tmp);
     if (!map)
         return (NULL);
@@ -255,7 +303,8 @@ int check_path_format(char *path, char *term)
     for (int i = 0; tmp[i]; i++)
         fprintf(stderr, "tmp[%d] -> %s\n", i, tmp[i]);
     fd = open(path, O_RDONLY);
-        close(fd);
+    close(fd);
+    //GRACIASS NORMINETTE
     if (size <= 1 ||
         ft_strncmp(term, tmp[size - 1], ft_strlen(term) + 1) != 0 ||
         fd <= 0)

@@ -6,7 +6,7 @@
 /*   By: andoni <andoni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 16:42:02 by andoni            #+#    #+#             */
-/*   Updated: 2022/11/09 21:54:38 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/20 16:19:10 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 
 # define TEXTURE		4096
 # define SP				32
+# define NL				10
 
 # define F			0
 # define C		1
@@ -175,7 +176,7 @@ int     line_contain_data(char *line);
 int     is_player_position(char c);
 int     process_player(int pos_found, int line, int colum, char **raw);
 //PARSE_MAP
-size_t	get_map_size(char *path);
+void	get_map_size(char *path, size_t	sz[2]);
 int     get_map_type(char **raw);
 
 void	logger(char *msg);
@@ -210,5 +211,8 @@ int	key_hook(int keycode, t_application *appl);
 int	application_init(t_application *appl, char *path);
 int	process_image(t_tx *t, t_mlx *mlx, char *xpm_file);
 void	locate_player(t_player *player, t_map *map, t_camera *cam);
+
+//SHOW MAP
+void	show_map(char **map);
 
 #endif
