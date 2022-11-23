@@ -29,10 +29,10 @@ int	get_tx_color(t_tx t[4], int tx_y, int tx_x, int tx_type)
 	int	len;
 
 	len = t[tx_type].line_length;
-	color[0] = t[tx_type].img[tx_y * len + tx_x * 4 + 0];
-	color[1] = t[tx_type].img[tx_y * len + tx_x * 4 + 1];
-	color[2] = t[tx_type].img[tx_y * len + tx_x * 4 + 2];
-	color[3] = t[tx_type].img[tx_y * len + tx_x * 4 + 3];
+	color[0] = t[tx_type].img_addr[tx_y * len + tx_x * 4 + 0];
+	color[1] = t[tx_type].img_addr[tx_y * len + tx_x * 4 + 1];
+	color[2] = t[tx_type].img_addr[tx_y * len + tx_x * 4 + 2];
+	color[3] = t[tx_type].img_addr[tx_y * len + tx_x * 4 + 3];
 	return (get_rgb(color[3], color[2], color[1], color[0]));
 }
 

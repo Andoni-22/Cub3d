@@ -3,7 +3,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-void    free_str_array(char **tmp)
+char    **free_str_array(char **tmp)
 {
     int i;
 
@@ -11,6 +11,7 @@ void    free_str_array(char **tmp)
     while (tmp[++i])
         free(tmp[i]);
     free(tmp);
+    return (NULL);
 }
 
 int str_array_get_size(char **src)
