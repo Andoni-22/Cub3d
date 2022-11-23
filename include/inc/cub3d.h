@@ -188,6 +188,8 @@ char    **str_array_copy(char **src);
 int     str_array_get_size(char **src);
 char    **free_str_array(char **tmp);
 char	*chr_cut_back(char *dir, char c);
+int     print_error(int code, char *str);
+int     print_error_and_free(int code, char *str, char **tmp);
 
 //PIXEL UTILS//
 void	clear_image(t_mlx *mlx);

@@ -1,5 +1,6 @@
 #include "cub3d.h"
 #include "mlx.h"
+#include "custom_errors.h"
 
 #include <unistd.h>
 #include <fcntl.h>
@@ -258,7 +259,7 @@ char    **load_map(t_application *appl, char *path)
 
     get_map_size(path, sz);
     if (!sz[0])
-        return (NULL);
+        return (print_error(5, MAP_IS_EMPTY));
     tmp = load_raw_file_data(path, sz[0]);
     map = process_raw_data(appl, tmp, sz);
     free_str_array(tmp);
@@ -285,22 +286,17 @@ int check_path_format(char *path, char *term)
     size = 0;
     tmp = ft_split(path, '.');
     if (!tmp)
-        return (-1);
-    fprintf(stderr, "COMNPLETE PATH: %s\n", path);
+        return (print_error(1, BAD_PATH_CUB));
     while (tmp[size] != NULL)
         size++;
-    for (int i = 0; tmp[i]; i++)
-        fprintf(stderr, "tmp[%d] -> %s\n", i, tmp[i]);
     fd = open(path, O_RDONLY);
     close(fd);
-
-    if (size <= 1 ||
-        ft_strncmp(term, tmp[size - 1], ft_strlen(term) + 1) != 0 ||
-        fd <= 0)
-    {
-        free_str_array(tmp);
-        return (-1);
-    }
+    if (ft_strncmp(term, tmp[size - 1], ft_strlen(term) + 1) != 0)
+        return (print_error_and_free(2, BAD_PATH_CUB, tmp));
+    if (size <= 1 && fd > 0)
+        return (print_error_and_free(3, EMPTY_FILE, tmp));
+    if (fd <= 0)
+        return (print_error_and_free(4, INCORRECT_FILE,tmp));
     free_str_array(tmp);
     return (0);
 }
