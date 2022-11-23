@@ -101,6 +101,7 @@ typedef struct s_player
 	double	dir_x;
 	double	dir_y;
 	double	old_dir_x;
+	int		exist;
 }	t_player;
 
 typedef struct s_ray
@@ -166,20 +167,20 @@ void	appl_mlx_destroy(t_mlx *mlx);
 int		game_loop(t_application *appl);
 
 //PARSER
-int check_path_format(char *path, char *term);
+int		check_path_format(char *path, char *term);
 char	**load_map(t_application *appl, char *path);
 int     map_first_row_chrs(char *line);
 int     is_config_line(char *line);
 int     is_valid_map_line(char *line);
 int     line_contain_data(char *line);
-//int 	appl_map_init(t_application *appl, char *path);
+
 //PARSE_PLAYER
 int     is_player_position(char c);
 int     process_player(int pos_found, int line, int colum, char **raw);
-//PARSE_MAP
+
+////PARSE_MAP
 void	get_map_size(char *path, size_t	sz[2]);
 int     get_map_type(char **raw);
-
 void	logger(char *msg);
 
 //UTILS
@@ -203,7 +204,7 @@ int	get_tx_color(t_tx t[4], int tx_y, int tx_x, int tx_type);
 
 //PIXEL UTILS
 void	set_pixel_color(t_mlx *mlx, int x, int y, int color);
-int	get_rgb(int t, int red, int green, int blue);
+int		get_rgb(int t, int red, int green, int blue);
 
 //HOOKS
 int	key_hook(int keycode, t_application *appl);
@@ -211,7 +212,7 @@ int	key_hook(int keycode, t_application *appl);
 //INIT
 int	application_init(t_application *appl, char *path);
 int	process_image(t_tx *t, t_mlx *mlx, char *xpm_file);
-void	locate_player(t_player *player, t_map *map, t_camera *cam);
+void	locate_player(t_player *player, t_camera *cam, char *line);
 
 //SHOW MAP
 void	show_map(char **map);

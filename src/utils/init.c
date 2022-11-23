@@ -44,7 +44,8 @@ int	application_init(t_application *appl, char *path)
 		return (-1);
 	if (appl_map_init(appl, path) < 0)
 		return (-1);
-    locate_player(&appl->player, &appl->map, &appl->cam);
+	if (!appl->player.exist)
+		return (-1);
 	return (0);
 }
 

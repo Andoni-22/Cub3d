@@ -72,26 +72,23 @@ static void	set_player_pos(t_player *player, t_camera *cam, int dir)
 	vertical_player_pos(player, cam, dir);
 }
 
-void	locate_player(t_player *player, t_map *map, t_camera *cam)
+void	locate_player(t_player *player, t_camera *cam, char *line)
 {
 	char	*player_pos;
-	size_t	i;
 
-	i = -1;
-	while (map->map[++i])
+	player_pos = find_player(line, "NSEW");
+	if (player_pos && player->exist)
+		player->exist = -1;
+	if (player->exist)
+		return ;
+	if (player_pos)
 	{
-		player_pos = find_player(map->map[i], "NSEW");
-		if (player_pos)
-		{
-			player->pos_y = player_pos - map->map[i];
-			set_player_pos(player, cam, *player_pos);
-			*player_pos = FLOOR;
-			break ;
-		}
-		player->pos_x++;
+		player->pos_y = player_pos - line;
+		set_player_pos(player, cam, *player_pos);
+		*player_pos = FLOOR;
+		player->exist++;
 	}
-	if (!player_pos)
-		exit(1);
+	player->pos_x++;
 	player->pos_y += 0.1;
 	player->pos_x += 0.1;
 }
@@ -128,4 +125,5 @@ void	appl_mlx_destroy(t_mlx	*mlx)
 {
 	mlx_destroy_image(mlx->mlx, mlx->img);
 	mlx_destroy_window(mlx->mlx, mlx->mlx_win);
+	free(mlx->mlx);
 }
