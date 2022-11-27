@@ -190,7 +190,7 @@ char    **free_str_array(char **tmp);
 char	*chr_cut_back(char *dir, char c);
 
 //PIXEL UTILS//
-void	clear_image(t_mlx *mlx);
+void	clear_image(t_mlx *mlx, t_rgb rgb[2]);
 
 //RAY//
 void	set_ray(t_ray *ray, t_player *pl, t_camera *cam);

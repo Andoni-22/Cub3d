@@ -21,6 +21,7 @@ int	main(int argc, char **argv)
 	t_mlx			*mlx_win;
 	t_map			*map;
 
+	ft_memset(&appl, 0, sizeof(t_application));
 	if (argc != 2 || application_init(&appl, argv[1]) < 0)
     {
         perror("Error");

@@ -26,15 +26,16 @@
 # define ZOOM_OUT		4
 # define ZOOM_IN		5
 
-/*
 # define ROTATE_LEFT 65361
 # define ROTATE_RIGHT 65363
 # define LEFT	97
 # define UP		119
 # define RIGHT	100
 # define DOWN	115
-*/
+# define ESC	65307
+# define EXIT	113
 
+/*
 # define ROTATE_LEFT 123
 # define ROTATE_RIGHT 124
 # define LEFT	0
@@ -43,5 +44,6 @@
 # define DOWN	1
 # define ESC	53
 # define EXIT	12
+*/
 
 #endif

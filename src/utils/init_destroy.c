@@ -118,7 +118,8 @@ void	appl_map_destroy(t_map *map)
 void	application_destory(t_application *appl)
 {
 	appl_mlx_destroy(&appl->mlx_win, appl->tx);
-	//appl_map_destroy(&appl->map);
+	if (appl->map.map)
+		appl_map_destroy(&appl->map);
 }
 
 static void	destroy_textures(t_mlx *mlx, t_tx tx[4])
@@ -128,15 +129,21 @@ static void	destroy_textures(t_mlx *mlx, t_tx tx[4])
 	i = -1;
 	while (++i < 4)
 	{
-		mlx_destroy_image(mlx->mlx, tx[i].img);
-		tx[i].img = NULL;
+		if (tx[i].img)
+		{
+			mlx_destroy_image(mlx->mlx, tx[i].img);
+			tx[i].img = NULL;
+		}
 	}
 }
 
 void	appl_mlx_destroy(t_mlx	*mlx, t_tx tx[4])
 {
 	destroy_textures(mlx, tx);
-	mlx_destroy_image(mlx->mlx, mlx->img);
-	mlx_destroy_window(mlx->mlx, mlx->mlx_win);
+	if (mlx->mlx)
+	{
+		mlx_destroy_image(mlx->mlx, mlx->img);
+		mlx_destroy_window(mlx->mlx, mlx->mlx_win);
+	}
 	free(mlx->mlx);
 }

@@ -93,6 +93,7 @@ static void	horizontal_key_hook(int keycode, t_application *a)
 
 int	key_hook(int keycode, t_application *appl)
 {
+	fprintf(stderr, "KEYCODE: %d\n", keycode);
 	if (keycode == ESC || keycode == EXIT)
 	{
 		application_destory(appl);

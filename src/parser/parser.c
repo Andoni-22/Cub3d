@@ -53,9 +53,7 @@ static int  check_rgb_format(char *line)
     coma_count = 0;
     while (line[++i])
     {
-        if (line[i] == COMA && line[i + 1] == COMA)
-            return (1);
-        else if (!ft_strchr("0123456789,", line[i]))
+        if (!ft_strchr("0123456789,", line[i]))
             return (1);
         else if (line[i] == COMA)
             coma_count++;
@@ -108,7 +106,7 @@ static int query_texture(t_mlx *mlx, t_tx tx[4], t_rgb rgb[2], char **tx_tab)
         }
         else if (!ft_strncmp(rgb[0].key, tx_tab[0], 2))
         {
-            if (set_rgb(rgb, tx_tab, F) == -1)
+            if (set_rgb(rgb, tx_tab, C) == -1)
                 return (-1);
             return (0);
         }
@@ -136,7 +134,7 @@ static int set_textures(t_tx tx[4], t_mlx *mlx, t_rgb rgb[2], char **raw_tab)
         if (raw_tab[pos][0] == '\0')
             continue;
         tx_tab = ft_split(raw_tab[pos], SP);
-        if (!tx_tab || !tx_tab[0] || !tx_tab[1]
+        if (!tx_tab || !tx_tab[0] || !tx_tab[1] || tx_tab[2]
             || query_texture(mlx, tx, rgb, tx_tab) == -1)
         {
             free_str_array(tx_tab);
@@ -205,14 +203,7 @@ static char **complex_map(t_application *appl, char **raw_tab, size_t sz[2])
 
     pos = set_textures(appl->tx, &appl->mlx_win, appl->rgb, raw_tab);
     if (pos == -1)
-    {
-        while (++pos < 4)
-        {
-            if (appl->tx[pos].img)
-                mlx_destroy_image(appl->mlx_win.mlx, appl->tx[pos].img);
-        }
         return (NULL);
-    }
     while (raw_tab[pos] &&
         ft_strchr(raw_tab[pos], '1') == 0)
         pos++;

@@ -11,6 +11,7 @@
 # **************************************************************************** #
 
 NAME 		= Cub3d
+LIBFT		= Libft
 
 
 CC 			= gcc
@@ -57,21 +58,28 @@ OBJ		= $(addsuffix .o, $(FILES))
 .c.o:
 	$(CC) $(CFLAGS) $(SNTZ) $(INC) -o $@ -c $^
 
-$(NAME): $(UNAME)
+$(NAME): $(LIBFT) $(UNAME)
 
 all: $(NAME)
 
+Libft:
+	$(MAKE) -C src/libft/src
+
 Darwin: $(OBJ)
+	mv src/libft/src/libft.a include/lib/libft_mac.a
 	$(CC) $(CFLAGS) $(SNTZ) -o $(NAME) $(OBJ) $(LIB) $(FRAME)
 
 Linux: $(OBJ)
+	mv src/libft/src/libft.a include/lib/libft_linux.a
 	$(CC) $(CFLAGS) $(SNTZ) -o $(NAME) $(OBJ) $(LIB_LINUX)
 
 clean:
 	$(RM) $(OBJ)
+	$(MAKE) -C src/libft/src clean
 
 fclean: clean
 	$(RM) $(NAME)
+	$(RM) include/lib/libft_*.a
 
 re: fclean all
 
