@@ -6,7 +6,7 @@
 #    By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/09 20:06:14 by lugonzal          #+#    #+#              #
-#    Updated: 2022/11/12 18:55:41 by lugonzal         ###   ########.fr        #
+#    Updated: 2022/11/27 16:29:38 by lugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME 		= Cub3d
 
 CC 			= gcc
 CFLAGS 		= -g3 -Wall -Werror -Wextra -Wpedantic
-SNTZ		= -fsanitize=address
+#SNTZ		= -fsanitize=address
 
 INC 		= -I ./include -I ./include/inc
 LIB			= -L ./include/lib -lft_mac -lmlx

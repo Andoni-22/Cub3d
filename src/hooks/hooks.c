@@ -6,12 +6,14 @@
 /*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 20:07:59 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/11/09 20:08:38 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/27 16:50:12 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "mlx.h"
 #include "cub3d.h"
 #include "hooks.h"
+
 #include <math.h>
 
 static int	cls(t_map *map, t_player *pl, float x, float y)
@@ -86,9 +88,16 @@ static void	horizontal_key_hook(int keycode, t_application *a)
 	}
 }
 
+#include <stdio.h>
+#include <stdlib.h>
 
 int	key_hook(int keycode, t_application *appl)
 {
+	if (keycode == ESC || keycode == EXIT)
+	{
+		application_destory(appl);
+		exit(0);
+	}
 	vertical_key_hook(keycode, appl);
 	horizontal_key_hook(keycode, appl);
 	rotate(keycode, appl);

@@ -6,7 +6,7 @@
 /*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 01:38:18 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/11/13 01:47:51 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/27 16:50:10 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,12 +117,25 @@ void	appl_map_destroy(t_map *map)
 
 void	application_destory(t_application *appl)
 {
-	appl_mlx_destroy(&appl->mlx_win);
+	appl_mlx_destroy(&appl->mlx_win, appl->tx);
 	//appl_map_destroy(&appl->map);
 }
 
-void	appl_mlx_destroy(t_mlx	*mlx)
+static void	destroy_textures(t_mlx *mlx, t_tx tx[4])
 {
+	int	i;
+
+	i = -1;
+	while (++i < 4)
+	{
+		mlx_destroy_image(mlx->mlx, tx[i].img);
+		tx[i].img = NULL;
+	}
+}
+
+void	appl_mlx_destroy(t_mlx	*mlx, t_tx tx[4])
+{
+	destroy_textures(mlx, tx);
 	mlx_destroy_image(mlx->mlx, mlx->img);
 	mlx_destroy_window(mlx->mlx, mlx->mlx_win);
 	free(mlx->mlx);

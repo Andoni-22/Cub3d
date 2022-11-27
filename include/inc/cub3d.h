@@ -6,7 +6,7 @@
 /*   By: andoni <andoni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 16:42:02 by andoni            #+#    #+#             */
-/*   Updated: 2022/11/20 16:19:10 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/27 16:43:04 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ typedef struct s_application
 
 int		application_init(t_application *appl, char *path);
 void	application_destory(t_application *appl);
-void	appl_mlx_destroy(t_mlx *mlx);
+void	appl_mlx_destroy(t_mlx *mlx, t_tx tx[4]);
 int		game_loop(t_application *appl);
 
 //PARSER
