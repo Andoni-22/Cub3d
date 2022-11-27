@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 /**
  * Abrimos el fichero y leemos todo la informacion
@@ -13,7 +12,7 @@
  * @param sz numero de filas del fichero
  * @return NULL si sale mal, el mapa en un char ** si sale bien
  */
-char **load_raw_file_data(char *path, size_t sz)
+char **load_raw_file_data(char *path, size_t sz, t_custom_error *c_error)
 {
 	char	**map;
 	char	*line;
@@ -21,7 +20,7 @@ char **load_raw_file_data(char *path, size_t sz)
 
 	map = ft_calloc(sizeof(char *), sz + 1);
 	if (!map)
-		return (NULL);
+		return (set_error_chr(c_error, 20, INVALID_MALLOC));
 	sz = 0;
 	fd = open(path, O_RDONLY);
 	while (1)
@@ -231,12 +230,12 @@ static char **complex_map(t_application *appl, char **raw_tab, size_t sz[2])
  * @param raw map raw data
  * @return
  */
-static char **process_raw_data(t_application *appl, char **raw, size_t sz[2])
+static char **process_raw_data(t_application *appl, char **raw, size_t sz[2], t_custom_error *c_error)
 {
     int     map_type;
     char    **map;
 
-    map_type = get_map_type(raw);
+    map_type = get_map_type(raw, c_error);
     if (map_type == 0 || map_type == -1)
         return (NULL);
     map = complex_map(appl, raw, sz);
@@ -251,7 +250,7 @@ static char **process_raw_data(t_application *appl, char **raw, size_t sz[2])
  * @return NULL if file is not correct or a char**
  *          with the map
  */
-char    **load_map(t_application *appl, char *path)
+char **load_map(t_application *appl, char *path, t_custom_error *c_error)
 {
 	size_t	sz[2];
     char    **tmp;
@@ -259,9 +258,9 @@ char    **load_map(t_application *appl, char *path)
 
     get_map_size(path, sz);
     if (!sz[0])
-        return (print_error(5, MAP_IS_EMPTY));
-    tmp = load_raw_file_data(path, sz[0]);
-    map = process_raw_data(appl, tmp, sz);
+        return (set_error_chr(c_error, 5, MAP_IS_EMPTY));
+    tmp = load_raw_file_data(path, sz[0], c_error);
+    map = process_raw_data(appl, tmp, sz, NULL);
     free_str_array(tmp);
     if (!map)
         return (NULL);
@@ -277,7 +276,7 @@ char    **load_map(t_application *appl, char *path)
  * @param path la ruta del mapa
  * @return -1 if any error, 0 if it is correct
  */
-int check_path_format(char *path, char *term)
+int check_path_format(char *path, char *term, t_custom_error *c_error)
 {
     char    **tmp;
     int     size;
@@ -286,17 +285,17 @@ int check_path_format(char *path, char *term)
     size = 0;
     tmp = ft_split(path, '.');
     if (!tmp)
-        return (print_error(1, BAD_PATH_CUB));
+        return (set_error(c_error, 1, BAD_PATH_CUB));
     while (tmp[size] != NULL)
         size++;
     fd = open(path, O_RDONLY);
     close(fd);
     if (ft_strncmp(term, tmp[size - 1], ft_strlen(term) + 1) != 0)
-        return (print_error_and_free(2, BAD_PATH_CUB, tmp));
+        return (set_error_and_free(c_error, 2, BAD_PATH_CUB, tmp));
     if (size <= 1 && fd > 0)
-        return (print_error_and_free(3, EMPTY_FILE, tmp));
+        return (set_error_and_free(c_error, 3, EMPTY_FILE, tmp));
     if (fd <= 0)
-        return (print_error_and_free(4, INCORRECT_FILE,tmp));
+        return (set_error_and_free(c_error, 4, INCORRECT_FILE,tmp));
     free_str_array(tmp);
     return (0);
 }

@@ -12,14 +12,32 @@ void	show_map(char **map)
 
 int print_error(int code, char *str)
 {
+    if (code == -1 || str == NULL)
+    {
+        printf("Error: Undefied error");
+        return (-1);
+    }
     printf("Error: %d: %s\n", code, str);
-    return -1;
+    return (code);
 }
 
-int print_error_and_free(int code, char *str, char **tmp)
+int print_custom_error(t_custom_error *c_error)
+{
+    if (c_error->code == -1 || c_error->str == NULL)
+    {
+        printf("Error: Undefied error");
+        return (-1);
+    }
+    print_error(c_error->code, c_error->str);
+    if (c_error->str)
+        free(c_error->str);
+    return (c_error->code);
+}
+
+int set_error_and_free(t_custom_error *c_error, int code, char *str, char **tmp)
 {
     free_str_array(tmp);
-    printf("Error: %d: %s\n", code, str);
+    set_error(c_error, code, str);
     return -1;
 }
 
@@ -39,9 +57,8 @@ int set_error(t_custom_error *c_err, int code, char *str)
     return (-1);
 }
 
-int custom_error(t_custom_error *c_err)
+char    **set_error_chr(t_custom_error *c_err, int code, char *str)
 {
-    print_error(c_err->code, c_err->str);
-    free(c_err->str);
-    return (-1);
+    set_error(c_err, code, str);
+    return (NULL);
 }

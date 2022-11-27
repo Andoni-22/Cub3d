@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include "get_next_line.h"
+#include "custom_errors.h"
 
 # define BYTE 			8
 # define COMA			','
@@ -49,6 +50,14 @@
 # define SOUTH			"SO"
 # define WEST			"WE"
 # define EAST			"EA"
+
+typedef struct s_aux_params
+{
+	int map_start;
+	int map_end;
+	int config_start;
+	int config_end;
+}	t_aux_params;
 
 typedef struct s_tx
 {
@@ -161,16 +170,16 @@ typedef struct s_application
 	t_rgb		rgb[2];
 }	t_application;
 
-int		application_init(t_application *appl, char *path);
+int application_init(t_application *appl, char *path, t_custom_error *c_error);
 void	application_destory(t_application *appl);
 void	appl_mlx_destroy(t_mlx *mlx);
 int		game_loop(t_application *appl);
 
 //PARSER
-int		check_path_format(char *path, char *term);
-char	**load_map(t_application *appl, char *path);
+int check_path_format(char *path, char *term, t_custom_error *c_error);
+char **load_map(t_application *appl, char *path, t_custom_error *c_error);
 int     map_first_row_chrs(char *line);
-int     is_config_line(char *line);
+int is_config_line(char *line, t_custom_error *c_error);
 int     is_valid_map_line(char *line);
 int     line_contain_data(char *line);
 
@@ -180,7 +189,7 @@ int     process_player(int pos_found, int line, int colum, char **raw);
 
 ////PARSE_MAP
 void	get_map_size(char *path, size_t	sz[2]);
-int     get_map_type(char **raw);
+int get_map_type(char **raw, t_custom_error *c_error);
 void	logger(char *msg);
 
 //UTILS
@@ -188,8 +197,6 @@ char    **str_array_copy(char **src);
 int     str_array_get_size(char **src);
 char    **free_str_array(char **tmp);
 char	*chr_cut_back(char *dir, char c);
-int     print_error(int code, char *str);
-int     print_error_and_free(int code, char *str, char **tmp);
 
 //PIXEL UTILS//
 void	clear_image(t_mlx *mlx);
@@ -212,7 +219,6 @@ int		get_rgb(int t, int red, int green, int blue);
 int	key_hook(int keycode, t_application *appl);
 
 //INIT
-int	application_init(t_application *appl, char *path);
 int	process_image(t_tx *t, t_mlx *mlx, char *xpm_file);
 void	locate_player(t_player *player, t_camera *cam, char *line);
 

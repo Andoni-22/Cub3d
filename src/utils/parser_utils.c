@@ -114,7 +114,7 @@ static int check_color_format(char *str)
  * @param line
  * @return -1 si hay error, 0 si esta bien
  */
-int is_config_line(char *line)
+int is_config_line(char *line, t_custom_error *c_error)
 {
     char    **tmp;
     int     config_type;
@@ -131,11 +131,11 @@ int is_config_line(char *line)
     }
     config_type = is_config_param(tmp[0]);
     if (config_type < 0)
-        ret = -1;
-    if (config_type == 1 && check_path_format(tmp[1], FILE_FORMAT_XPM) < 0)
-        ret = -1;
+        ret = set_error(c_error, 99, INVALID_PARAM);
+    if (config_type == 1 && check_path_format(tmp[1], FILE_FORMAT_XPM, NULL) < 0)
+        ret = set_error(c_error, 98, BAD_PATH_XPM);
     if (config_type == 2 && check_color_format(tmp[1]) < 0)
-        ret = -1;
+        ret = set_error(c_error, 97, INVALID_COLOR);
     free_str_array(tmp);
     return (ret);
 }
