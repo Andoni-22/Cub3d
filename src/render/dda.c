@@ -3,7 +3,7 @@
 
 int	game_loop(t_application *a)
 {
-	clear_image(&a->mlx_win);
+	clear_image(&a->mlx_win, a->rgb);
 	a->mlx_win.x = -1;
 	a->ray.pos_x = a->player.pos_x;
 	a->ray.pos_y = a->player.pos_y;

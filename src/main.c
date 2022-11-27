@@ -6,7 +6,7 @@
 /*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 20:53:48 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/11/09 20:07:37 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/27 16:50:12 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	main(int argc, char **argv)
 	t_mlx			*mlx_win;
 	t_map			*map;
 
+	ft_memset(&appl, 0, sizeof(t_application));
 	if (argc != 2 || application_init(&appl, argv[1]) < 0)
     {
         perror("Error");
