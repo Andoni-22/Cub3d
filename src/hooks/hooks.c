@@ -14,7 +14,7 @@
 #include "hooks.h"
 #include <math.h>
 
-int	cls(t_map *map, t_player *pl, float x, float y)
+static int	cls(t_map *map, t_player *pl, float x, float y)
 {
 	int	ret_val[3];
 

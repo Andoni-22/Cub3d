@@ -87,10 +87,10 @@ void	locate_player(t_player *player, t_camera *cam, char *line)
 		set_player_pos(player, cam, *player_pos);
 		*player_pos = FLOOR;
 		player->exist++;
+		player->pos_y += 0.1;
+		player->pos_x += 0.1;
 	}
 	player->pos_x++;
-	player->pos_y += 0.1;
-	player->pos_x += 0.1;
 }
 
 int	process_image(t_tx *t, t_mlx *mlx, char *xpm_file)
