@@ -30,9 +30,9 @@ static int appl_mlx_init(t_mlx *mlx, t_custom_error *c_error)
  */
 static int appl_map_init(t_application *appl, char *path, t_custom_error *c_error)
 {
-    if (check_path_format(path, FILE_FORMAT_CUB, NULL) < 0)
+    if (check_path_format(path, FILE_FORMAT_CUB, c_error) < 0)
         return (-1);
-    appl->map.map = load_map(appl, path, NULL);
+    appl->map.map = load_map(appl, path, c_error);
 	if (!appl->map.map)
 		return (-1);
 	return (0);

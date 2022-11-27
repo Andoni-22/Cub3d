@@ -14,21 +14,19 @@
 #include "mlx.h"
 #include "custom_errors.h"
 
-#include <stdio.h>
-#include <tclDecls.h>
 
 int	main(int argc, char **argv)
 {
 	t_application	appl;
 	t_mlx			*mlx_win;
 	t_map			*map;
-    t_custom_error  *c_error;
+    t_custom_error  c_error;
 
-    custom_error_init(c_error);
-	if (argc != 2 || application_init(&appl, argv[1], c_error) < 0)
+    custom_error_init(&c_error);
+	if (argc != 2 || application_init(&appl, argv[1], &c_error) < 0)
     {
 		application_destory(&appl);
-        return (print_custom_error(c_error));
+        return (print_custom_error(&c_error));
     }
 	mlx_win = &appl.mlx_win;
 	map = &appl.map;
