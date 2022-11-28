@@ -23,6 +23,7 @@ int	main(int argc, char **argv)
     t_custom_error  c_error;
 
     custom_error_init(&c_error);
+	ft_memset(&appl, 0, sizeof(t_application));
 	if (argc != 2 || application_init(&appl, argv[1], &c_error) < 0)
     {
 		application_destory(&appl);

@@ -6,7 +6,7 @@
 /*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 01:38:18 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/11/13 01:47:51 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/27 16:50:10 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ void	locate_player(t_player *player, t_camera *cam, char *line)
 		set_player_pos(player, cam, *player_pos);
 		*player_pos = FLOOR;
 		player->exist++;
+		player->pos_y += 0.1;
+		player->pos_x += 0.1;
 	}
 	player->pos_x++;
-	player->pos_y += 0.1;
-	player->pos_x += 0.1;
 }
 
 int	process_image(t_tx *t, t_mlx *mlx, char *xpm_file)
@@ -117,13 +117,33 @@ void	appl_map_destroy(t_map *map)
 
 void	application_destory(t_application *appl)
 {
-	appl_mlx_destroy(&appl->mlx_win);
-	//appl_map_destroy(&appl->map);
+	appl_mlx_destroy(&appl->mlx_win, appl->tx);
+	if (appl->map.map)
+		appl_map_destroy(&appl->map);
 }
 
-void	appl_mlx_destroy(t_mlx	*mlx)
+static void	destroy_textures(t_mlx *mlx, t_tx tx[4])
 {
-	mlx_destroy_image(mlx->mlx, mlx->img);
-	mlx_destroy_window(mlx->mlx, mlx->mlx_win);
+	int	i;
+
+	i = -1;
+	while (++i < 4)
+	{
+		if (tx[i].img)
+		{
+			mlx_destroy_image(mlx->mlx, tx[i].img);
+			tx[i].img = NULL;
+		}
+	}
+}
+
+void	appl_mlx_destroy(t_mlx	*mlx, t_tx tx[4])
+{
+	destroy_textures(mlx, tx);
+	if (mlx->mlx)
+	{
+		mlx_destroy_image(mlx->mlx, mlx->img);
+		mlx_destroy_window(mlx->mlx, mlx->mlx_win);
+	}
 	free(mlx->mlx);
 }

@@ -17,14 +17,14 @@ int	get_rgb(int t, int red, int green, int blue)
 	return (t << 24 | red << 16 | green << 8 | blue);
 }
 
-void	clear_image(t_mlx *mlx)
+void	clear_image(t_mlx *mlx, t_rgb rgb[2])
 {
 	int	x;
 	int	y;
 	int	color[2];
 
-	color[0] = get_rgb(0, 51, 153, 255);
-	color[1] = get_rgb(0, 224, 224, 224);
+	color[0] = get_rgb(rgb[0].trgb[0], rgb[0].trgb[1], rgb[0].trgb[2], rgb[0].trgb[3]);
+	color[1] = get_rgb(rgb[1].trgb[0], rgb[1].trgb[1], rgb[1].trgb[2], rgb[0].trgb[3]);
 	y = -1;
 	while (++y < HEIGHT / 2)
 	{

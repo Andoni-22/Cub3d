@@ -6,7 +6,7 @@
 /*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 01:32:52 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/11/13 01:34:40 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/27 16:50:11 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # define UP		119
 # define RIGHT	100
 # define DOWN	115
+# define ESC	65307
+# define EXIT	113
 
 /*
 # define ROTATE_LEFT 123
@@ -40,6 +42,8 @@
 # define UP		13
 # define RIGHT	2
 # define DOWN	1
+# define ESC	53
+# define EXIT	12
 */
 
 #endif

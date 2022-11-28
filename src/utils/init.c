@@ -40,7 +40,6 @@ static int appl_map_init(t_application *appl, char *path, t_custom_error *c_erro
 
 int application_init(t_application *appl, char *path, t_custom_error *c_error)
 {
-	ft_memset(appl, 0, sizeof(t_application));
 	if (appl_mlx_init(&appl->mlx_win, c_error) < 0)
 		return (-1);
 	if (appl_map_init(appl, path, c_error) < 0)

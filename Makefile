@@ -6,16 +6,17 @@
 #    By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/09 20:06:14 by lugonzal          #+#    #+#              #
-#    Updated: 2022/11/12 18:55:41 by lugonzal         ###   ########.fr        #
+#    Updated: 2022/11/27 16:29:38 by lugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		= Cub3d
+LIBFT		= Libft
 
 
 CC 			= gcc
 CFLAGS 		= -g3 -Wall -Werror -Wextra -Wpedantic
-SNTZ		= -fsanitize=address
+#SNTZ		= -fsanitize=address
 
 INC 		= -I ./include -I ./include/inc
 LIB			= -L ./include/lib -lft_mac -lmlx
@@ -57,21 +58,28 @@ OBJ		= $(addsuffix .o, $(FILES))
 .c.o:
 	$(CC) $(CFLAGS) $(SNTZ) $(INC) -o $@ -c $^
 
-$(NAME): $(UNAME)
+$(NAME): $(LIBFT) $(UNAME)
 
 all: $(NAME)
 
+Libft:
+	$(MAKE) -C src/libft/src
+
 Darwin: $(OBJ)
+	mv src/libft/src/libft.a include/lib/libft_mac.a
 	$(CC) $(CFLAGS) $(SNTZ) -o $(NAME) $(OBJ) $(LIB) $(FRAME)
 
 Linux: $(OBJ)
+	mv src/libft/src/libft.a include/lib/libft_linux.a
 	$(CC) $(CFLAGS) $(SNTZ) -o $(NAME) $(OBJ) $(LIB_LINUX)
 
 clean:
 	$(RM) $(OBJ)
+	$(MAKE) -C src/libft/src clean
 
 fclean: clean
 	$(RM) $(NAME)
+	$(RM) include/lib/libft_*.a
 
 re: fclean all
 

@@ -6,7 +6,7 @@
 /*   By: andoni <andoni@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 16:42:02 by andoni            #+#    #+#             */
-/*   Updated: 2022/11/20 16:19:10 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/27 16:43:04 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,16 +170,16 @@ typedef struct s_application
 	t_rgb		rgb[2];
 }	t_application;
 
-int application_init(t_application *appl, char *path, t_custom_error *c_error);
+int		application_init(t_application *appl, char *path, t_custom_error *c_error);
 void	application_destory(t_application *appl);
-void	appl_mlx_destroy(t_mlx *mlx);
+void	appl_mlx_destroy(t_mlx *mlx, t_tx tx[4]);
 int		game_loop(t_application *appl);
 
 //PARSER
-int check_path_format(char *path, char *term, t_custom_error *c_error);
-char **load_map(t_application *appl, char *path, t_custom_error *c_error);
+int		check_path_format(char *path, char *term, t_custom_error *c_error);
+char	**load_map(t_application *appl, char *path, t_custom_error *c_error);
 int     map_first_row_chrs(char *line);
-int is_config_line(char *line, t_custom_error *c_error);
+int		is_config_line(char *line, t_custom_error *c_error);
 int     is_valid_map_line(char *line);
 int     line_contain_data(char *line);
 
@@ -189,7 +189,7 @@ int     process_player(int pos_found, int line, int colum, char **raw);
 
 ////PARSE_MAP
 void	get_map_size(char *path, size_t	sz[2]);
-int get_map_type(char **raw, t_custom_error *c_error);
+int		get_map_type(char **raw, t_custom_error *c_error);
 void	logger(char *msg);
 
 //UTILS
@@ -199,7 +199,7 @@ char    **free_str_array(char **tmp);
 char	*chr_cut_back(char *dir, char c);
 
 //PIXEL UTILS//
-void	clear_image(t_mlx *mlx);
+void	clear_image(t_mlx *mlx, t_rgb rgb[2]);
 
 //RAY//
 void	set_ray(t_ray *ray, t_player *pl, t_camera *cam);
@@ -208,18 +208,18 @@ void	set_ray(t_ray *ray, t_player *pl, t_camera *cam);
 void	wall_hit_case(t_ray *ray, t_map *map, t_mlx *mlx, t_tx *t);
 
 //TEXTURE//
-int	set_tx(t_ray *ray);
-int	get_tx_color(t_tx t[4], int tx_y, int tx_x, int tx_type);
+int		set_tx(t_ray *ray);
+int		get_tx_color(t_tx t[4], int tx_y, int tx_x, int tx_type);
 
 //PIXEL UTILS
 void	set_pixel_color(t_mlx *mlx, int x, int y, int color);
 int		get_rgb(int t, int red, int green, int blue);
 
 //HOOKS
-int	key_hook(int keycode, t_application *appl);
+int		key_hook(int keycode, t_application *appl);
 
 //INIT
-int	process_image(t_tx *t, t_mlx *mlx, char *xpm_file);
+int		process_image(t_tx *t, t_mlx *mlx, char *xpm_file);
 void	locate_player(t_player *player, t_camera *cam, char *line);
 
 //SHOW MAP
