@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "cub3d.h"
 #include "mlx.h"
 #include "custom_errors.h"
@@ -22,8 +23,9 @@ int	main(int argc, char **argv)
 	t_map			*map;
     t_custom_error  c_error;
 
-    custom_error_init(&c_error);
+	ft_memset(&c_error, 0, sizeof(t_application));
 	ft_memset(&appl, 0, sizeof(t_application));
+	custom_error_init(&c_error);
 	if (argc != 2 || application_init(&appl, argv[1], &c_error) < 0)
     {
 		application_destory(&appl);

@@ -89,12 +89,10 @@ int	get_map_type(char **raw, t_custom_error *c_error)
 				aux.map_start = i;
 			if ((aux.map_start >= 0) && (map_first_row_chrs(raw[i]) == 0))
 				aux.map_end = i;
-			if ((aux.config_start == -1) && (is_config_line(raw[i], NULL) == 0))
+			if ((aux.config_start == -1) && (is_config_line(raw[i], c_error) == 0))
 				aux.config_start = i;
-			if ((aux.config_start >= 0) && (is_config_line(raw[i], NULL) == 0))
+			if ((aux.config_start >= 0) && (is_config_line(raw[i], c_error) == 0))
 				aux.config_end = i;
-			if (i != aux.map_end && (is_config_line(raw[i], NULL) == -1))
-				return (-1);
 			if ((aux.map_start >= 0) && aux.config_start > aux.map_start)
 				return (set_error(c_error, 40, INVALID_CFG_START));
 			if ((aux.map_start >= 0) && (is_valid_map_line(raw[i]) < 0))

@@ -251,7 +251,7 @@ char **load_map(t_application *appl, char *path, t_custom_error *c_error)
     if (!sz[0])
         return (set_error_chr(c_error, 5, MAP_IS_EMPTY));
     tmp = load_raw_file_data(path, sz[0], c_error);
-    map = process_raw_data(appl, tmp, sz, NULL);
+    map = process_raw_data(appl, tmp, sz, c_error);
     free_str_array(tmp);
     if (!map)
         return (NULL);
