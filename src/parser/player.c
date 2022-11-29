@@ -1,31 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   player.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/29 20:19:56 by afiat-ar          #+#    #+#             */
+/*   Updated: 2022/11/29 20:21:21 by afiat-ar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-int is_player_position(char c)
+int	is_player_position(char c)
 {
-    if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
-        return (0);
-    return (-1);
-}
-
-//TODO
-int process_player(int pos_found, int line, int colum, char **raw)
-{
-    int i;
-    int x;
-
-    (void)x;
-    (void)line;
-    (void)colum;
-    (void)raw;
-    if (pos_found >= 1)
-        return (-1);
-    i = 0;
-    while (raw[i])
-    {
-        x = 0;
-        //while (raw)
-        i++;
-    }
-
-    return (0);
+	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+		return (0);
+	return (-1);
 }

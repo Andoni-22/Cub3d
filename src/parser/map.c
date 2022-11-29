@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/29 20:20:02 by afiat-ar          #+#    #+#             */
+/*   Updated: 2022/11/29 20:21:21 by afiat-ar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include "cub3d.h"
 #include <unistd.h>
@@ -30,16 +42,6 @@ void	get_map_size(char *path, size_t sz[2])
 	close(fd);
 }
 
-static void	erase_nl(char *line)
-{
-	while (*line)
-	{
-		if (*line == '\n')
-			*line = 0;
-		line++;
-	}
-}
-
 static int	return_map_type(t_custom_error *c_error, t_aux_params aux)
 {
 	if (aux.config_end >= aux.map_end)
@@ -61,18 +63,24 @@ static void	aux_params_init(t_aux_params *aux)
 	aux->config_end = -1;
 }
 
-/**
- * En esta funcion queremos saber si es solo simple
- * o si es complejo, para eso usaremos map_start y
- * config_start, ambas las inicialiceremos a -1
- * si al final de la funcion map_start es 0 y config_rest
- * -1, quiere decir que tenemos un mapa simplem, en caso de que
- * ambos tengan datos, tendremos que comprobar si config_start es mauor a map_start
- * y que no volavmos a tener lineas de config una vez encontrado el map start
- *
- * @param raw
- * @return
- */
+int static	map_control_lop(
+		t_aux_params *aux, int i, char *raw, t_custom_error *c_error)
+{
+	if ((aux->map_start == -1) && (map_first_row_chrs(raw) == 0))
+		aux->map_start = i;
+	if ((aux->map_start >= 0) && (map_first_row_chrs(raw) == 0))
+		aux->map_end = i;
+	if ((aux->config_start == -1) && (is_config_line(raw, c_error) == 0))
+		aux->config_start = i;
+	if ((aux->config_start >= 0) && (is_config_line(raw, c_error) == 0))
+		aux->config_end = i;
+	if ((aux->map_start >= 0) && aux->config_start > aux->map_start)
+		return (set_error(c_error, 40, INVALID_CFG_START));
+	if ((aux->map_start >= 0) && (is_valid_map_line(raw) < 0))
+		return (set_error(c_error, 41, INVALID_MAP_LINE));
+	return (0);
+}
+
 int	get_map_type(char **raw, t_custom_error *c_error)
 {
 	int				i;
@@ -85,18 +93,8 @@ int	get_map_type(char **raw, t_custom_error *c_error)
 		erase_nl(raw[i]);
 		if (line_contain_data(raw[i]) == 0)
 		{
-			if ((aux.map_start == -1) && (map_first_row_chrs(raw[i]) == 0))
-				aux.map_start = i;
-			if ((aux.map_start >= 0) && (map_first_row_chrs(raw[i]) == 0))
-				aux.map_end = i;
-			if ((aux.config_start == -1) && (is_config_line(raw[i], c_error) == 0))
-				aux.config_start = i;
-			if ((aux.config_start >= 0) && (is_config_line(raw[i], c_error) == 0))
-				aux.config_end = i;
-			if ((aux.map_start >= 0) && aux.config_start > aux.map_start)
-				return (set_error(c_error, 40, INVALID_CFG_START));
-			if ((aux.map_start >= 0) && (is_valid_map_line(raw[i]) < 0))
-				return (set_error(c_error, 41, INVALID_MAP_LINE));
+			if (map_control_lop(&aux, i, raw[i], c_error) < 0)
+				return (-1);
 		}
 		i++;
 	}

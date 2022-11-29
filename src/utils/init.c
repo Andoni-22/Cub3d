@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/29 20:18:48 by afiat-ar          #+#    #+#             */
+/*   Updated: 2022/11/29 20:18:51 by afiat-ar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 #include "mlx.h"
 #include "custom_errors.h"
 
-static int appl_mlx_init(t_mlx *mlx, t_custom_error *c_error)
+static int	appl_mlx_init(t_mlx *mlx, t_custom_error *c_error)
 {
 	mlx->mlx = mlx_init();
 	if (!mlx->mlx)
@@ -20,25 +32,18 @@ static int appl_mlx_init(t_mlx *mlx, t_custom_error *c_error)
 	return (0);
 }
 
-/**
- * map struct initialization method
- * first we control the path,
- * then we read the data
- * @param appl struct with all the data
- * @param path file path string
- * @return -1 if error, 0 if it's correct
- */
-static int appl_map_init(t_application *appl, char *path, t_custom_error *c_error)
+static int	appl_map_init(
+		t_application *appl, char *path, t_custom_error *c_error)
 {
-    if (check_path_format(path, FILE_FORMAT_CUB, c_error) < 0)
-        return (-1);
-    appl->map.map = load_map(appl, path, c_error);
+	if (check_path_format(path, FILE_FORMAT_CUB, c_error) < 0)
+		return (-1);
+	appl->map.map = load_map(appl, path, c_error);
 	if (!appl->map.map)
 		return (-1);
 	return (0);
 }
 
-int application_init(t_application *appl, char *path, t_custom_error *c_error)
+int	application_init(t_application *appl, char *path, t_custom_error *c_error)
 {
 	if (appl_mlx_init(&appl->mlx_win, c_error) < 0)
 		return (-1);
@@ -48,4 +53,3 @@ int application_init(t_application *appl, char *path, t_custom_error *c_error)
 		return (-1);
 	return (0);
 }
-

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/09 20:06:14 by lugonzal          #+#    #+#              #
-#    Updated: 2022/11/27 16:29:38 by lugonzal         ###   ########.fr        #
+#    Updated: 2022/11/29 18:53:16 by afiat-ar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,8 +33,11 @@ FRAME		= -framework OpenGL -framework AppKit
 FILES		= src/main \
 			  src/utils/init_destroy \
 			  src/parser/map \
+			  src/parser/map_validation \
 			  src/parser/parser \
 			  src/parser/player \
+			  src/parser/file \
+			  src/parser/textures \
 			  src/render/dda \
 			  src/render/ray \
 			  src/render/wall \
@@ -42,6 +45,7 @@ FILES		= src/main \
 			  src/render/pixel_utils \
 			  src/utils/init \
 			  src/utils/utils \
+			  src/utils/custom_errors \
 			  src/utils/chr_utils \
 			  src/utils/chr_array_utils \
 			  src/utils/parser_utils \

@@ -70,4 +70,3 @@ void	wall_hit_case(t_ray *ray, t_map *map, t_mlx *mlx, t_tx *t)
 	map->wall_height = (int)HEIGHT / map->perp_wall_dist;
 	draw_wall_tx(ray, map, mlx, t);
 }
-

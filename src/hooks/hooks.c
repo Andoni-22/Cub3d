@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx.h"
 #include "cub3d.h"
 #include "hooks.h"
-
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 static int	cls(t_map *map, t_player *pl, float x, float y)
 {
@@ -88,9 +88,6 @@ static void	horizontal_key_hook(int keycode, t_application *a)
 	}
 }
 
-#include <stdio.h>
-#include <stdlib.h>
-
 int	key_hook(int keycode, t_application *appl)
 {
 	fprintf(stderr, "KEYCODE: %d\n", keycode);
@@ -105,4 +102,3 @@ int	key_hook(int keycode, t_application *appl)
 	game_loop(appl);
 	return (1);
 }
-

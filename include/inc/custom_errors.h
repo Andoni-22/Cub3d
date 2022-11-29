@@ -1,24 +1,32 @@
-//
-// Created by Andoni Fiat arriola on 11/23/22.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   custom_errors.h                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/29 20:22:27 by afiat-ar          #+#    #+#             */
+/*   Updated: 2022/11/29 20:23:10 by afiat-ar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#ifndef CUB3D_CUSTOM_ERRORS_H
-#define CUB3D_CUSTOM_ERRORS_H
+# ifndef CUB3D_CUSTOM_ERRORS_H
+# define CUB3D_CUSTOM_ERRORS_H
 
-#define BAD_PATH_CUB "Incorrect path, make sure that file termination is .cub"
-#define BAD_PATH_XPM "Incorrect path, make sure that file termination is .xpm"
-#define INCORRECT_FILE "Make sure if you can read the file"
-#define EMPTY_FILE "File does not contain data"
-#define MAP_IS_EMPTY "Map does not contain any data"
-#define MLX_DEFAULT_ERROR   "Something goes wrong with MLX init methods"
-#define INVALID_MALLOC  "Could not allocate memory"
-#define INVALID_CFG_START "Configurations lines may not be on a correct position"
-#define INVALID_MAP_LINE "MAP line contain ilegal arguments"
-#define INVALID_CFG_POS "Configurations needs to be before map"
-#define INVALID_NL "You need to add a newline between cofig and map"
-#define NO_CFG "There is not any configuration"
-#define INVALID_PARAM "Invalid congirutaion parameter"
-#define INVALID_COLOR "Color code is not correct"
+# define BAD_PATH_CUB "Incorrect path, make sure that file termination is .cub"
+# define BAD_PATH_XPM "Incorrect path, make sure that file termination is .xpm"
+# define INCORRECT_FILE "Make sure if you can read the file"
+# define EMPTY_FILE "File does not contain data"
+# define MAP_IS_EMPTY "Map does not contain any data"
+# define MLX_DEFAULT_ERROR   "Something goes wrong with MLX init methods"
+# define INVALID_MALLOC  "Could not allocate memory"
+# define INVALID_CFG_START "Configurations lines may not be on a correct position"
+# define INVALID_MAP_LINE "MAP line contain ilegal arguments"
+# define INVALID_CFG_POS "Configurations needs to be before map"
+# define INVALID_NL "You need to add a newline between cofig and map"
+# define NO_CFG "There is not any configuration"
+# define INVALID_PARAM "Invalid congirutaion parameter"
+# define INVALID_COLOR "Color code is not correct"
 
 typedef struct s_custom_error
 {

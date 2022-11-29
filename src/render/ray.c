@@ -51,4 +51,3 @@ void	set_ray(t_ray *ray, t_player *pl, t_camera *cam)
 	ray_delta(ray);
 	ray_next_square_dist(ray);
 }
-
