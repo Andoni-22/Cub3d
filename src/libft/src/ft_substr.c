@@ -6,11 +6,11 @@
 /*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 19:12:03 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/11/30 18:48:26 by afiat-ar         ###   ########.fr       */
+/*   Updated: 2022/11/30 19:09:23 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include <stdlib.h>
 #include "libft.h"
 
 char	*ft_substr(char const *s, unsigned int start, int len)

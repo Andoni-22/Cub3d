@@ -6,9 +6,11 @@
 /*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 19:27:18 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/11/30 18:48:35 by afiat-ar         ###   ########.fr       */
+/*   Updated: 2022/11/30 19:09:23 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {

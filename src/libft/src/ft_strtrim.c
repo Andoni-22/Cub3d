@@ -6,9 +6,11 @@
 /*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 11:57:14 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/11/30 18:48:29 by afiat-ar         ###   ########.fr       */
+/*   Updated: 2022/11/30 19:09:23 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 static int	ft_check(char *s1, char *set)
 {
