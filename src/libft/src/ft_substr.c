@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lugonzal <lugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 19:12:03 by lugonzal          #+#    #+#             */
-/*Updated: 2021/05/27 20:12:50 by lugonzal               ###   ########.fr    */
+/*   Updated: 2022/11/30 18:48:26 by afiat-ar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdlib.h>
+
 #include <stdio.h>
 #include "libft.h"
 

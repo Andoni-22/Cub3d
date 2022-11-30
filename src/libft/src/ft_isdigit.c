@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lugonzal <lugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 21:04:53 by lugonzal          #+#    #+#             */
-/*Updated: 2021/05/26 21:07:07 by lugonzal               ###   ########.fr    */
+/*   Updated: 2022/11/30 18:51:20 by afiat-ar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 int	ft_isdigit(int c)
 {
 	if (c < 48 || (c > 57))

@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lugonzal <lugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 20:47:32 by lugonzal          #+#    #+#             */
-/*Updated: 2021/05/26 20:51:12 by lugonzal               ###   ########.fr    */
+/*   Updated: 2022/11/30 18:51:30 by afiat-ar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 int	ft_isalpha(int c)
 {
 	if (c >= 65 && c <= 122)

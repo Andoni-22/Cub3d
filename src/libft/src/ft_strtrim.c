@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lugonzal <lugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 11:57:14 by lugonzal          #+#    #+#             */
-/*Updated: 2021/05/28 12:09:02 by lugonzal               ###   ########.fr    */
+/*   Updated: 2022/11/30 18:48:29 by afiat-ar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+
 static int	ft_check(char *s1, char *set)
 {
 	int	i;

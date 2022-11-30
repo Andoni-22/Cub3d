@@ -3,13 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lugonzal <lugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 19:19:59 by lugonzal          #+#    #+#             */
-/*Updated: 2021/06/03 19:20:30 by lugonzal               ###   ########.fr    */
+/*   Updated: 2022/11/30 18:54:40 by afiat-ar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
+
 int	ft_lstsize(t_list *lst)
 {
 	int		i;

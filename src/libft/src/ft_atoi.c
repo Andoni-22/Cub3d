@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lugonzal <lugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By:  <afiat-ar@student.42urduliz.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/27 14:04:40 by lugonzal          #+#    #+#             */
-/*Updated: 2021/05/27 14:05:26 by lugonzal               ###   ########.fr    */
+/*   Created: 2022/11/30 18:43:21 by                   #+#    #+#             */
+/*   Updated: 2022/11/30 18:43:34 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 int	ft_atoi(const char *str)
 {
 	int	out;
