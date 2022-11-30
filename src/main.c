@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 20:53:48 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/11/09 20:07:37 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/30 20:11:23 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv)
 	t_map			*map;
     t_custom_error  c_error;
 
-	ft_memset(&c_error, 0, sizeof(t_application));
+	ft_memset(&c_error, 0, sizeof(t_custom_error));
 	ft_memset(&appl, 0, sizeof(t_application));
 	custom_error_init(&c_error);
 	if (argc != 2 || application_init(&appl, argv[1], &c_error) < 0)
