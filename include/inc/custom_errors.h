@@ -6,7 +6,7 @@
 /*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 20:22:27 by afiat-ar          #+#    #+#             */
-/*   Updated: 2022/11/30 19:42:21 by afiat-ar         ###   ########.fr       */
+/*   Updated: 2022/11/30 20:12:12 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # define NO_CFG "There is not any configuration"
 # define INVALID_PARAM "Invalid congirutaion parameter"
 # define INVALID_COLOR "Color code is not correct"
+# define BAP_PLAYER "Something goes wrong with player..."
+# define MAP_IS_OPEN "Map is open"
 
 typedef struct s_custom_error
 {
