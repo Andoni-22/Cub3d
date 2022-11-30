@@ -6,7 +6,7 @@
 /*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 16:42:02 by andoni            #+#    #+#             */
-/*   Updated: 2022/11/29 20:22:06 by afiat-ar         ###   ########.fr       */
+/*   Updated: 2022/11/30 19:45:00 by afiat-ar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ typedef struct s_wall_info
 	int		color;
 }	t_wall_info;
 
-typedef	struct  s_rgb
+typedef struct s_rgb
 {
 	char	key[2];
 	int		trgb[4];
@@ -179,29 +179,29 @@ int		game_loop(t_application *appl);
 //PARSER
 int		check_path_format(char *path, char *term, t_custom_error *c_error);
 char	**load_map(t_application *appl, char *path, t_custom_error *c_error);
-int     map_first_row_chrs(char *line);
+int		map_first_row_chrs(char *line);
 int		is_config_line(char *line, t_custom_error *c_error);
-int     is_valid_map_line(char *line);
-int     line_contain_data(char *line);
+int		is_valid_map_line(char *line);
+int		line_contain_data(char *line);
 
 //PARSE_PLAYER
-int     is_player_position(char c);
-int     process_player(int pos_found, int line, int colum, char **raw);
+int		is_player_position(char c);
+int		process_player(int pos_found, int line, int colum, char **raw);
 
 ////PARSE_MAP
 void	get_map_size(char *path, size_t	sz[2]);
 int		get_map_type(char **raw, t_custom_error *c_error);
 void	logger(char *msg);
-char	**process_raw_data(t_application *appl, char **raw, size_t sz[2], t_custom_error *c_error);
+char	**process_raw_data(t_application *appl,
+			char **raw, size_t sz[2], t_custom_error *c_error);
 char	**complex_map(t_application *appl, char **raw_tab, size_t sz[2]);
 char	**load_raw_file_data(char *path, size_t sz, t_custom_error *c_error);
 int		set_textures(t_tx tx[4], t_mlx *mlx, t_rgb rgb[2], char **raw_tab);
 
-
 //UTILS
-char    **str_array_copy(char **src);
-int     str_array_get_size(char **src);
-char    **free_str_array(char **tmp);
+char	**str_array_copy(char **src);
+int		str_array_get_size(char **src);
+char	**free_str_array(char **tmp);
 char	*chr_cut_back(char *dir, char c);
 void	erase_nl(char *line);
 
