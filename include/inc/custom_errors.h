@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   custom_errors.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/29 20:22:27 by afiat-ar          #+#    #+#             */
-/*   Updated: 2022/11/29 20:23:10 by afiat-ar         ###   ########.fr       */
+/*   Created: 2022/11/30 19:31:29 by lugonzal          #+#    #+#             */
+/*   Updated: 2022/11/30 19:41:36 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef CUB3D_CUSTOM_ERRORS_H
-# define CUB3D_CUSTOM_ERRORS_H
+#ifndef CUSTOM_ERRORS_H
+# define CUSTOM_ERRORS_H
 
 # define BAD_PATH_CUB "Incorrect path, make sure that file termination is .cub"
 # define BAD_PATH_XPM "Incorrect path, make sure that file termination is .xpm"
@@ -20,7 +20,7 @@
 # define MAP_IS_EMPTY "Map does not contain any data"
 # define MLX_DEFAULT_ERROR   "Something goes wrong with MLX init methods"
 # define INVALID_MALLOC  "Could not allocate memory"
-# define INVALID_CFG_START "Configurations lines may not be on a correct position"
+# define INVALID_CFG_START "cfg lines may not be on a correct position"
 # define INVALID_MAP_LINE "MAP line contain ilegal arguments"
 # define INVALID_CFG_POS "Configurations needs to be before map"
 # define INVALID_NL "You need to add a newline between cofig and map"
@@ -30,8 +30,8 @@
 
 typedef struct s_custom_error
 {
-    int     code;
-    char    *str;
+        int     code;
+        char    *str;
 }   t_custom_error;
 
 int     custom_error_init(t_custom_error *c_err);

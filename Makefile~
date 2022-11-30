@@ -6,7 +6,7 @@
 #    By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/09 20:06:14 by lugonzal          #+#    #+#              #
-#    Updated: 2022/11/30 20:08:53 by lugonzal         ###   ########.fr        #
+#    Updated: 2022/11/30 19:06:33 by lugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,6 @@ FILES		= src/main \
 			  src/utils/chr_utils \
 			  src/utils/chr_array_utils \
 			  src/utils/parser_utils \
-			  src/utils/locate_player \
 			  src/utils/get_next_line \
 			  src/utils/get_next_line_utils \
 			  src/hooks/hooks

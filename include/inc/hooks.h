@@ -6,7 +6,7 @@
 /*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 01:32:52 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/11/27 16:50:11 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/11/30 19:20:55 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define ZOOM_OUT		4
 # define ZOOM_IN		5
 
+/*
 # define ROTATE_LEFT 65361
 # define ROTATE_RIGHT 65363
 # define LEFT	97
@@ -34,8 +35,8 @@
 # define DOWN	115
 # define ESC	65307
 # define EXIT	113
+*/
 
-/*
 # define ROTATE_LEFT 123
 # define ROTATE_RIGHT 124
 # define LEFT	0
@@ -44,6 +45,5 @@
 # define DOWN	1
 # define ESC	53
 # define EXIT	12
-*/
 
 #endif
