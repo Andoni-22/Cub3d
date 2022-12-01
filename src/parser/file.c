@@ -6,38 +6,15 @@
 /*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 18:51:30 by afiat-ar          #+#    #+#             */
-/*   Updated: 2022/12/01 18:33:45 by                  ###   ########.fr       */
+/*   Updated: 2022/12/01 20:36:56 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "custom_errors.h"
+
 #include <unistd.h>
-#include <sys/fcntl.h>
-
-int	check_path_format(char *path, char *term, t_custom_error *c_error)
-{
-	char	**tmp;
-	int		size;
-	int		fd;
-
-	size = 0;
-	tmp = ft_split(path, '.');
-	if (!tmp)
-		return (set_error(c_error, 1, BAD_PATH_CUB));
-	while (tmp[size] != NULL)
-		size++;
-	fd = open(path, O_RDONLY);
-	close(fd);
-	if (ft_strncmp(term, tmp[size - 1], ft_strlen(term) + 1) != 0)
-		return (set_error_and_free(c_error, 2, BAD_PATH_CUB, tmp));
-	if (size <= 1 && fd > 0)
-		return (set_error_and_free(c_error, 3, EMPTY_FILE, tmp));
-	if (fd <= 0)
-		return (set_error_and_free(c_error, 4, INCORRECT_FILE, tmp));
-	free_str_array(tmp);
-	return (0);
-}
+#include <fcntl.h>
 
 char	**process_raw_data(
 		t_application *appl, char **raw, size_t sz[2], t_custom_error *c_error)

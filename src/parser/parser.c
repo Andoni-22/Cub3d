@@ -6,7 +6,7 @@
 /*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 18:48:29 by afiat-ar          #+#    #+#             */
-/*   Updated: 2022/11/29 18:53:17 by afiat-ar         ###   ########.fr       */
+/*   Updated: 2022/12/01 20:17:19 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	is_open(char **map, int i)
 	return (0);
 }
 
-static char	**get_map(char **raw, int start, size_t sz[2], t_application *appl)
+static char	**get_map(char **raw, int start, size_t sz[2], t_application *a)
 {
 	char	**map;
 	int		i;
@@ -46,19 +46,19 @@ static char	**get_map(char **raw, int start, size_t sz[2], t_application *appl)
 	i = 0;
 	while (raw[start])
 	{
-		locate_player(&appl->player, &appl->cam, raw[start]);
+		locate_player(&a->player, &a->cam, raw[start]);
 		map[i + 1] = ft_calloc(sizeof(char), (sz[1] + 1));
 		ft_memset(map[i + 1], SP, sz[1]);
 		ft_memcpy(map[i + 1], raw[start], ft_strlen(raw[start]));
 		free(raw[start]);
 		raw[start++] = NULL;
 		if (is_open(map, i++))
-			return (set_error_and_free_chr(appl->aux_error, 22, MAP_IS_OPEN, map));
+			return (set_error_and_free_chr(a->aux_error, 22, MAP_IS_OPEN, map));
 	}
 	if (is_open(map, i))
-		return (set_error_and_free_chr(appl->aux_error, 22, MAP_IS_OPEN, map));
-	if (appl->player.exist != 1)
-		return (set_error_and_free_chr(appl->aux_error, 22, BAP_PLAYER, map));
+		return (set_error_and_free_chr(a->aux_error, 22, MAP_IS_OPEN, map));
+	if (a->player.exist != 1)
+		return (set_error_and_free_chr(a->aux_error, 22, BAP_PLAYER, map));
 	return (map);
 }
 

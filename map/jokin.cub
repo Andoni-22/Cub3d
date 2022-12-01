@@ -1,7 +1,7 @@
 NO ./xpm_images/jokin.xpm
-SO ./xpm_images/AnyConv.com__redbrick.xpm
-WE ./xpm_images/AnyConv.com__colorstone.xpm
-EA ./xpm_images/AnyConv.com__greystone.xpm
+SO ./xpm_images/jokin.xpm
+WE ./xpm_images/jokin.xpm
+EA ./xpm_images/jokin.xpm
 
 F 225,0,0
 C 225,0,0

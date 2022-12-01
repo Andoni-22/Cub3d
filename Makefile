@@ -6,7 +6,7 @@
 #    By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/09 20:06:14 by lugonzal          #+#    #+#              #
-#    Updated: 2022/11/30 20:08:53 by lugonzal         ###   ########.fr        #
+#    Updated: 2022/12/01 19:26:31 by lugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LIBFT		= Libft
 
 CC 			= gcc
 CFLAGS 		= -g3 -Wall -Werror -Wextra -Wpedantic
-SNTZ		= -fsanitize=address
+#SNTZ		= -fsanitize=address
 FRAME		= -framework OpenGL -framework AppKit
 
 INC 		= -I include -I include/inc -I $(MINILIB_PATH) -I $(LIBFT_PATH)

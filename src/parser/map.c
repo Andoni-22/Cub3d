@@ -6,41 +6,12 @@
 /*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 20:20:02 by afiat-ar          #+#    #+#             */
-/*   Updated: 2022/12/01 19:10:47 by                  ###   ########.fr       */
+/*   Updated: 2022/12/01 20:40:40 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "cub3d.h"
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdlib.h>
 #include "custom_errors.h"
-
-void	get_map_size(char *path, size_t sz[2])
-{
-	char	*line;
-	size_t	len;
-	int		fd;
-
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-		return ;
-	sz[0] = 0;
-	sz[1] = 0;
-	while (1)
-	{
-	line = get_next_line(fd);
-		if (!line)
-			break ;
-		len = ft_strlen(line);
-		if (len > sz[1])
-			sz[1] = len;
-		free(line);
-		sz[0]++;
-	}
-	close(fd);
-}
 
 static int	return_map_type(t_custom_error *c_error, t_aux_params aux)
 {
@@ -89,7 +60,7 @@ int static	map_control_lop(
 int	get_map_type(char **raw, t_custom_error *c_error)
 {
 	int				i;
-	int 			x;
+	int				x;
 	t_aux_params	aux;
 
 	i = aux_params_init(&aux);

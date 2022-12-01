@@ -6,7 +6,7 @@
 /*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 20:19:15 by afiat-ar          #+#    #+#             */
-/*   Updated: 2022/11/29 20:21:24 by afiat-ar         ###   ########.fr       */
+/*   Updated: 2022/12/01 20:30:27 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ char	**set_error_chr(t_custom_error *c_err, int code, char *str)
 	return (NULL);
 }
 
-char 	**set_error_and_free_chr(t_custom_error *c_error, int code, char *str, char **tmp)
+char	**set_error_and_free_chr(t_custom_error *c_error,
+		int code, char *str, char **tmp)
 {
 	free_str_array(tmp);
 	set_error(c_error, code, str);
