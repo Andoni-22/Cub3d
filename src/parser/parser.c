@@ -53,12 +53,12 @@ static char	**get_map(char **raw, int start, size_t sz[2], t_application *appl)
 		free(raw[start]);
 		raw[start++] = NULL;
 		if (is_open(map, i++))
-			return (set_error_and_free(c_error, 22, MAP_IS_OPEN, map));
+			return (set_error_and_free_chr(appl->aux_error, 22, MAP_IS_OPEN, map));
 	}
 	if (is_open(map, i))
-		return (set_error_and_free(c_error, 22, MAP_IS_OPEN, map));
+		return (set_error_and_free_chr(appl->aux_error, 22, MAP_IS_OPEN, map));
 	if (appl->player.exist != 1)
-		return (set_error_and_free(c_error, 22, BAP_PLAYER, map));
+		return (set_error_and_free_chr(appl->aux_error, 22, BAP_PLAYER, map));
 	return (map);
 }
 

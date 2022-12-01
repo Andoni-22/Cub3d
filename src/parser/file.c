@@ -6,7 +6,7 @@
 /*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 18:51:30 by afiat-ar          #+#    #+#             */
-/*   Updated: 2022/11/29 18:53:17 by afiat-ar         ###   ########.fr       */
+/*   Updated: 2022/12/01 18:33:45 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	**process_raw_data(
 	map_type = get_map_type(raw, c_error);
 	if (map_type == 0 || map_type == -1)
 		return (NULL);
+	appl->aux_error = c_error;
 	map = complex_map(appl, raw, sz);
 	return (map);
 }
@@ -104,6 +105,25 @@ int	map_first_row_chrs(char *line)
 	while (line[i])
 	{
 		if (line[i] == '1' || line[i] == ' ')
+			cont++;
+		i++;
+	}
+	if (cont != (i))
+		return (-1);
+	return (0);
+}
+
+int	map_row_chrs(char *line)
+{
+	int	i;
+	int	cont;
+
+	i = 0;
+	cont = 0;
+	while (line[i])
+	{
+		if (line[i] == '1' || line[i] == ' '
+			|| line[i] == '0')
 			cont++;
 		i++;
 	}

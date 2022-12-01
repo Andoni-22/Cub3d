@@ -6,7 +6,7 @@
 /*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 16:42:02 by andoni            #+#    #+#             */
-/*   Updated: 2022/11/30 20:11:23 by                  ###   ########.fr       */
+/*   Updated: 2022/12/01 18:29:27 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_aux_params
 {
 	int	map_start;
 	int	map_end;
+	int	map_line;
 	int	config_start;
 	int	config_end;
 }	t_aux_params;
@@ -161,13 +162,14 @@ typedef struct s_rgb
 
 typedef struct s_application
 {
-	t_map		map;
-	t_mlx		mlx_win;
-	t_player	player;
-	t_camera	cam;
-	t_ray		ray;
-	t_tx		tx[4];
-	t_rgb		rgb[2];
+	t_map			map;
+	t_mlx			mlx_win;
+	t_player		player;
+	t_camera		cam;
+	t_ray			ray;
+	t_tx			tx[4];
+	t_rgb			rgb[2];
+	t_custom_error	*aux_error;
 }	t_application;
 
 int		application_init(
@@ -180,6 +182,7 @@ int		game_loop(t_application *appl);
 int		check_path_format(char *path, char *term, t_custom_error *c_error);
 char	**load_map(t_application *appl, char *path, t_custom_error *c_error);
 int		map_first_row_chrs(char *line);
+int		map_row_chrs(char *line);
 int		is_config_line(char *line, t_custom_error *c_error);
 int		is_valid_map_line(char *line);
 int		line_contain_data(char *line);

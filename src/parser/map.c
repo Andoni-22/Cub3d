@@ -6,7 +6,7 @@
 /*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 20:20:02 by afiat-ar          #+#    #+#             */
-/*   Updated: 2022/11/29 20:21:21 by afiat-ar         ###   ########.fr       */
+/*   Updated: 2022/12/01 19:10:47 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,14 @@ static int	return_map_type(t_custom_error *c_error, t_aux_params aux)
 	return (255);
 }
 
-static void	aux_params_init(t_aux_params *aux)
+static int	aux_params_init(t_aux_params *aux)
 {
 	aux->map_start = -1;
 	aux->map_end = -1;
 	aux->config_start = -1;
 	aux->config_end = -1;
+	aux->map_line = -1;
+	return (-1);
 }
 
 int static	map_control_lop(
@@ -68,11 +70,14 @@ int static	map_control_lop(
 {
 	if ((aux->map_start == -1) && (map_first_row_chrs(raw) == 0))
 		aux->map_start = i;
+	if ((aux->map_start >= 0) && (map_row_chrs(raw) == 0))
+		aux->map_line = i;
 	if ((aux->map_start >= 0) && (map_first_row_chrs(raw) == 0))
 		aux->map_end = i;
 	if ((aux->config_start == -1) && (is_config_line(raw, c_error) == 0))
 		aux->config_start = i;
-	if ((aux->config_start >= 0) && (is_config_line(raw, c_error) == 0))
+	if ((aux->map_line != i)
+		&& (aux->config_start >= 0) && (is_config_line(raw, c_error) == 0))
 		aux->config_end = i;
 	if ((aux->map_start >= 0) && aux->config_start > aux->map_start)
 		return (set_error(c_error, 40, INVALID_CFG_START));
@@ -84,11 +89,11 @@ int static	map_control_lop(
 int	get_map_type(char **raw, t_custom_error *c_error)
 {
 	int				i;
+	int 			x;
 	t_aux_params	aux;
 
-	i = 0;
-	aux_params_init(&aux);
-	while (raw[i])
+	i = aux_params_init(&aux);
+	while (raw[++i])
 	{
 		erase_nl(raw[i]);
 		if (line_contain_data(raw[i]) == 0)
@@ -96,7 +101,15 @@ int	get_map_type(char **raw, t_custom_error *c_error)
 			if (map_control_lop(&aux, i, raw[i], c_error) < 0)
 				return (-1);
 		}
-		i++;
+		else if (aux.map_start != -1)
+		{
+			x = i -1;
+			while (raw[++x])
+			{
+				if (line_contain_data(raw[x]) == 0)
+					return (set_error(c_error, 122, MAP_NL));
+			}
+		}
 	}
 	return (return_map_type(c_error, aux));
 }

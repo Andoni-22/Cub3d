@@ -6,7 +6,7 @@
 /*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 20:22:27 by afiat-ar          #+#    #+#             */
-/*   Updated: 2022/11/30 20:12:12 by                  ###   ########.fr       */
+/*   Updated: 2022/12/01 19:03:07 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define INVALID_COLOR "Color code is not correct"
 # define BAP_PLAYER "Something goes wrong with player..."
 # define MAP_IS_OPEN "Map is open"
+# define MAP_NL "I do not like that nl -_-"
 
 typedef struct s_custom_error
 {
@@ -39,6 +40,8 @@ typedef struct s_custom_error
 int		custom_error_init(t_custom_error *c_err);
 int		set_error(t_custom_error *c_err, int code, char *str);
 char	**set_error_chr(t_custom_error *c_err, int code, char *str);
+char	**set_error_and_free_chr(t_custom_error *c_error,
+							  int code, char *str, char **tmp);
 int		set_error_and_free(t_custom_error *c_error,
 			int code, char *str, char **tmp);
 int		print_error(int code, char *str);

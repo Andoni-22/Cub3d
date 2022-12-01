@@ -51,5 +51,6 @@ int	application_init(t_application *appl, char *path, t_custom_error *c_error)
 		return (-1);
 	if (!appl->player.exist)
 		return (-1);
+	appl->aux_error = NULL;
 	return (0);
 }

@@ -40,3 +40,10 @@ char	**set_error_chr(t_custom_error *c_err, int code, char *str)
 	set_error(c_err, code, str);
 	return (NULL);
 }
+
+char 	**set_error_and_free_chr(t_custom_error *c_error, int code, char *str, char **tmp)
+{
+	free_str_array(tmp);
+	set_error(c_error, code, str);
+	return (NULL);
+}
