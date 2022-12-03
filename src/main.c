@@ -6,7 +6,7 @@
 /*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 20:53:48 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/12/01 20:15:35 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/12/03 18:26:54 by afiat-ar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	main(int argc, char **argv)
 	custom_error_init(&c_error);
 	if (argc != 2 || application_init(&appl, argv[1], &c_error) < 0)
 	{
+		if (argc != 2)
+			set_error(&c_error, 1, ILEGAL_ARGS);
 		application_destory(&appl);
 		return (print_custom_error(&c_error));
 	}

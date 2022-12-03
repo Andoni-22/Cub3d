@@ -6,13 +6,14 @@
 /*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 20:22:27 by afiat-ar          #+#    #+#             */
-/*   Updated: 2022/12/03 17:55:34 by afiat-ar         ###   ########.fr       */
+/*   Updated: 2022/12/03 18:25:49 by afiat-ar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUSTOM_ERRORS_H
 # define CUSTOM_ERRORS_H
 
+# define ILEGAL_ARGS "Ilegal arguments..."
 # define BAD_PATH_CUB "Incorrect path, make sure that file termination is .cub"
 # define BAD_PATH_XPM "Incorrect path, make sure that file termination is .xpm"
 # define INCORRECT_FILE "Make sure if you can read the file"
