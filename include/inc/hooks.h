@@ -34,6 +34,7 @@
 # define DOWN	115
 # define ESC	65307
 # define EXIT	113
+# define LEFT_CLICK 1
 
 /*
 # define ROTATE_LEFT 123
