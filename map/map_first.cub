@@ -1,10 +1,15 @@
-NO ./xpm_images/jokin.xpm
+NO ./xpm_images/AnyConv.com__eagle.xpm
 SO ./xpm_images/AnyConv.com__redbrick.xpm
 WE ./xpm_images/AnyConv.com__colorstone.xpm
 EA ./xpm_images/AnyConv.com__greystone.xpm
 
+<<<<<<< HEAD
 F 41,51,97
 C 225,0,0
+=======
+F 3,135,127
+C 0,12,232
+>>>>>>> a6ac48f3eb99e3991b2f1108c27ab143d922f0f5
 
   111111111111111111111111
   100000000000000000000001
