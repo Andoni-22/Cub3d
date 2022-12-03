@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andoni <andoni@student.42.fr>              +#+  +:+       +#+        */
+/*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 16:42:02 by andoni            #+#    #+#             */
-/*   Updated: 2022/11/27 16:43:04 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/12/01 18:29:27 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include "get_next_line.h"
+# include "custom_errors.h"
 
 # define BYTE 			8
 # define COMA			','
@@ -49,6 +50,15 @@
 # define SOUTH			"SO"
 # define WEST			"WE"
 # define EAST			"EA"
+
+typedef struct s_aux_params
+{
+	int	map_start;
+	int	map_end;
+	int	map_line;
+	int	config_start;
+	int	config_end;
+}	t_aux_params;
 
 typedef struct s_tx
 {
@@ -144,7 +154,7 @@ typedef struct s_wall_info
 	int		color;
 }	t_wall_info;
 
-typedef	struct s_rgb
+typedef struct s_rgb
 {
 	char	key[2];
 	int		trgb[4];
@@ -152,42 +162,51 @@ typedef	struct s_rgb
 
 typedef struct s_application
 {
-	t_map		map;
-	t_mlx		mlx_win;
-	t_player	player;
-	t_camera	cam;
-	t_ray		ray;
-	t_tx		tx[4];
-	t_rgb		rgb[2];
+	t_map			map;
+	t_mlx			mlx_win;
+	t_player		player;
+	t_camera		cam;
+	t_ray			ray;
+	t_tx			tx[4];
+	t_rgb			rgb[2];
+	t_custom_error	*aux_error;
 }	t_application;
 
-int		application_init(t_application *appl, char *path);
+int		application_init(
+			t_application *appl, char *path, t_custom_error *c_error);
 void	application_destory(t_application *appl);
 void	appl_mlx_destroy(t_mlx *mlx, t_tx tx[4]);
 int		game_loop(t_application *appl);
 
 //PARSER
-int		check_path_format(char *path, char *term);
-char	**load_map(t_application *appl, char *path);
-int     map_first_row_chrs(char *line);
-int     is_config_line(char *line);
-int     is_valid_map_line(char *line);
-int     line_contain_data(char *line);
+int		check_path_format(char *path, char *term, t_custom_error *c_error);
+char	**load_map(t_application *appl, char *path, t_custom_error *c_error);
+int		map_first_row_chrs(char *line);
+int		map_row_chrs(char *line);
+int		is_config_line(char *line, t_custom_error *c_error);
+int		is_valid_map_line(char *line);
+int		line_contain_data(char *line);
 
 //PARSE_PLAYER
-int     is_player_position(char c);
-int     process_player(int pos_found, int line, int colum, char **raw);
+int		is_player_position(char c);
+int		process_player(int pos_found, int line, int colum, char **raw);
 
 ////PARSE_MAP
 void	get_map_size(char *path, size_t	sz[2]);
-int     get_map_type(char **raw);
+int		get_map_type(char **raw, t_custom_error *c_error);
 void	logger(char *msg);
+char	**process_raw_data(t_application *appl,
+			char **raw, size_t sz[2], t_custom_error *c_error);
+char	**complex_map(t_application *appl, char **raw_tab, size_t sz[2]);
+char	**load_raw_file_data(char *path, size_t sz, t_custom_error *c_error);
+int		set_textures(t_tx tx[4], t_mlx *mlx, t_rgb rgb[2], char **raw_tab);
 
 //UTILS
-char    **str_array_copy(char **src);
-int     str_array_get_size(char **src);
-char    **free_str_array(char **tmp);
+char	**str_array_copy(char **src);
+int		str_array_get_size(char **src);
+char	**free_str_array(char **tmp);
 char	*chr_cut_back(char *dir, char c);
+void	erase_nl(char *line);
 
 //PIXEL UTILS//
 void	clear_image(t_mlx *mlx, t_rgb rgb[2]);
@@ -199,19 +218,18 @@ void	set_ray(t_ray *ray, t_player *pl, t_camera *cam);
 void	wall_hit_case(t_ray *ray, t_map *map, t_mlx *mlx, t_tx *t);
 
 //TEXTURE//
-int	set_tx(t_ray *ray);
-int	get_tx_color(t_tx t[4], int tx_y, int tx_x, int tx_type);
+int		set_tx(t_ray *ray);
+int		get_tx_color(t_tx t[4], int tx_y, int tx_x, int tx_type);
 
 //PIXEL UTILS
 void	set_pixel_color(t_mlx *mlx, int x, int y, int color);
 int		get_rgb(int t, int red, int green, int blue);
 
 //HOOKS
-int	key_hook(int keycode, t_application *appl);
+int		key_hook(int keycode, t_application *appl);
 
 //INIT
-int	application_init(t_application *appl, char *path);
-int	process_image(t_tx *t, t_mlx *mlx, char *xpm_file);
+int		process_image(t_tx *t, t_mlx *mlx, char *xpm_file);
 void	locate_player(t_player *player, t_camera *cam, char *line);
 
 //SHOW MAP

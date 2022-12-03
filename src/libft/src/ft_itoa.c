@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lugonzal <lugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: afiat-ar <afiat-ar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 17:42:22 by lugonzal          #+#    #+#             */
-/*Updated: 2021/05/28 17:50:37 by lugonzal               ###   ########.fr    */
+/*   Updated: 2022/11/30 19:03:56 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "libft.h"
+
 static int	ft_power_num(unsigned int num)
 {
 	int	i;
@@ -26,7 +28,7 @@ static int	ft_power_num(unsigned int num)
 	return (i);
 }
 
-static char	*ft_putnbr(long	num, char *str)
+static char	*ft_putnbr(long num, char *str)
 {
 	unsigned int	size;
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wall.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/30 19:25:03 by lugonzal          #+#    #+#             */
+/*   Updated: 2022/12/01 21:15:23 by lugonzal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <math.h>
 #include "cub3d.h"
 
@@ -70,4 +82,3 @@ void	wall_hit_case(t_ray *ray, t_map *map, t_mlx *mlx, t_tx *t)
 	map->wall_height = (int)HEIGHT / map->perp_wall_dist;
 	draw_wall_tx(ray, map, mlx, t);
 }
-

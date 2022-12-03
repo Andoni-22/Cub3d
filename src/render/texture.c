@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   texture.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/30 19:25:18 by lugonzal          #+#    #+#             */
+/*   Updated: 2022/12/01 21:15:02 by lugonzal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 int	set_tx(t_ray *ray)
@@ -35,4 +47,3 @@ int	get_tx_color(t_tx t[4], int tx_y, int tx_x, int tx_type)
 	color[3] = t[tx_type].img_addr[tx_y * len + tx_x * 4 + 3];
 	return (get_rgb(color[3], color[2], color[1], color[0]));
 }
-

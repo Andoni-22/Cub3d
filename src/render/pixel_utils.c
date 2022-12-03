@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pixel_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/30 19:24:29 by lugonzal          #+#    #+#             */
+/*   Updated: 2022/11/30 20:11:23 by                  ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	set_pixel_color(t_mlx *mlx, int x, int y, int color)
@@ -23,8 +35,10 @@ void	clear_image(t_mlx *mlx, t_rgb rgb[2])
 	int	y;
 	int	color[2];
 
-	color[0] = get_rgb(rgb[0].trgb[0], rgb[0].trgb[1], rgb[0].trgb[2], rgb[0].trgb[3]);
-	color[1] = get_rgb(rgb[1].trgb[0], rgb[1].trgb[1], rgb[1].trgb[2], rgb[0].trgb[3]);
+	color[0] = get_rgb(
+			rgb[0].trgb[0], rgb[0].trgb[1], rgb[0].trgb[2], rgb[0].trgb[3]);
+	color[1] = get_rgb(
+			rgb[1].trgb[0], rgb[1].trgb[1], rgb[1].trgb[2], rgb[0].trgb[3]);
 	y = -1;
 	while (++y < HEIGHT / 2)
 	{

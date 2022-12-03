@@ -6,14 +6,14 @@
 #    By: lugonzal <lugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/29 17:18:21 by lugonzal          #+#    #+#              #
-# Updated: 2021/05/29 17:18:27 by lugonzal               ###   ########.fr     #
+#   Updated: 2022/11/30 20:11:23 by                  ###   ########.fr       # #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3
 AR = ar rcs
 RM = rm -f
 
