@@ -6,7 +6,7 @@
 /*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:24:29 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/12/03 18:08:22 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/12/03 18:15:00 by afiat-ar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	clear_image(t_mlx *mlx, t_rgb rgb[2])
 	int	color[2];
 
 	color[0] = get_rgb(
-		rgb[0].trgb[0], rgb[0].trgb[1], rgb[0].trgb[2], rgb[0].trgb[3]);
+			rgb[0].trgb[0], rgb[0].trgb[1], rgb[0].trgb[2], rgb[0].trgb[3]);
 	color[1] = get_rgb(
-		rgb[1].trgb[0], rgb[1].trgb[1], rgb[1].trgb[2], rgb[1].trgb[3]);
+			rgb[1].trgb[0], rgb[1].trgb[1], rgb[1].trgb[2], rgb[1].trgb[3]);
 	y = -1;
 	while (++y < HEIGHT / 2)
 	{
