@@ -31,6 +31,7 @@
 # define BAP_PLAYER "Something goes wrong with player..."
 # define MAP_IS_OPEN "Map is open"
 # define MAP_NL "I do not like that nl -_-"
+# define INVALID_CFG "Invalid config params num"
 
 typedef struct s_custom_error
 {
