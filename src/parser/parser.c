@@ -68,7 +68,7 @@ char	**complex_map(t_application *appl, char **raw_tab, size_t sz[2])
 
 	pos = set_textures(appl->tx, &appl->mlx_win, appl->rgb, raw_tab);
 	if (pos == -1)
-		return (NULL);
+		return (set_error_chr(appl->aux_error, 65, INVALID_CFG));
 	while (raw_tab[pos]
 		&& ft_strchr(raw_tab[pos], '1') == 0)
 		pos++;
