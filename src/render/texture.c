@@ -6,7 +6,7 @@
 /*   By: lugonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:25:18 by lugonzal          #+#    #+#             */
-/*   Updated: 2022/12/01 21:15:02 by lugonzal         ###   ########.fr       */
+/*   Updated: 2022/12/03 18:29:15 by lugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@ int	set_tx(t_ray *ray)
 
 	if (ray->dir_x >= 0)
 	{
-		tx_type = 3;
-		if (ray->side && ray->dir_y >= 0)
-			tx_type = 2;
-		else if (ray->side && ray->dir_y < 0)
-			tx_type = 1;
-	}
-	else
-	{
 		tx_type = 0;
 		if (ray->side && ray->dir_y >= 0)
 			tx_type = 2;
 		else if (ray->side && ray->dir_y < 0)
-			tx_type = 1;
+			tx_type = 3;
+	}
+	else
+	{
+		tx_type = 1;
+		if (ray->side && ray->dir_y >= 0)
+			tx_type = 2;
+		else if (ray->side && ray->dir_y < 0)
+			tx_type = 3;
 	}
 	return (tx_type);
 }
